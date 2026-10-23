@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Map · BiUH Campus Map</title>
+<meta name="description" content="Interactive schematic map of the BiUH campus. Click a building to see its name, purpose and location.">
+<meta name="theme-color" content="#0f766e">
+
+<!-- Open Graph — update these if the username or repository changes. -->
+<meta property="og:title" content="Campus Map · BiUH Campus Map">
+<meta property="og:description" content="Interactive schematic map of the BiUH campus. Click a building to see its name and purpose.">
+<meta property="og:image" content="https://kalueriw.github.io/campus-map/images/og-image.jpg">
+<meta property="og:url" content="https://kalueriw.github.io/campus-map/map.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Z" fill="currentColor"/>
+        <circle cx="12" cy="9" r="2.6" fill="#fbfaf7"/>
+      </svg>
+      BiUH Campus Map
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="map.html" aria-current="page">Map</a>
+      <a href="buildings.html">Buildings</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap wrap-wide">
+  <header class="page-head">
+    <p class="kicker">Campus map</p>
+    <h1>Find your way around campus.</h1>
+    <p class="lead">Click any building to see its name, what it is used for, and where it sits. Use the search box or the category buttons to narrow the map down.</p>
+  </header>
+
+  <div class="map-toolbar">
+    <div class="search">
+      <label for="map-search">Find a building</label>
+      <input id="map-search" type="search" placeholder="Try “teaching” or “宿舍”" autocomplete="off">
+    </div>
+    <div class="legend" role="group" aria-label="Filter by category">
+      <button class="legend-btn" type="button" data-category="all" aria-pressed="true">
+        <span class="swatch swatch-all" aria-hidden="true"></span>All
+      </button>
+      <button class="legend-btn" type="button" data-category="academic" aria-pressed="false">
+        <span class="swatch" aria-hidden="true"></span>Academic
+      </button>
+      <button class="legend-btn" type="button" data-category="student-life" aria-pressed="false">
+        <span class="swatch" aria-hidden="true"></span>Student life
+      </button>
+      <button class="legend-btn" type="button" data-category="residence" aria-pressed="false">
+        <span class="swatch" aria-hidden="true"></span>Residence
+      </button>
+      <button class="legend-btn" type="button" data-category="sports" aria-pressed="false">
+        <span class="swatch" aria-hidden="true"></span>Sport
+      </button>
+      <button class="legend-btn" type="button" data-category="landmark" aria-pressed="false">
+        <span class="swatch" aria-hidden="true"></span>Landmark
+      </button>
+    </div>
+  </div>
+  <p class="map-status" id="map-status" role="status" aria-live="polite"></p>
+
+  <div class="map-card">
+    <div class="map-scroller" tabindex="0" role="region" aria-label="Campus map. On a narrow screen, scroll sideways to see the whole campus.">
+      <svg id="campus-svg" viewBox="0 0 1966 701" role="group" aria-labelledby="map-svg-title map-svg-desc" focusable="false">
+        <title id="map-svg-title">Schematic map of the BiUH campus</title>
+        <desc id="map-svg-desc">The sports field and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with student dormitories B and A on the eastern edge, teacher dormitories A and B below them, and a lake and teacher center to the south-west.</desc>
+
+        <defs>
+          <pattern id="glassGrid" width="18" height="18" patternUnits="userSpaceOnUse">
+            <path d="M0 0H18V18H0Z" fill="none" stroke="#8fb3c8" stroke-width="1" opacity="0.7"/>
+          </pattern>
+          <pattern id="diagLines" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="16" stroke="#8fb3c8" stroke-width="1" opacity="0.7"/>
+          </pattern>
+          <symbol id="court" viewBox="0 0 55 80">
+            <rect x="1" y="1" width="53" height="78" rx="4" fill="#f0d3d0" stroke="#c98b8b" stroke-width="1.5"/>
+            <line x1="1" y1="40" x2="54" y2="40" stroke="#c98b8b" stroke-width="1"/>
+            <circle cx="27.5" cy="40" r="7" fill="none" stroke="#c98b8b" stroke-width="1"/>
+          </symbol>
+        </defs>
+
+        <!-- ground and park -->
+        <rect width="1966" height="701" fill="#e9f0dd"/>
+        <path class="park" d="M560 701V520C650 460 780 470 900 485C1040 502 1160 452 1300 470C1450 490 1560 530 1700 520C1800 512 1900 490 1966 495V701Z"/>
+
+        <!-- roads and paths -->
+        <g class="roads" aria-hidden="true">
+          <path class="road" d="M552 150C566 250 540 340 600 392L1930 392" stroke-width="36"/>
+          <path class="road" d="M1932 30V690" stroke-width="30"/>
+          <path class="road" d="M1420 165H1772" stroke-width="26"/>
+          <path class="road" d="M560 620C680 600 760 600 840 612" stroke-width="12"/>
+          <path class="road" d="M1408 330C1370 380 1378 520 1460 572C1540 622 1640 592 1692 542" stroke-width="12"/>
+          <path class="road" d="M900 680C980 640 1060 630 1140 650" stroke-width="10"/>
+        </g>
+
+        <!-- trees -->
+        <g aria-hidden="true">
+          <circle class="tree" cx="70" cy="200" r="10"/>
+          <circle class="tree" cx="115" cy="188" r="9"/>
+          <circle class="tree" cx="160" cy="180" r="8"/>
+          <circle class="tree" cx="330" cy="200" r="9"/>
+          <circle class="tree" cx="375" cy="195" r="8"/>
+          <circle class="tree" cx="420" cy="190" r="8"/>
+          <circle class="tree" cx="465" cy="195" r="8"/>
+          <circle class="tree" cx="510" cy="200" r="9"/>
+          <circle class="tree" cx="555" cy="210" r="10"/>
+          <circle class="tree" cx="393" cy="265" r="6"/>
+          <circle class="tree" cx="393" cy="355" r="6"/>
+          <circle class="tree" cx="393" cy="445" r="6"/>
+          <circle class="tree" cx="393" cy="535" r="6"/>
+          <circle class="tree" cx="463" cy="265" r="6"/>
+          <circle class="tree" cx="463" cy="355" r="6"/>
+          <circle class="tree" cx="463" cy="445" r="6"/>
+          <circle class="tree" cx="463" cy="535" r="6"/>
+          <circle class="tree" cx="548" cy="260" r="8"/>
+          <circle class="tree" cx="548" cy="335" r="8"/>
+          <circle class="tree" cx="548" cy="410" r="8"/>
+          <circle class="tree" cx="548" cy="485" r="8"/>
+          <circle class="tree" cx="548" cy="560" r="8"/>
+          <circle class="tree" cx="548" cy="620" r="9"/>
+          <circle class="tree" cx="640" cy="205" r="9"/>
+          <circle class="tree" cx="930" cy="205" r="9"/>
+          <circle class="tree" cx="1005" cy="215" r="9"/>
+          <circle class="tree" cx="1335" cy="210" r="10"/>
+          <circle class="tree" cx="1335" cy="375" r="9"/>
+          <circle class="tree" cx="640" cy="395" r="9"/>
+          <circle class="tree" cx="600" cy="370" r="8"/>
+          <circle class="tree" cx="930" cy="395" r="8"/>
+          <circle class="tree" cx="1170" cy="120" r="9"/>
+          <circle class="tree" cx="1450" cy="120" r="9"/>
+          <circle class="tree" cx="1455" cy="210" r="8"/>
+          <circle class="tree" cx="1700" cy="215" r="9"/>
+          <circle class="tree" cx="1705" cy="130" r="8"/>
+          <circle class="tree" cx="1405" cy="330" r="9"/>
+          <circle class="tree" cx="1390" cy="420" r="8"/>
+          <circle class="tree" cx="1395" cy="500" r="9"/>
+          <circle class="tree" cx="1435" cy="565" r="8"/>
+          <circle class="tree" cx="1590" cy="545" r="9"/>
+          <circle class="tree" cx="1700" cy="520" r="8"/>
+          <circle class="tree" cx="900" cy="600" r="10"/>
+          <circle class="tree" cx="980" cy="640" r="9"/>
+          <circle class="tree" cx="1080" cy="590" r="9"/>
+          <circle class="tree" cx="1160" cy="640" r="10"/>
+          <circle class="tree" cx="1250" cy="590" r="9"/>
+          <circle class="tree" cx="1330" cy="640" r="8"/>
+          <circle class="tree" cx="1410" cy="610" r="9"/>
+          <circle class="tree" cx="1910" cy="160" r="8"/>
+          <circle class="tree" cx="1905" cy="315" r="8"/>
+          <circle class="tree" cx="1905" cy="445" r="8"/>
+          <circle class="tree" cx="1908" cy="555" r="8"/>
+          <circle class="tree" cx="1905" cy="675" r="8"/>
+          <circle class="tree" cx="1200" cy="30" r="9"/>
+          <circle class="tree" cx="1700" cy="30" r="9"/>
+          <circle class="tree" cx="1850" cy="25" r="8"/>
+        </g>
+
+        <!-- building plinths -->
+        <g class="plinths" aria-hidden="true">
+          <rect class="plinth" x="650" y="213" width="680" height="174" rx="12"/>
+          <rect class="plinth" x="1180" y="48" width="260" height="145" rx="10"/>
+          <rect class="plinth" x="1510" y="48" width="182" height="148" rx="10"/>
+          <rect class="plinth" x="645" y="455" width="252" height="160" rx="10"/>
+          <rect class="plinth" x="1732" y="49" width="162" height="77" rx="8"/>
+          <rect class="plinth" x="1742" y="219" width="147" height="77" rx="8"/>
+          <rect class="plinth" x="1769" y="339" width="122" height="72" rx="8"/>
+          <rect class="plinth" x="1769" y="464" width="122" height="72" rx="8"/>
+          <rect class="plinth" x="1612" y="579" width="122" height="77" rx="8"/>
+          <rect class="plinth" x="1767" y="584" width="122" height="72" rx="8"/>
+        </g>
+
+        <!-- small unlabelled service buildings (context only) -->
+        <g class="context-buildings" aria-hidden="true">
+          <rect class="context-building" x="1618" y="585" width="110" height="65" rx="4"/>
+          <rect class="context-building" x="1773" y="590" width="110" height="60" rx="4"/>
+        </g>
+
+        <!-- interactive buildings -->
+
+        <g class="building" data-building="sports-field" data-category="sports" role="button" tabindex="0" aria-label="Sports Field, 运动场">
+          <title>Sports Field · 运动场</title>
+          <ellipse class="b-shape b-shape--track" cx="170" cy="420" rx="140" ry="192"/>
+          <ellipse cx="170" cy="420" rx="128" ry="178" fill="none" stroke="#f6e7df" stroke-width="2"/>
+          <ellipse cx="170" cy="420" rx="118" ry="166" fill="#cfe6b8"/>
+          <ellipse cx="170" cy="420" rx="100" ry="146" fill="none" stroke="#b7d8a0" stroke-width="2"/>
+          <text class="b-label" text-anchor="middle">
+            <tspan class="en" x="170" y="412">Sports Field</tspan>
+            <tspan class="zh" x="170" y="434">运动场</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="basketball-court" data-category="sports" role="button" tabindex="0" aria-label="Basketball Courts, 篮球场">
+          <title>Basketball Courts · 篮球场</title>
+          <rect class="b-shape" x="325" y="225" width="205" height="380" rx="12" opacity="0.35"/>
+          <use href="#court" x="330" y="230" width="55" height="80"/>
+          <use href="#court" x="400" y="230" width="55" height="80"/>
+          <use href="#court" x="470" y="230" width="55" height="80"/>
+          <use href="#court" x="330" y="325" width="55" height="80"/>
+          <use href="#court" x="400" y="325" width="55" height="80"/>
+          <use href="#court" x="470" y="325" width="55" height="80"/>
+          <use href="#court" x="330" y="420" width="55" height="80"/>
+          <use href="#court" x="400" y="420" width="55" height="80"/>
+          <use href="#court" x="470" y="420" width="55" height="80"/>
+          <use href="#court" x="330" y="515" width="55" height="80"/>
+          <use href="#court" x="400" y="515" width="55" height="80"/>
+          <use href="#court" x="470" y="515" width="55" height="80"/>
+          <text class="b-label" text-anchor="middle">
+            <tspan class="en" x="430" y="400">Basketball Courts</tspan>
+            <tspan class="zh" x="430" y="422">篮球场</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="welcome-center" data-category="student-life" role="button" tabindex="0" aria-label="Welcome Center, 欢迎中心">
+          <title>Welcome Center · 欢迎中心</title>
+          <rect class="b-shape" x="665" y="475" width="210" height="120" rx="6"/>
+          <rect x="681" y="491" width="178" height="88" rx="3" fill="url(#diagLines)" opacity="0.55"/>
+          <text class="b-label" text-anchor="middle">
+            <tspan class="en" x="770" y="530">Welcome Center</tspan>
+            <tspan class="zh" x="770" y="552">欢迎中心</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="teaching-a" data-category="academic" role="button" tabindex="0" aria-label="Teaching Building A, 教学楼A">
+          <title>Teaching Building A · 教学楼A</title>
+          <rect class="b-shape" x="670" y="235" width="238" height="130" rx="6"/>
+          <rect x="690" y="255" width="198" height="90" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
+          <text class="b-label" text-anchor="middle">
+            <tspan class="en" x="789" y="294">Teaching Building A</tspan>
+            <tspan class="zh" x="789" y="316">教学楼A</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="teaching-b" data-category="academic" role="button" tabindex="0" aria-label="Teaching Building B, 教学楼B">
+          <title>Teaching Building B · 教学楼B</title>
+          <rect class="b-shape" x="1060" y="235" width="240" height="130" rx="6"/>
+          <rect x="1080" y="255" width="200" height="90" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
+          <text class="b-label" text-anchor="middle">
+            <tspan class="en" x="1180" y="294">Teaching Building B</tspan>
+            <tspan class="zh" x="1180" y="316">教学楼B</tspan>
+          </text>
+        </g>
+
+        <g aria-hidden="true">
+          <rect x="908" y="275" width="152" height="28" rx="4" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.5"/>
+        </g>
+
+        <g class="building" data-building="training" data-category="academic" role="button" tabindex="0" aria-label="Training Building, 实训楼">
+          <title>Training Building · 实训楼</title>
+          <rect class="b-shape" x="1198" y="65" width="225" height="115" rx="6"/>
+          <rect x="1218" y="85" width="145" height="75" rx="3" fill="#f3efe6" stroke="#b9c9d3" stroke-width="1.5"/>
+          <ellipse cx="1385" cy="122" rx="20" ry="16" fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5"/>
+          <text class="b-label" text-anchor="middle">
+            <tspan class="en" x="1300" y="116">Training Building</tspan>
+            <tspan class="zh" x="1300" y="138">实训楼</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="student-center" data-category="student-life" role="button" tabindex="0" aria-label="Student Center, 学生中心">
+          <title>Student Center · 学生中心</title>
+          <rect class="b-shape" x="1528" y="65" width="145" height="120" rx="6"/>
+          <rect x="1540" y="78" width="121" height="14" rx="2" fill="#cfe3f2" opacity="0.9"/>
+          <rect x="1540" y="158" width="121" height="14" rx="2" fill="#cfe3f2" opacity="0.9"/>
+          <text class="b-label b-label--small" text-anchor="middle">
+            <tspan class="en" x="1600" y="115">Student Center</tspan>
+            <tspan class="zh" x="1600" y="133">学生中心</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory B, 学生宿舍B">
+          <title>Student Dormitory B · 学生宿舍B</title>
+          <rect class="b-shape" x="1738" y="55" width="150" height="65" rx="5"/>
+          <text class="b-label b-label--small" text-anchor="middle">
+            <tspan class="en" x="1813" y="80">Student</tspan>
+            <tspan class="en" x="1813" y="98">Dorm B</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory A, 学生宿舍A">
+          <title>Student Dormitory A · 学生宿舍A</title>
+          <rect class="b-shape" x="1748" y="225" width="135" height="65" rx="5"/>
+          <text class="b-label b-label--small" text-anchor="middle">
+            <tspan class="en" x="1815" y="250">Student</tspan>
+            <tspan class="en" x="1815" y="268">Dorm A</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="teacher-dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Teacher Dormitory A, 教师宿舍A">
+          <title>Teacher Dormitory A · 教师宿舍A</title>
+          <rect class="b-shape" x="1775" y="345" width="108" height="60" rx="5"/>
+          <text class="b-label b-label--minor" text-anchor="middle">
+            <tspan class="en" x="1829" y="368">Teacher</tspan>
+            <tspan class="en" x="1829" y="385">Dorm A</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="teacher-dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Teacher Dormitory B, 教师宿舍B">
+          <title>Teacher Dormitory B · 教师宿舍B</title>
+          <rect class="b-shape" x="1775" y="470" width="108" height="60" rx="5"/>
+          <text class="b-label b-label--minor" text-anchor="middle">
+            <tspan class="en" x="1829" y="493">Teacher</tspan>
+            <tspan class="en" x="1829" y="510">Dorm B</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="teacher-center" data-category="student-life" role="button" tabindex="0" aria-label="Teacher Center, 教师中心">
+          <title>Teacher Center · 教师中心</title>
+          <rect class="b-shape" x="1555" y="370" width="50" height="68" rx="4"/>
+          <rect class="b-shape" x="1595" y="382" width="55" height="52" rx="4"/>
+          <rect class="b-shape" x="1660" y="345" width="85" height="62" rx="4"/>
+          <rect class="b-shape" x="1530" y="495" width="75" height="48" rx="4"/>
+          <text class="b-label b-label--medium b-label--outside" text-anchor="middle">
+            <tspan class="en" x="1650" y="447">Teacher Center</tspan>
+            <tspan class="zh" x="1650" y="465">教师中心</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="lake" data-category="landmark" role="button" tabindex="0" aria-label="Lake, 小湖">
+          <title>Lake · 小湖</title>
+          <path class="b-shape" d="M1530 350C1565 365 1580 410 1570 450C1560 495 1525 535 1485 540C1450 545 1428 510 1428 470C1428 430 1440 385 1465 365C1485 350 1508 344 1530 350Z"/>
+          <path d="M1460 400C1490 390 1520 400 1540 425" fill="none" stroke="#c9e8f1" stroke-width="4" stroke-linecap="round"/>
+          <path d="M1450 470C1475 462 1500 468 1515 485" fill="none" stroke="#c9e8f1" stroke-width="3" stroke-linecap="round"/>
+          <text class="b-label b-label--water" text-anchor="middle">
+            <tspan class="en" x="1500" y="430">Lake</tspan>
+            <tspan class="zh" x="1500" y="447">小湖</tspan>
+          </text>
+        </g>
+
+        <!-- compass -->
+        <g aria-hidden="true" transform="translate(62 650)">
+          <circle r="22" fill="#fbfaf7" opacity="0.85" stroke="#b9c9b6" stroke-width="1.5"/>
+          <path d="M0 -12L5 6L0 3L-5 6Z" fill="#0f766e"/>
+          <text x="0" y="-27" text-anchor="middle" font-size="11" font-weight="700" fill="#5f6b63">N</text>
+        </g>
+      </svg>
+    </div>
+    <p class="map-hint">Schematic map — not to scale. On a small screen, swipe the map sideways to see the whole campus.</p>
+  </div>
+
+  <aside class="map-panel" id="map-panel" aria-live="polite">
+    <div class="panel-empty">
+      <h2>Pick a place</h2>
+      <p>Click any building on the map to see what it is and where it sits. Use the search box or the category buttons to narrow the map down.</p>
+      <ul class="panel-tips">
+        <li><b>1</b><span>Click a building shape to open its details.</span></li>
+        <li><b>2</b><span>Search in English or Chinese.</span></li>
+        <li><b>3</b><span>On a phone, swipe the map sideways.</span></li>
+      </ul>
+    </div>
+  </aside>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p><strong>BiUH Campus Map</strong> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</p>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="map.html">Map</a>
+      <a href="buildings.html">Buildings</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="map.js"></script>
+</body>
+</html>

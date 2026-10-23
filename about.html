@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About · BiUH Campus Map</title>
+<meta name="description" content="Why and how I built the BiUH Campus Map for my Web Technologies 2026 project.">
+<meta name="theme-color" content="#0f766e">
+
+<!-- Open Graph — update these if the username or repository changes. -->
+<meta property="og:title" content="About · BiUH Campus Map">
+<meta property="og:description" content="Why and how I built the BiUH Campus Map for my Web Technologies 2026 project.">
+<meta property="og:image" content="https://kalueriw.github.io/campus-map/images/og-image.jpg">
+<meta property="og:url" content="https://kalueriw.github.io/campus-map/about.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Z" fill="currentColor"/>
+        <circle cx="12" cy="9" r="2.6" fill="#fbfaf7"/>
+      </svg>
+      BiUH Campus Map
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="map.html">Map</a>
+      <a href="buildings.html">Buildings</a>
+      <a href="about.html" aria-current="page">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <header class="page-head">
+    <p class="kicker">About</p>
+    <h1>About this map.</h1>
+    <p class="lead">A small website with one job: help a new student or a visitor find the right building without asking around.</p>
+  </header>
+
+  <div class="prose">
+    <h2>Why I built it</h2>
+    <p>When I arrived on campus, the map I had was a flat plan: useful in a meeting room, awkward on a phone. The buildings all looked similar, and the names were easy to mix up. I wanted something I could open in a browser, tap, and understand in a few seconds — so I drew one myself.</p>
+    <p>The result is a schematic map, not a satellite photo. Shapes are simplified and labelled, which makes the important things — where the teaching buildings sit, how the dorms line the eastern edge, where the lake is — easier to read at any size. A few smaller buildings are drawn in grey for context and are not labelled.</p>
+
+    <h2>What is on the site</h2>
+    <ul>
+      <li><strong>Home</strong> — a short introduction and a preview of the campus.</li>
+      <li><strong>Map</strong> — the main page: 13 places, a search box, category filters, and a details panel for every building.</li>
+      <li><strong>Buildings</strong> — the same places as cards, with English and Chinese names.</li>
+      <li><strong>About</strong> — this page.</li>
+    </ul>
+
+    <h2>How it works</h2>
+    <p>Everything is static. There is no server and no database, and the site does not collect any data.</p>
+    <ul>
+      <li><strong>Semantic HTML</strong> — one <code>&lt;header&gt;</code>, one <code>&lt;main&gt;</code>, one <code>&lt;footer&gt;</code>; the map is an inline SVG with a title and description.</li>
+      <li><strong>One stylesheet</strong> — colours, spacing and category colours live in CSS custom properties, so the four pages look like one site.</li>
+      <li><strong>Vanilla JavaScript</strong> — a single small file reads the building data, handles clicks and keyboard input, and filters the map. No libraries.</li>
+      <li><strong>Responsive by default</strong> — the SVG scales with its container; on a narrow screen the map becomes scrollable instead of shrinking to nothing.</li>
+      <li><strong>Accessible controls</strong> — every building is a keyboard-focusable button, the filter buttons report their pressed state, and the details panel announces changes.</li>
+    </ul>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li>How to plan an SVG with a coordinate system, and why a <code>viewBox</code> makes a drawing responsive for free.</li>
+      <li>How to keep a map interaction simple: select, filter, describe — no framework needed.</li>
+      <li>How much easier a project becomes when the scope is small on purpose. Four pages, 13 places, one clear job.</li>
+    </ul>
+
+    <h2>What I would add next</h2>
+    <ul>
+      <li>Photos of each building, taken on a walk around campus.</li>
+      <li>A simple route hint: “You are at the Welcome Center; the Student Center is this way.”</li>
+      <li>More places — the canteen, the library, the main gate — once their names are confirmed.</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Please check the details.</strong> Building names were taken from the campus plan and my own walk around. If a name or location is wrong, tell me and I will correct it.</p>
+    </div>
+
+    <div class="credits">
+      <p><strong>Credits and sources</strong></p>
+      <p>The map is a schematic drawn from scratch in SVG, based on the campus plan and my own walks around campus. No third-party photographs or map tiles are used on this site.</p>
+      <p>Typefaces are the ones already on your device (system fonts). Built for Web Technologies 2026 at BiUH.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p><strong>BiUH Campus Map</strong> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</p>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="map.html">Map</a>
+      <a href="buildings.html">Buildings</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

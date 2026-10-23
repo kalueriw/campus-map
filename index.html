@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BiUH Campus Map</title>
+<meta name="description" content="A simple, hand-drawn map of the BiUH campus. Find every teaching building, dormitory and sports ground in one place.">
+<meta name="theme-color" content="#0f766e">
+
+<!-- Open Graph — update these if the username or repository changes. -->
+<meta property="og:title" content="BiUH Campus Map">
+<meta property="og:description" content="A simple, hand-drawn map of the BiUH campus — find every building, fast.">
+<meta property="og:image" content="https://kalueriw.github.io/campus-map/images/og-image.jpg">
+<meta property="og:url" content="https://kalueriw.github.io/campus-map/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Z" fill="currentColor"/>
+        <circle cx="12" cy="9" r="2.6" fill="#fbfaf7"/>
+      </svg>
+      BiUH Campus Map
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="map.html">Map</a>
+      <a href="buildings.html">Buildings</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="kicker">Web Technologies 2026 · BiUH</p>
+        <h1>Find your way around campus.</h1>
+        <p class="lead">A simple, hand-drawn map of the BiUH campus: every teaching building, dormitory and sports ground in one place — with English and Chinese names.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="map.html">Open the map</a>
+          <a class="btn btn-ghost" href="buildings.html">Browse buildings</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>13</strong><span>places mapped</span></div>
+          <div class="stat"><strong>5</strong><span>categories</span></div>
+          <div class="stat"><strong>1</strong><span>hand-drawn map</span></div>
+        </div>
+      </div>
+
+      <div class="hero-map">
+        <svg viewBox="0 0 700 420" aria-hidden="true" focusable="false">
+          <rect width="700" height="420" fill="#e9f0dd"/>
+          <path d="M180 420V330C250 300 330 310 410 322C500 336 580 314 700 330V420Z" fill="#dfeccb"/>
+
+          <g fill="none" stroke="#f6f1e6" stroke-linecap="round">
+            <path d="M185 55C205 145 175 225 225 272L665 272" stroke-width="16"/>
+            <path d="M665 20V400" stroke-width="14"/>
+            <path d="M430 140H590" stroke-width="12"/>
+          </g>
+
+          <g aria-hidden="true">
+            <circle cx="70" cy="90" r="7" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="115" cy="75" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="260" cy="80" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="380" cy="70" r="7" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="430" cy="95" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="500" cy="45" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="600" cy="80" r="7" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="660" cy="130" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="250" cy="330" r="7" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="330" cy="360" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="400" cy="335" r="7" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="500" cy="360" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="590" cy="330" r="7" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+            <circle cx="660" cy="365" r="6" fill="#7fb35a" stroke="#a8cf83" stroke-width="1.5"/>
+          </g>
+
+          <ellipse cx="95" cy="225" rx="66" ry="96" fill="#e7a9ab"/>
+          <ellipse cx="95" cy="225" rx="50" ry="78" fill="#cfe6b8"/>
+          <ellipse cx="95" cy="225" rx="60" ry="88" fill="none" stroke="#f6e7df" stroke-width="1.5"/>
+
+          <g fill="#f0d3d0" stroke="#c98b8b" stroke-width="1">
+            <rect x="178" y="122" width="27" height="40" rx="3"/>
+            <rect x="216" y="122" width="27" height="40" rx="3"/>
+            <rect x="178" y="178" width="27" height="40" rx="3"/>
+            <rect x="216" y="178" width="27" height="40" rx="3"/>
+            <rect x="178" y="234" width="27" height="40" rx="3"/>
+            <rect x="216" y="234" width="27" height="40" rx="3"/>
+          </g>
+
+          <rect x="270" y="120" width="90" height="52" rx="4" fill="#cfe3f2" stroke="#4a7c9b" stroke-width="1.5"/>
+          <rect x="390" y="120" width="90" height="52" rx="4" fill="#cfe3f2" stroke="#4a7c9b" stroke-width="1.5"/>
+          <rect x="360" y="136" width="30" height="13" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1"/>
+          <rect x="462" y="55" width="72" height="44" rx="4" fill="#cfe3f2" stroke="#4a7c9b" stroke-width="1.5"/>
+          <rect x="540" y="55" width="56" height="46" rx="4" fill="#f7e0c4" stroke="#b45309" stroke-width="1.5"/>
+
+          <g fill="#ece0b8" stroke="#8a6d1f" stroke-width="1.5">
+            <rect x="612" y="42" width="56" height="27" rx="3"/>
+            <rect x="614" y="102" width="53" height="27" rx="3"/>
+            <rect x="614" y="147" width="53" height="27" rx="3"/>
+            <rect x="614" y="192" width="53" height="27" rx="3"/>
+          </g>
+
+          <g fill="#f7e0c4" stroke="#b45309" stroke-width="1.5">
+            <rect x="505" y="248" width="31" height="31" rx="3"/>
+            <rect x="542" y="259" width="26" height="23" rx="3"/>
+            <rect x="470" y="292" width="24" height="20" rx="3"/>
+          </g>
+
+          <path d="M455 246C470 236 486 246 491 267C496 290 481 309 465 311C449 313 441 294 441 278C441 264 447 253 455 246Z" fill="#a9d6e5" stroke="#2b7a99" stroke-width="1.5"/>
+
+          <g class="hero-pin" transform="translate(315 134)">
+            <path d="M0 -23C-10.5 -23 -19 -14.5 -19 -4C-19 10 0 27 0 27S19 10 19 -4C19 -14.5 10.5 -23 0 -23Z" fill="#0f766e"/>
+            <circle cy="-5" r="6.5" fill="#fbfaf7"/>
+          </g>
+        </svg>
+        <p class="hero-caption">A hand-drawn SVG map — click a building, get its story.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <p class="kicker">The campus, at a glance</p>
+      <h2>Small enough to learn in a week.</h2>
+      <p>Sport runs along the west edge: the track first, then the basketball courts. Teaching Buildings A and B sit at the top of campus, with the Training Building and Student Center to their east. The student and teacher dormitories line the eastern edge, and the lake and Teacher Center sit in the south-east.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <h3>Click a building</h3>
+        <p>Every shape on the map opens a short description and tells you where it sits.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+        </div>
+        <h3>Search in two languages</h3>
+        <p>Type English or Chinese — “teaching”, “dorm”, “湖” — and the map narrows down.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>
+          </svg>
+        </div>
+        <h3>Works on a phone</h3>
+        <p>The map scales and scrolls, so it still works on the way to class.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+          </svg>
+        </div>
+        <h3>No app, no login</h3>
+        <p>A static website: nothing to install, no account, and no data collected.</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p><strong>BiUH Campus Map</strong> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</p>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="map.html">Map</a>
+      <a href="buildings.html">Buildings</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
