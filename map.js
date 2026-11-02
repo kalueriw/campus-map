@@ -94,8 +94,8 @@
       en: 'Teacher Dormitory A',
       zh: '教师宿舍A',
       category: 'residence',
-      desc: 'Staff housing south-east of the student center.',
-      where: 'Eastern edge, below the student dormitories.',
+      desc: 'Staff housing in the lakeside cluster, directly below the student center.',
+      where: 'Below the student center, on the east side of the lake.',
       aliases: 'teacher staff dormitory housing 教师宿舍A 教师宿舍a 宿舍'
     },
     {
@@ -103,8 +103,8 @@
       en: 'Teacher Dormitory B',
       zh: '教师宿舍B',
       category: 'residence',
-      desc: 'Staff housing south-east of the student center.',
-      where: 'Eastern edge, below Teacher Dormitory A.',
+      desc: 'Staff housing in the lakeside cluster, below Teacher Dormitory A.',
+      where: 'Below Teacher Dormitory A, on the east side of the lake.',
       aliases: 'teacher staff dormitory housing 教师宿舍B 教师宿舍b 宿舍'
     },
     {
@@ -112,8 +112,8 @@
       en: 'Teacher Center',
       zh: '教师中心',
       category: 'student-life',
-      desc: 'A small staff building beside the lake, used for meetings and quiet work.',
-      where: 'Beside the lake, south-east of the center of campus.',
+      desc: 'A small staff building on the edge of the lake, used for meetings and quiet work.',
+      where: 'On the east bank of the lake, below the student center.',
       aliases: 'teacher staff center offices 教师中心'
     },
     {

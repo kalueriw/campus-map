@@ -401,15 +401,22 @@ h3 { letter-spacing: -0.01em; }
 .b-label { paint-order: stroke; stroke: rgba(251, 250, 247, 0.9); stroke-width: 4px; }
 .b-label .en { fill: #14201c; font-weight: 700; font-size: 22px; }
 .b-label .zh { fill: #3f4a43; font-size: 14px; font-weight: 500; }
-.b-label--small .en { font-size: 15px; }
-.b-label--small .zh { font-size: 10.5px; }
-.b-label--medium .en { font-size: 17px; }
-.b-label--medium .zh { font-size: 11.5px; }
-.b-label--minor .en { font-size: 14px; }
-.b-label--minor .zh { font-size: 10px; }
+.b-label--small .en { font-size: 17px; }
+.b-label--small .zh { font-size: 12px; }
+.b-label--medium .en { font-size: 18px; }
+.b-label--medium .zh { font-size: 12px; }
+.b-label--minor .en { font-size: 16px; }
+.b-label--minor .zh { font-size: 11px; }
 .b-label--water .en { fill: var(--cat-ink); font-style: italic; font-size: 19px; }
 .b-label--water .zh { fill: var(--cat-ink); font-size: 12px; }
 .b-label--outside { stroke-width: 5px; }
+
+.b-leader {
+  fill: none;
+  stroke: #8d9184;
+  stroke-width: 1.3;
+  stroke-dasharray: 5 4;
+}
 
 .tree { fill: #7fb35a; stroke: #a8cf83; stroke-width: 2; }
 .context-building { fill: #e4e0d5; stroke: #c9c2b2; stroke-width: 1.5; }

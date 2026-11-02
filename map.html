@@ -77,9 +77,9 @@
 
   <div class="map-card">
     <div class="map-scroller" tabindex="0" role="region" aria-label="Campus map. On a narrow screen, scroll sideways to see the whole campus.">
-      <svg id="campus-svg" viewBox="0 0 1966 701" role="group" aria-labelledby="map-svg-title map-svg-desc" focusable="false">
+      <svg id="campus-svg" viewBox="0 0 1964 700" role="group" aria-labelledby="map-svg-title map-svg-desc" focusable="false">
         <title id="map-svg-title">Schematic map of the BiUH campus</title>
-        <desc id="map-svg-desc">The sports field and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with student dormitories B and A on the eastern edge, teacher dormitories A and B below them, and a lake and teacher center to the south-west.</desc>
+        <desc id="map-svg-desc">The sports field and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with student dormitories B and A stacked on the eastern edge. Below the student center are a lake and a group of smaller buildings: teacher dormitories A and B, with the teacher center beside the lake.</desc>
 
         <defs>
           <pattern id="glassGrid" width="18" height="18" patternUnits="userSpaceOnUse">
@@ -88,255 +88,307 @@
           <pattern id="diagLines" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <line x1="0" y1="0" x2="0" y2="16" stroke="#8fb3c8" stroke-width="1" opacity="0.7"/>
           </pattern>
-          <symbol id="court" viewBox="0 0 55 80">
-            <rect x="1" y="1" width="53" height="78" rx="4" fill="#f0d3d0" stroke="#c98b8b" stroke-width="1.5"/>
-            <line x1="1" y1="40" x2="54" y2="40" stroke="#c98b8b" stroke-width="1"/>
-            <circle cx="27.5" cy="40" r="7" fill="none" stroke="#c98b8b" stroke-width="1"/>
+          <symbol id="court" viewBox="0 0 50 84">
+            <rect x="1" y="1" width="48" height="82" rx="3" fill="#f0d3d0" stroke="#c98b8b" stroke-width="1.5"/>
+            <line x1="1" y1="42" x2="49" y2="42" stroke="#c98b8b" stroke-width="1"/>
+            <circle cx="25" cy="42" r="7" fill="none" stroke="#c98b8b" stroke-width="1"/>
           </symbol>
         </defs>
 
-        <!-- ground and park -->
-        <rect width="1966" height="701" fill="#e9f0dd"/>
-        <path class="park" d="M560 701V520C650 460 780 470 900 485C1040 502 1160 452 1300 470C1450 490 1560 530 1700 520C1800 512 1900 490 1966 495V701Z"/>
+        <!-- ground beyond the campus edge, then the campus itself -->
+        <rect width="1964" height="700" fill="#f6f4ee"/>
+        <path d="M0 225H562V195H1202V40H1452V15H1964V700H70Q0 700 0 630Z" fill="#eef3e2"/>
+        <path d="M0 225H562V195H1202V40H1452V15H1964" fill="none" stroke="#ddd8cb" stroke-width="2"/>
+        <path class="park" d="M800 700V640C870 582 960 560 1050 572C1140 584 1220 556 1305 552C1400 548 1480 570 1560 596C1650 624 1780 616 1880 590C1922 580 1950 576 1964 576V700Z"/>
 
         <!-- roads and paths -->
         <g class="roads" aria-hidden="true">
-          <path class="road" d="M552 150C566 250 540 340 600 392L1930 392" stroke-width="36"/>
-          <path class="road" d="M1932 30V690" stroke-width="30"/>
-          <path class="road" d="M1420 165H1772" stroke-width="26"/>
-          <path class="road" d="M560 620C680 600 760 600 840 612" stroke-width="12"/>
-          <path class="road" d="M1408 330C1370 380 1378 520 1460 572C1540 622 1640 592 1692 542" stroke-width="12"/>
-          <path class="road" d="M900 680C980 640 1060 630 1140 650" stroke-width="10"/>
+          <path class="road" d="M548 202C596 214 606 262 606 306C606 352 596 374 640 388H1928" stroke-width="30"/>
+          <path class="road" d="M600 202H1200" stroke-width="26"/>
+          <path class="road" d="M1200 202H1762" stroke-width="24"/>
+          <path class="road" d="M1924 22V688" stroke-width="26"/>
+          <path class="road" d="M905 386V428" stroke-width="14"/>
+          <path class="road" d="M560 640C650 620 740 606 830 612" stroke-width="12"/>
+          <path class="road" d="M980 696C1052 654 1128 642 1216 654" stroke-width="10"/>
+          <path class="road" d="M1216 690C1232 640 1288 604 1348 588C1392 576 1420 552 1436 520" stroke-width="9"/>
+          <path class="road" d="M880 596C944 562 1012 566 1068 596" stroke-width="9"/>
+          <path class="road" d="M1712 566C1748 592 1806 604 1866 596" stroke-width="9"/>
         </g>
 
         <!-- trees -->
         <g aria-hidden="true">
-          <circle class="tree" cx="70" cy="200" r="10"/>
-          <circle class="tree" cx="115" cy="188" r="9"/>
-          <circle class="tree" cx="160" cy="180" r="8"/>
-          <circle class="tree" cx="330" cy="200" r="9"/>
-          <circle class="tree" cx="375" cy="195" r="8"/>
-          <circle class="tree" cx="420" cy="190" r="8"/>
-          <circle class="tree" cx="465" cy="195" r="8"/>
-          <circle class="tree" cx="510" cy="200" r="9"/>
-          <circle class="tree" cx="555" cy="210" r="10"/>
-          <circle class="tree" cx="393" cy="265" r="6"/>
-          <circle class="tree" cx="393" cy="355" r="6"/>
-          <circle class="tree" cx="393" cy="445" r="6"/>
-          <circle class="tree" cx="393" cy="535" r="6"/>
-          <circle class="tree" cx="463" cy="265" r="6"/>
-          <circle class="tree" cx="463" cy="355" r="6"/>
-          <circle class="tree" cx="463" cy="445" r="6"/>
-          <circle class="tree" cx="463" cy="535" r="6"/>
-          <circle class="tree" cx="548" cy="260" r="8"/>
-          <circle class="tree" cx="548" cy="335" r="8"/>
-          <circle class="tree" cx="548" cy="410" r="8"/>
-          <circle class="tree" cx="548" cy="485" r="8"/>
-          <circle class="tree" cx="548" cy="560" r="8"/>
-          <circle class="tree" cx="548" cy="620" r="9"/>
-          <circle class="tree" cx="640" cy="205" r="9"/>
-          <circle class="tree" cx="930" cy="205" r="9"/>
-          <circle class="tree" cx="1005" cy="215" r="9"/>
-          <circle class="tree" cx="1335" cy="210" r="10"/>
-          <circle class="tree" cx="1335" cy="375" r="9"/>
-          <circle class="tree" cx="640" cy="395" r="9"/>
-          <circle class="tree" cx="600" cy="370" r="8"/>
-          <circle class="tree" cx="930" cy="395" r="8"/>
-          <circle class="tree" cx="1170" cy="120" r="9"/>
-          <circle class="tree" cx="1450" cy="120" r="9"/>
-          <circle class="tree" cx="1455" cy="210" r="8"/>
-          <circle class="tree" cx="1700" cy="215" r="9"/>
-          <circle class="tree" cx="1705" cy="130" r="8"/>
-          <circle class="tree" cx="1405" cy="330" r="9"/>
-          <circle class="tree" cx="1390" cy="420" r="8"/>
-          <circle class="tree" cx="1395" cy="500" r="9"/>
-          <circle class="tree" cx="1435" cy="565" r="8"/>
-          <circle class="tree" cx="1590" cy="545" r="9"/>
-          <circle class="tree" cx="1700" cy="520" r="8"/>
-          <circle class="tree" cx="900" cy="600" r="10"/>
-          <circle class="tree" cx="980" cy="640" r="9"/>
-          <circle class="tree" cx="1080" cy="590" r="9"/>
-          <circle class="tree" cx="1160" cy="640" r="10"/>
-          <circle class="tree" cx="1250" cy="590" r="9"/>
-          <circle class="tree" cx="1330" cy="640" r="8"/>
-          <circle class="tree" cx="1410" cy="610" r="9"/>
-          <circle class="tree" cx="1910" cy="160" r="8"/>
-          <circle class="tree" cx="1905" cy="315" r="8"/>
-          <circle class="tree" cx="1905" cy="445" r="8"/>
-          <circle class="tree" cx="1908" cy="555" r="8"/>
-          <circle class="tree" cx="1905" cy="675" r="8"/>
-          <circle class="tree" cx="1200" cy="30" r="9"/>
-          <circle class="tree" cx="1700" cy="30" r="9"/>
-          <circle class="tree" cx="1850" cy="25" r="8"/>
+          <circle class="tree" cx="24" cy="252" r="9"/>
+          <circle class="tree" cx="26" cy="312" r="8"/>
+          <circle class="tree" cx="24" cy="372" r="8"/>
+          <circle class="tree" cx="26" cy="432" r="9"/>
+          <circle class="tree" cx="24" cy="492" r="8"/>
+          <circle class="tree" cx="26" cy="552" r="8"/>
+          <circle class="tree" cx="30" cy="612" r="9"/>
+          <circle class="tree" cx="320" cy="222" r="8"/>
+          <circle class="tree" cx="352" cy="220" r="8"/>
+          <circle class="tree" cx="384" cy="218" r="8"/>
+          <circle class="tree" cx="416" cy="218" r="8"/>
+          <circle class="tree" cx="448" cy="220" r="8"/>
+          <circle class="tree" cx="480" cy="222" r="8"/>
+          <circle class="tree" cx="512" cy="224" r="8"/>
+          <circle class="tree" cx="542" cy="226" r="8"/>
+          <circle class="tree" cx="378" cy="330" r="5"/>
+          <circle class="tree" cx="378" cy="431" r="5"/>
+          <circle class="tree" cx="378" cy="532" r="5"/>
+          <circle class="tree" cx="436" cy="330" r="5"/>
+          <circle class="tree" cx="436" cy="431" r="5"/>
+          <circle class="tree" cx="436" cy="532" r="5"/>
+          <circle class="tree" cx="497" cy="330" r="5"/>
+          <circle class="tree" cx="497" cy="431" r="5"/>
+          <circle class="tree" cx="497" cy="532" r="5"/>
+          <circle class="tree" cx="556" cy="270" r="8"/>
+          <circle class="tree" cx="558" cy="340" r="8"/>
+          <circle class="tree" cx="556" cy="410" r="8"/>
+          <circle class="tree" cx="558" cy="480" r="8"/>
+          <circle class="tree" cx="556" cy="550" r="8"/>
+          <circle class="tree" cx="558" cy="618" r="8"/>
+          <circle class="tree" cx="608" cy="176" r="8"/>
+          <circle class="tree" cx="650" cy="176" r="8"/>
+          <circle class="tree" cx="692" cy="176" r="8"/>
+          <circle class="tree" cx="734" cy="176" r="8"/>
+          <circle class="tree" cx="776" cy="176" r="8"/>
+          <circle class="tree" cx="818" cy="176" r="8"/>
+          <circle class="tree" cx="860" cy="176" r="8"/>
+          <circle class="tree" cx="902" cy="176" r="8"/>
+          <circle class="tree" cx="944" cy="176" r="8"/>
+          <circle class="tree" cx="986" cy="176" r="8"/>
+          <circle class="tree" cx="1028" cy="176" r="8"/>
+          <circle class="tree" cx="1070" cy="176" r="8"/>
+          <circle class="tree" cx="1112" cy="176" r="8"/>
+          <circle class="tree" cx="1154" cy="176" r="8"/>
+          <circle class="tree" cx="660" cy="380" r="8"/>
+          <circle class="tree" cx="720" cy="372" r="8"/>
+          <circle class="tree" cx="940" cy="372" r="8"/>
+          <circle class="tree" cx="990" cy="380" r="8"/>
+          <circle class="tree" cx="1100" cy="372" r="8"/>
+          <circle class="tree" cx="1150" cy="380" r="8"/>
+          <circle class="tree" cx="1340" cy="176" r="8"/>
+          <circle class="tree" cx="1345" cy="360" r="8"/>
+          <circle class="tree" cx="1348" cy="430" r="8"/>
+          <circle class="tree" cx="1210" cy="120" r="8"/>
+          <circle class="tree" cx="1462" cy="120" r="8"/>
+          <circle class="tree" cx="1462" cy="228" r="8"/>
+          <circle class="tree" cx="1704" cy="120" r="7"/>
+          <circle class="tree" cx="1704" cy="230" r="7"/>
+          <circle class="tree" cx="1706" cy="306" r="7"/>
+          <circle class="tree" cx="1704" cy="452" r="7"/>
+          <circle class="tree" cx="1447" cy="330" r="8"/>
+          <circle class="tree" cx="1443" cy="400" r="7"/>
+          <circle class="tree" cx="1447" cy="470" r="8"/>
+          <circle class="tree" cx="1443" cy="530" r="7"/>
+          <circle class="tree" cx="1608" cy="300" r="7"/>
+          <circle class="tree" cx="1730" cy="330" r="6"/>
+          <circle class="tree" cx="1730" cy="380" r="6"/>
+          <circle class="tree" cx="1730" cy="430" r="6"/>
+          <circle class="tree" cx="1752" cy="548" r="8"/>
+          <circle class="tree" cx="1600" cy="560" r="7"/>
+          <circle class="tree" cx="880" cy="600" r="9"/>
+          <circle class="tree" cx="950" cy="644" r="9"/>
+          <circle class="tree" cx="1040" cy="590" r="9"/>
+          <circle class="tree" cx="1110" cy="646" r="9"/>
+          <circle class="tree" cx="1200" cy="598" r="9"/>
+          <circle class="tree" cx="1280" cy="648" r="8"/>
+          <circle class="tree" cx="1360" cy="616" r="9"/>
+          <circle class="tree" cx="1902" cy="150" r="7"/>
+          <circle class="tree" cx="1902" cy="250" r="7"/>
+          <circle class="tree" cx="1902" cy="350" r="7"/>
+          <circle class="tree" cx="1902" cy="450" r="7"/>
+          <circle class="tree" cx="1902" cy="550" r="7"/>
+          <circle class="tree" cx="1902" cy="650" r="7"/>
+          <circle class="tree" cx="1500" cy="34" r="8"/>
+          <circle class="tree" cx="1780" cy="32" r="8"/>
         </g>
 
         <!-- building plinths -->
         <g class="plinths" aria-hidden="true">
-          <rect class="plinth" x="650" y="213" width="680" height="174" rx="12"/>
-          <rect class="plinth" x="1180" y="48" width="260" height="145" rx="10"/>
-          <rect class="plinth" x="1510" y="48" width="182" height="148" rx="10"/>
-          <rect class="plinth" x="645" y="455" width="252" height="160" rx="10"/>
-          <rect class="plinth" x="1732" y="49" width="162" height="77" rx="8"/>
-          <rect class="plinth" x="1742" y="219" width="147" height="77" rx="8"/>
-          <rect class="plinth" x="1769" y="339" width="122" height="72" rx="8"/>
-          <rect class="plinth" x="1769" y="464" width="122" height="72" rx="8"/>
-          <rect class="plinth" x="1612" y="579" width="122" height="77" rx="8"/>
-          <rect class="plinth" x="1767" y="584" width="122" height="72" rx="8"/>
-        </g>
-
-        <!-- small unlabelled service buildings (context only) -->
-        <g class="context-buildings" aria-hidden="true">
-          <rect class="context-building" x="1618" y="585" width="110" height="65" rx="4"/>
-          <rect class="context-building" x="1773" y="590" width="110" height="60" rx="4"/>
+          <rect class="plinth" x="656" y="212" width="266" height="158" rx="10"/>
+          <rect class="plinth" x="1046" y="212" width="276" height="158" rx="10"/>
+          <rect class="plinth" x="1184" y="50" width="262" height="146" rx="10"/>
+          <rect class="plinth" x="1518" y="52" width="176" height="212" rx="10"/>
+          <rect class="plinth" x="656" y="438" width="252" height="180" rx="10"/>
+          <rect class="plinth" x="1728" y="55" width="182" height="97" rx="8"/>
+          <rect class="plinth" x="1728" y="205" width="182" height="97" rx="8"/>
+          <rect class="plinth" x="1500" y="330" width="238" height="224" rx="12"/>
         </g>
 
         <!-- interactive buildings -->
 
         <g class="building" data-building="sports-field" data-category="sports" role="button" tabindex="0" aria-label="Sports Field, 运动场">
           <title>Sports Field · 运动场</title>
-          <ellipse class="b-shape b-shape--track" cx="170" cy="420" rx="140" ry="192"/>
-          <ellipse cx="170" cy="420" rx="128" ry="178" fill="none" stroke="#f6e7df" stroke-width="2"/>
-          <ellipse cx="170" cy="420" rx="118" ry="166" fill="#cfe6b8"/>
-          <ellipse cx="170" cy="420" rx="100" ry="146" fill="none" stroke="#b7d8a0" stroke-width="2"/>
+          <ellipse class="b-shape b-shape--track" cx="175" cy="434" rx="125" ry="197"/>
+          <ellipse cx="175" cy="434" rx="112" ry="181" fill="none" stroke="#f6e7df" stroke-width="2"/>
+          <rect x="140" y="322" width="130" height="240" rx="65" fill="#cfe6b8"/>
+          <line x1="152" y1="442" x2="258" y2="442" stroke="#b7d8a0" stroke-width="2"/>
+          <circle cx="205" cy="442" r="20" fill="none" stroke="#b7d8a0" stroke-width="2"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="170" y="412">Sports Field</tspan>
-            <tspan class="zh" x="170" y="434">运动场</tspan>
+            <tspan class="en" x="200" y="428">Sports Field</tspan>
+            <tspan class="zh" x="200" y="450">运动场</tspan>
           </text>
         </g>
 
         <g class="building" data-building="basketball-court" data-category="sports" role="button" tabindex="0" aria-label="Basketball Courts, 篮球场">
           <title>Basketball Courts · 篮球场</title>
-          <rect class="b-shape" x="325" y="225" width="205" height="380" rx="12" opacity="0.35"/>
-          <use href="#court" x="330" y="230" width="55" height="80"/>
-          <use href="#court" x="400" y="230" width="55" height="80"/>
-          <use href="#court" x="470" y="230" width="55" height="80"/>
-          <use href="#court" x="330" y="325" width="55" height="80"/>
-          <use href="#court" x="400" y="325" width="55" height="80"/>
-          <use href="#court" x="470" y="325" width="55" height="80"/>
-          <use href="#court" x="330" y="420" width="55" height="80"/>
-          <use href="#court" x="400" y="420" width="55" height="80"/>
-          <use href="#court" x="470" y="420" width="55" height="80"/>
-          <use href="#court" x="330" y="515" width="55" height="80"/>
-          <use href="#court" x="400" y="515" width="55" height="80"/>
-          <use href="#court" x="470" y="515" width="55" height="80"/>
+          <rect class="b-shape" x="315" y="230" width="232" height="410" rx="12" opacity="0.3"/>
+          <use href="#court" x="325" y="240" width="50" height="84"/>
+          <use href="#court" x="383" y="240" width="50" height="84"/>
+          <use href="#court" x="441" y="240" width="50" height="84"/>
+          <use href="#court" x="325" y="341" width="50" height="84"/>
+          <use href="#court" x="383" y="341" width="50" height="84"/>
+          <use href="#court" x="441" y="341" width="50" height="84"/>
+          <use href="#court" x="325" y="442" width="50" height="84"/>
+          <use href="#court" x="383" y="442" width="50" height="84"/>
+          <use href="#court" x="441" y="442" width="50" height="84"/>
+          <use href="#court" x="325" y="543" width="50" height="84"/>
+          <use href="#court" x="383" y="543" width="50" height="84"/>
+          <use href="#court" x="441" y="543" width="50" height="84"/>
+          <g fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5">
+            <rect x="505" y="240" width="34" height="84" rx="3"/>
+            <rect x="505" y="341" width="34" height="84" rx="3"/>
+            <rect x="505" y="442" width="34" height="84" rx="3"/>
+            <rect x="505" y="543" width="34" height="84" rx="3"/>
+          </g>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="430" y="400">Basketball Courts</tspan>
-            <tspan class="zh" x="430" y="422">篮球场</tspan>
+            <tspan class="en" x="430" y="398">Basketball Courts</tspan>
+            <tspan class="zh" x="430" y="420">篮球场</tspan>
           </text>
         </g>
 
         <g class="building" data-building="welcome-center" data-category="student-life" role="button" tabindex="0" aria-label="Welcome Center, 欢迎中心">
           <title>Welcome Center · 欢迎中心</title>
-          <rect class="b-shape" x="665" y="475" width="210" height="120" rx="6"/>
-          <rect x="681" y="491" width="178" height="88" rx="3" fill="url(#diagLines)" opacity="0.55"/>
+          <rect class="b-shape" x="675" y="456" width="214" height="144" rx="6"/>
+          <rect x="691" y="472" width="182" height="112" rx="3" fill="url(#diagLines)" opacity="0.55"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="770" y="530">Welcome Center</tspan>
-            <tspan class="zh" x="770" y="552">欢迎中心</tspan>
+            <tspan class="en" x="782" y="520">Welcome Center</tspan>
+            <tspan class="zh" x="782" y="542">欢迎中心</tspan>
           </text>
         </g>
 
         <g class="building" data-building="teaching-a" data-category="academic" role="button" tabindex="0" aria-label="Teaching Building A, 教学楼A">
           <title>Teaching Building A · 教学楼A</title>
-          <rect class="b-shape" x="670" y="235" width="238" height="130" rx="6"/>
-          <rect x="690" y="255" width="198" height="90" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
+          <rect class="b-shape" x="675" y="228" width="225" height="124" rx="6"/>
+          <rect x="700" y="250" width="170" height="56" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
+          <rect x="878" y="240" width="16" height="100" rx="2" fill="url(#diagLines)" opacity="0.5"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="789" y="294">Teaching Building A</tspan>
-            <tspan class="zh" x="789" y="316">教学楼A</tspan>
+            <tspan class="en" x="785" y="292">Teaching Building A</tspan>
+            <tspan class="zh" x="785" y="314">教学楼A</tspan>
           </text>
         </g>
 
         <g class="building" data-building="teaching-b" data-category="academic" role="button" tabindex="0" aria-label="Teaching Building B, 教学楼B">
           <title>Teaching Building B · 教学楼B</title>
-          <rect class="b-shape" x="1060" y="235" width="240" height="130" rx="6"/>
-          <rect x="1080" y="255" width="200" height="90" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
+          <rect class="b-shape" x="1065" y="228" width="240" height="124" rx="6"/>
+          <rect x="1090" y="250" width="182" height="56" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
+          <rect x="1069" y="240" width="16" height="100" rx="2" fill="url(#diagLines)" opacity="0.5"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="1180" y="294">Teaching Building B</tspan>
-            <tspan class="zh" x="1180" y="316">教学楼B</tspan>
+            <tspan class="en" x="1185" y="292">Teaching Building B</tspan>
+            <tspan class="zh" x="1185" y="314">教学楼B</tspan>
           </text>
         </g>
 
         <g aria-hidden="true">
-          <rect x="908" y="275" width="152" height="28" rx="4" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.5"/>
+          <rect x="900" y="238" width="165" height="26" rx="4" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.5"/>
         </g>
 
         <g class="building" data-building="training" data-category="academic" role="button" tabindex="0" aria-label="Training Building, 实训楼">
           <title>Training Building · 实训楼</title>
-          <rect class="b-shape" x="1198" y="65" width="225" height="115" rx="6"/>
-          <rect x="1218" y="85" width="145" height="75" rx="3" fill="#f3efe6" stroke="#b9c9d3" stroke-width="1.5"/>
-          <ellipse cx="1385" cy="122" rx="20" ry="16" fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5"/>
+          <rect class="b-shape" x="1202" y="67" width="225" height="111" rx="6"/>
+          <rect x="1216" y="81" width="197" height="85" rx="3" fill="#eef4f7" stroke="#9db9c8" stroke-width="1.5"/>
+          <rect x="1245" y="104" width="110" height="40" rx="2" fill="#cfe6b8" stroke="#a8c98f" stroke-width="1.5"/>
+          <circle cx="1390" cy="121" r="19" fill="#fbfaf7" stroke="#9db9c8" stroke-width="1.5"/>
+          <rect x="1400" y="81" width="13" height="85" fill="#cfe3f2" opacity="0.9"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="1300" y="116">Training Building</tspan>
-            <tspan class="zh" x="1300" y="138">实训楼</tspan>
+            <tspan class="en" x="1305" y="116">Training Building</tspan>
+            <tspan class="zh" x="1305" y="138">实训楼</tspan>
           </text>
         </g>
 
         <g class="building" data-building="student-center" data-category="student-life" role="button" tabindex="0" aria-label="Student Center, 学生中心">
           <title>Student Center · 学生中心</title>
-          <rect class="b-shape" x="1528" y="65" width="145" height="120" rx="6"/>
-          <rect x="1540" y="78" width="121" height="14" rx="2" fill="#cfe3f2" opacity="0.9"/>
-          <rect x="1540" y="158" width="121" height="14" rx="2" fill="#cfe3f2" opacity="0.9"/>
-          <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="1600" y="115">Student Center</tspan>
-            <tspan class="zh" x="1600" y="133">学生中心</tspan>
+          <rect class="b-shape" x="1537" y="70" width="138" height="167" rx="6"/>
+          <rect x="1548" y="78" width="58" height="5" rx="2" fill="#cfe3f2"/>
+          <rect x="1548" y="87" width="58" height="5" rx="2" fill="#cfe3f2"/>
+          <rect x="1548" y="96" width="58" height="5" rx="2" fill="#cfe3f2"/>
+          <rect x="1548" y="105" width="58" height="5" rx="2" fill="#cfe3f2"/>
+          <ellipse cx="1586" cy="150" rx="34" ry="20" fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5"/>
+          <rect x="1546" y="192" width="120" height="24" rx="2" fill="#dbeaf3" stroke="#9db9c8" stroke-width="1.5"/>
+          <rect x="1558" y="237" width="96" height="20" rx="3" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.5"/>
+          <path class="b-leader" d="M1677 178H1746"/>
+          <text class="b-label b-label--small b-label--outside" text-anchor="middle">
+            <tspan class="en" x="1802" y="172">Student Center</tspan>
+            <tspan class="zh" x="1802" y="188">学生中心</tspan>
           </text>
         </g>
 
         <g class="building" data-building="dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory B, 学生宿舍B">
           <title>Student Dormitory B · 学生宿舍B</title>
-          <rect class="b-shape" x="1738" y="55" width="150" height="65" rx="5"/>
+          <rect class="b-shape" x="1745" y="70" width="148" height="67" rx="5"/>
+          <rect x="1760" y="86" width="118" height="18" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.5"/>
           <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="1813" y="80">Student</tspan>
-            <tspan class="en" x="1813" y="98">Dorm B</tspan>
+            <tspan class="en" x="1819" y="124">Student Dorm B</tspan>
+            <tspan class="zh" x="1819" y="139">学生宿舍B</tspan>
           </text>
         </g>
 
         <g class="building" data-building="dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory A, 学生宿舍A">
           <title>Student Dormitory A · 学生宿舍A</title>
-          <rect class="b-shape" x="1748" y="225" width="135" height="65" rx="5"/>
+          <rect class="b-shape" x="1745" y="220" width="148" height="67" rx="5"/>
+          <rect x="1760" y="236" width="118" height="18" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.5"/>
           <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="1815" y="250">Student</tspan>
-            <tspan class="en" x="1815" y="268">Dorm A</tspan>
+            <tspan class="en" x="1819" y="274">Student Dorm A</tspan>
+            <tspan class="zh" x="1819" y="289">学生宿舍A</tspan>
           </text>
         </g>
 
         <g class="building" data-building="teacher-dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Teacher Dormitory A, 教师宿舍A">
           <title>Teacher Dormitory A · 教师宿舍A</title>
-          <rect class="b-shape" x="1775" y="345" width="108" height="60" rx="5"/>
-          <text class="b-label b-label--minor" text-anchor="middle">
-            <tspan class="en" x="1829" y="368">Teacher</tspan>
-            <tspan class="en" x="1829" y="385">Dorm A</tspan>
+          <rect class="b-shape" x="1628" y="346" width="90" height="57" rx="4"/>
+          <rect x="1638" y="358" width="62" height="18" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.2"/>
+          <path class="b-leader" d="M1722 374H1768"/>
+          <text class="b-label b-label--minor b-label--outside" text-anchor="middle">
+            <tspan class="en" x="1836" y="371">Teacher Dorm A</tspan>
+            <tspan class="zh" x="1836" y="386">教师宿舍A</tspan>
           </text>
         </g>
 
         <g class="building" data-building="teacher-dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Teacher Dormitory B, 教师宿舍B">
           <title>Teacher Dormitory B · 教师宿舍B</title>
-          <rect class="b-shape" x="1775" y="470" width="108" height="60" rx="5"/>
-          <text class="b-label b-label--minor" text-anchor="middle">
-            <tspan class="en" x="1829" y="493">Teacher</tspan>
-            <tspan class="en" x="1829" y="510">Dorm B</tspan>
+          <rect class="b-shape" x="1632" y="462" width="91" height="51" rx="4"/>
+          <rect x="1642" y="472" width="66" height="16" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.2"/>
+          <path class="b-leader" d="M1727 487H1768"/>
+          <text class="b-label b-label--minor b-label--outside" text-anchor="middle">
+            <tspan class="en" x="1836" y="484">Teacher Dorm B</tspan>
+            <tspan class="zh" x="1836" y="499">教师宿舍B</tspan>
           </text>
         </g>
 
         <g class="building" data-building="teacher-center" data-category="student-life" role="button" tabindex="0" aria-label="Teacher Center, 教师中心">
           <title>Teacher Center · 教师中心</title>
-          <rect class="b-shape" x="1555" y="370" width="50" height="68" rx="4"/>
-          <rect class="b-shape" x="1595" y="382" width="55" height="52" rx="4"/>
-          <rect class="b-shape" x="1660" y="345" width="85" height="62" rx="4"/>
-          <rect class="b-shape" x="1530" y="495" width="75" height="48" rx="4"/>
-          <text class="b-label b-label--medium b-label--outside" text-anchor="middle">
-            <tspan class="en" x="1650" y="447">Teacher Center</tspan>
-            <tspan class="zh" x="1650" y="465">教师中心</tspan>
+          <path class="b-shape" d="M1552 392H1580V377H1624V457H1552Z"/>
+          <rect x="1590" y="390" width="52" height="26" rx="2" fill="#f6f2e9" stroke="#c2b7a2" stroke-width="1.2"/>
+          <rect x="1558" y="410" width="26" height="34" rx="2" fill="#f6f2e9" stroke="#c2b7a2" stroke-width="1.2"/>
+          <rect x="1586" y="457" width="16" height="36" rx="2" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.2"/>
+          <rect class="b-shape" x="1518" y="495" width="82" height="42" rx="3"/>
+          <path d="M1526 501L1559 514L1592 501M1559 514V530" fill="none" stroke="#c2b7a2" stroke-width="1.5"/>
+          <path class="b-leader" d="M1548 540V556H1578"/>
+          <text class="b-label b-label--minor b-label--outside" text-anchor="middle">
+            <tspan class="en" x="1640" y="561">Teacher Center</tspan>
+            <tspan class="zh" x="1640" y="576">教师中心</tspan>
           </text>
         </g>
 
         <g class="building" data-building="lake" data-category="landmark" role="button" tabindex="0" aria-label="Lake, 小湖">
           <title>Lake · 小湖</title>
-          <path class="b-shape" d="M1530 350C1565 365 1580 410 1570 450C1560 495 1525 535 1485 540C1450 545 1428 510 1428 470C1428 430 1440 385 1465 365C1485 350 1508 344 1530 350Z"/>
-          <path d="M1460 400C1490 390 1520 400 1540 425" fill="none" stroke="#c9e8f1" stroke-width="4" stroke-linecap="round"/>
-          <path d="M1450 470C1475 462 1500 468 1515 485" fill="none" stroke="#c9e8f1" stroke-width="3" stroke-linecap="round"/>
+          <path class="b-shape" d="M1521 317C1539 315 1550 328 1552 348C1554 366 1550 382 1552 400C1554 426 1550 454 1540 480C1530 508 1512 534 1494 540C1476 546 1464 532 1460 510C1456 488 1458 462 1462 436C1465 412 1462 388 1472 364C1481 343 1496 330 1508 324C1512 321 1517 318 1521 317Z"/>
+          <path d="M1470 392C1492 384 1514 392 1526 408" fill="none" stroke="#c9e8f1" stroke-width="4" stroke-linecap="round"/>
+          <path d="M1466 466C1484 458 1502 464 1512 480" fill="none" stroke="#c9e8f1" stroke-width="3" stroke-linecap="round"/>
           <text class="b-label b-label--water" text-anchor="middle">
-            <tspan class="en" x="1500" y="430">Lake</tspan>
-            <tspan class="zh" x="1500" y="447">小湖</tspan>
+            <tspan class="en" x="1506" y="428">Lake</tspan>
+            <tspan class="zh" x="1506" y="445">小湖</tspan>
           </text>
         </g>
 
