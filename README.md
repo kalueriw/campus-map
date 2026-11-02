@@ -30,7 +30,9 @@ campus-map/
 │   └── icon-512.png          source icon, 512 × 512
 ├── screenshots/
 │   ├── desktop-home.png      1920 × 1080 (submission draft)
-│   └── mobile-home.png       375 × 812 (submission draft)
+│   ├── mobile-home.png       375 × 812 (submission draft)
+│   ├── desktop-map.png       1440 × 1000
+│   └── mobile-map.png        375 × 812
 └── README.md
 ```
 
