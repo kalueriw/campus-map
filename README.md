@@ -2,14 +2,14 @@
 
 A four-page, static campus map built for the **Web Technologies 2026** personal project.
 
-The site is a schematic map of the campus — the sports field, teaching buildings, training building, student center, dormitories, lake and teacher center — with English and Chinese names.
+The site is a schematic map of the campus — the sports field, teaching buildings, training building, student center, dormitories, lake and Lakeside Restaurant — with English and Chinese names. Click a building and the panel shows a photograph of it; small markers on the map open the places inside a building (the canteen, the gyms, the shops along the dormitories).
 
 ## Pages
 
 | Page | File | What it does |
 | --- | --- | --- |
 | Home | `index.html` | Introduction, campus overview, preview illustration |
-| Map | `map.html` | Interactive SVG map: select a building, search, filter by category |
+| Map | `map.html` | Interactive SVG map: select a building or a place inside it, see its photo, search, filter by category |
 | Buildings | `buildings.html` | Every place as a card, grouped by category, with a link back to the map |
 | About | `about.html` | Why and how the site was built, plus credits |
 
@@ -23,6 +23,9 @@ campus-map/
 ├── about.html
 ├── style.css          one shared stylesheet
 ├── map.js             map data + interactions (vanilla JavaScript)
+├── photos/
+│   ├── README.md              which photo was taken where
+│   └── *.jpg                  22 photos, 4080 × 3060 or 4096 × 3072, 72.7 MB
 ├── images/
 │   ├── og-image.jpg          1200 × 630, under 100 KB
 │   ├── favicon-32.png        32 × 32
@@ -70,7 +73,7 @@ The site is designed for **GitHub Pages**:
 Suggested text for the course platform — edit it so the words are yours.
 
 - **Title:** BiUH Campus Map
-- **Short description:** A hand-drawn campus map with clickable buildings, search, and English and Chinese names.
+- **Short description:** A hand-drawn campus map where every building opens its own photo, with English and Chinese names.
 - **Long description:** Start from the About page: why you built it, what the four pages do, how the map works, and what you would add next. Aim for 3–5 paragraphs.
 - **Status:** Completed
 
@@ -83,6 +86,8 @@ Suggested text for the course platform — edit it so the words are yours.
 
 ## Credits
 
-The map is a schematic drawn from scratch in SVG for this project. No third-party photographs, map tiles or icon sets are used. Campus names were taken from the campus plan and checked on site.
+The map is a schematic drawn from scratch in SVG for this project. No third-party map tiles or icon sets are used. Campus names were taken from the campus plan and checked on site.
+
+The photographs in `photos/` were taken by me around campus in November 2026. They are kept at full size; the site loads one only when you click the place it belongs to.
 
 Built for Web Technologies 2026 at BiUH.

@@ -44,7 +44,7 @@
   <header class="page-head">
     <p class="kicker">Campus map</p>
     <h1>Find your way around campus.</h1>
-    <p class="lead">Click any building to see its name, what it is used for, and where it sits. Use the search box or the category buttons to narrow the map down.</p>
+    <p class="lead">Click any building to see its name, what it is used for, where it sits — and a photo of it. The small round markers open the places inside a building: the canteen, the gyms, the shops in the dormitories. Use the search box or the category buttons to narrow the map down.</p>
   </header>
 
   <div class="map-toolbar">
@@ -79,7 +79,7 @@
     <div class="map-scroller" tabindex="0" role="region" aria-label="Campus map. On a narrow screen, scroll sideways to see the whole campus.">
       <svg id="campus-svg" viewBox="0 0 1964 700" role="group" aria-labelledby="map-svg-title map-svg-desc" focusable="false">
         <title id="map-svg-title">Schematic map of the BiUH campus</title>
-        <desc id="map-svg-desc">The sports field and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with student dormitories B and A stacked on the eastern edge. Below the student center are a lake and a group of smaller buildings: teacher dormitories A and B, with the teacher center beside the lake.</desc>
+        <desc id="map-svg-desc">The sports field, badminton courts and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with student dormitories 1 and 2 stacked on the eastern edge. Below the student center are a lake and a group of smaller buildings: teacher dormitories A and B, with the Lakeside Restaurant beside the lake. Small round markers open the places inside a building, such as the canteen, the gyms and the shops on the ground floor of the dormitories.</desc>
 
         <defs>
           <pattern id="glassGrid" width="18" height="18" patternUnits="userSpaceOnUse">
@@ -92,6 +92,15 @@
             <rect x="1" y="1" width="48" height="82" rx="3" fill="#f0d3d0" stroke="#c98b8b" stroke-width="1.5"/>
             <line x1="1" y1="42" x2="49" y2="42" stroke="#c98b8b" stroke-width="1"/>
             <circle cx="25" cy="42" r="7" fill="none" stroke="#c98b8b" stroke-width="1"/>
+          </symbol>
+          <symbol id="badminton" viewBox="0 0 50 84">
+            <rect x="1" y="1" width="48" height="82" rx="2" fill="#d7e8dc" stroke="#5f8f74" stroke-width="1.5"/>
+            <line x1="1" y1="42" x2="49" y2="42" stroke="#4f7f66" stroke-width="1.6"/>
+            <line x1="1" y1="30" x2="49" y2="30" stroke="#8fb8a2" stroke-width="0.8"/>
+            <line x1="1" y1="54" x2="49" y2="54" stroke="#8fb8a2" stroke-width="0.8"/>
+            <line x1="25" y1="30" x2="25" y2="54" stroke="#8fb8a2" stroke-width="0.8"/>
+            <line x1="1" y1="6" x2="49" y2="6" stroke="#8fb8a2" stroke-width="0.8"/>
+            <line x1="1" y1="78" x2="49" y2="78" stroke="#8fb8a2" stroke-width="0.8"/>
           </symbol>
         </defs>
 
@@ -233,28 +242,37 @@
 
         <g class="building" data-building="basketball-court" data-category="sports" role="button" tabindex="0" aria-label="Basketball Courts, 篮球场">
           <title>Basketball Courts · 篮球场</title>
-          <rect class="b-shape" x="315" y="230" width="232" height="410" rx="12" opacity="0.3"/>
+          <rect class="b-shape" x="315" y="232" width="232" height="408" rx="12" opacity="0.3"/>
           <use href="#court" x="325" y="240" width="50" height="84"/>
           <use href="#court" x="383" y="240" width="50" height="84"/>
           <use href="#court" x="441" y="240" width="50" height="84"/>
           <use href="#court" x="325" y="341" width="50" height="84"/>
           <use href="#court" x="383" y="341" width="50" height="84"/>
           <use href="#court" x="441" y="341" width="50" height="84"/>
-          <use href="#court" x="325" y="442" width="50" height="84"/>
-          <use href="#court" x="383" y="442" width="50" height="84"/>
-          <use href="#court" x="441" y="442" width="50" height="84"/>
           <use href="#court" x="325" y="543" width="50" height="84"/>
           <use href="#court" x="383" y="543" width="50" height="84"/>
           <use href="#court" x="441" y="543" width="50" height="84"/>
           <g fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5">
             <rect x="505" y="240" width="34" height="84" rx="3"/>
             <rect x="505" y="341" width="34" height="84" rx="3"/>
-            <rect x="505" y="442" width="34" height="84" rx="3"/>
             <rect x="505" y="543" width="34" height="84" rx="3"/>
           </g>
-          <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="430" y="398">Basketball Courts</tspan>
-            <tspan class="zh" x="430" y="420">篮球场</tspan>
+          <text class="b-label b-label--small" text-anchor="middle">
+            <tspan class="en" x="430" y="286">Basketball Courts</tspan>
+            <tspan class="zh" x="430" y="304">篮球场</tspan>
+          </text>
+        </g>
+
+        <g class="building" data-building="badminton-court" data-category="sports" role="button" tabindex="0" aria-label="Badminton Courts, 羽毛球场">
+          <title>Badminton Courts · 羽毛球场</title>
+          <rect class="b-shape" x="315" y="434" width="232" height="102" rx="10" opacity="0.5"/>
+          <use href="#badminton" x="325" y="442" width="50" height="84"/>
+          <use href="#badminton" x="383" y="442" width="50" height="84"/>
+          <use href="#badminton" x="441" y="442" width="50" height="84"/>
+          <rect x="505" y="442" width="34" height="84" rx="3" fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5"/>
+          <text class="b-label b-label--minor" text-anchor="middle">
+            <tspan class="en" x="430" y="467">Badminton Courts</tspan>
+            <tspan class="zh" x="430" y="483">羽毛球场</tspan>
           </text>
         </g>
 
@@ -310,10 +328,6 @@
         <g class="building" data-building="student-center" data-category="student-life" role="button" tabindex="0" aria-label="Student Center, 学生中心">
           <title>Student Center · 学生中心</title>
           <rect class="b-shape" x="1537" y="70" width="138" height="167" rx="6"/>
-          <rect x="1548" y="78" width="58" height="5" rx="2" fill="#cfe3f2"/>
-          <rect x="1548" y="87" width="58" height="5" rx="2" fill="#cfe3f2"/>
-          <rect x="1548" y="96" width="58" height="5" rx="2" fill="#cfe3f2"/>
-          <rect x="1548" y="105" width="58" height="5" rx="2" fill="#cfe3f2"/>
           <ellipse cx="1586" cy="150" rx="34" ry="20" fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5"/>
           <rect x="1546" y="192" width="120" height="24" rx="2" fill="#dbeaf3" stroke="#9db9c8" stroke-width="1.5"/>
           <rect x="1558" y="237" width="96" height="20" rx="3" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.5"/>
@@ -324,23 +338,21 @@
           </text>
         </g>
 
-        <g class="building" data-building="dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory B, 学生宿舍B">
-          <title>Student Dormitory B · 学生宿舍B</title>
+        <g class="building" data-building="dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory 1, 学生宿舍1">
+          <title>Student Dormitory 1 · 学生宿舍1</title>
           <rect class="b-shape" x="1745" y="70" width="148" height="67" rx="5"/>
-          <rect x="1760" y="86" width="118" height="18" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.5"/>
           <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="1819" y="124">Student Dorm B</tspan>
-            <tspan class="zh" x="1819" y="139">学生宿舍B</tspan>
+            <tspan class="en" x="1819" y="120">Student Dorm 1</tspan>
+            <tspan class="zh" x="1819" y="133">学生宿舍1</tspan>
           </text>
         </g>
 
-        <g class="building" data-building="dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory A, 学生宿舍A">
-          <title>Student Dormitory A · 学生宿舍A</title>
+        <g class="building" data-building="dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory 2, 学生宿舍2">
+          <title>Student Dormitory 2 · 学生宿舍2</title>
           <rect class="b-shape" x="1745" y="220" width="148" height="67" rx="5"/>
-          <rect x="1760" y="236" width="118" height="18" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.5"/>
           <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="1819" y="274">Student Dorm A</tspan>
-            <tspan class="zh" x="1819" y="289">学生宿舍A</tspan>
+            <tspan class="en" x="1819" y="243">Student Dorm 2</tspan>
+            <tspan class="zh" x="1819" y="256">学生宿舍2</tspan>
           </text>
         </g>
 
@@ -366,18 +378,18 @@
           </text>
         </g>
 
-        <g class="building" data-building="teacher-center" data-category="student-life" role="button" tabindex="0" aria-label="Teacher Center, 教师中心">
-          <title>Teacher Center · 教师中心</title>
+        <g class="building" data-building="lakeside-restaurant" data-category="student-life" role="button" tabindex="0" aria-label="Lakeside Restaurant, 湖畔坊餐厅">
+          <title>Lakeside Restaurant · 湖畔坊餐厅</title>
           <path class="b-shape" d="M1552 392H1580V377H1624V457H1552Z"/>
           <rect x="1590" y="390" width="52" height="26" rx="2" fill="#f6f2e9" stroke="#c2b7a2" stroke-width="1.2"/>
           <rect x="1558" y="410" width="26" height="34" rx="2" fill="#f6f2e9" stroke="#c2b7a2" stroke-width="1.2"/>
           <rect x="1586" y="457" width="16" height="36" rx="2" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.2"/>
           <rect class="b-shape" x="1518" y="495" width="82" height="42" rx="3"/>
           <path d="M1526 501L1559 514L1592 501M1559 514V530" fill="none" stroke="#c2b7a2" stroke-width="1.5"/>
-          <path class="b-leader" d="M1548 540V556H1578"/>
+          <path class="b-leader" d="M1548 540V556H1588"/>
           <text class="b-label b-label--minor b-label--outside" text-anchor="middle">
-            <tspan class="en" x="1640" y="561">Teacher Center</tspan>
-            <tspan class="zh" x="1640" y="576">教师中心</tspan>
+            <tspan class="en" x="1662" y="561">Lakeside Restaurant</tspan>
+            <tspan class="zh" x="1662" y="576">湖畔坊餐厅</tspan>
           </text>
         </g>
 
@@ -398,23 +410,36 @@
           <path d="M0 -12L5 6L0 3L-5 6Z" fill="#0f766e"/>
           <text x="0" y="-27" text-anchor="middle" font-size="11" font-weight="700" fill="#5f6b63">N</text>
         </g>
+
+        <!-- markers for the places inside buildings, filled in by map.js.
+             They are siblings of the building shapes on purpose: a button
+             inside a button is invisible to screen readers. -->
+        <g class="map-spots" id="map-spots" aria-label="Places inside buildings"></g>
       </svg>
     </div>
     <p class="map-hint">Schematic map — not to scale. On a small screen, swipe the map sideways to see the whole campus.</p>
   </div>
 
-  <aside class="map-panel" id="map-panel" aria-live="polite">
+  <aside class="map-panel" id="map-panel" aria-live="polite" tabindex="-1">
     <div class="panel-empty">
       <h2>Pick a place</h2>
-      <p>Click any building on the map to see what it is and where it sits. Use the search box or the category buttons to narrow the map down.</p>
+      <p>Click any building on the map to see what it is, where it sits and what it looks like. The small round markers open the places inside a building.</p>
       <ul class="panel-tips">
-        <li><b>1</b><span>Click a building shape to open its details.</span></li>
-        <li><b>2</b><span>Search in English or Chinese.</span></li>
-        <li><b>3</b><span>On a phone, swipe the map sideways.</span></li>
+        <li><b>1</b><span>Click a building to open its details and photo.</span></li>
+        <li><b>2</b><span>Click a marker to see the canteen, gym or shop inside.</span></li>
+        <li><b>3</b><span>Search in English or Chinese.</span></li>
       </ul>
     </div>
   </aside>
 </main>
+
+<dialog class="lightbox" id="photo-lightbox" aria-label="Photo viewer">
+  <form method="dialog">
+    <button class="lightbox-close" type="submit" aria-label="Close the photo">×</button>
+  </form>
+  <img alt="">
+  <p class="lightbox-caption"></p>
+</dialog>
 
 <footer class="site-footer">
   <div class="wrap footer-inner">

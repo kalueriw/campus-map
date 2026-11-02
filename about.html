@@ -50,12 +50,12 @@
   <div class="prose">
     <h2>Why I built it</h2>
     <p>When I arrived on campus, the map I had was a flat plan: useful in a meeting room, awkward on a phone. The buildings all looked similar, and the names were easy to mix up. I wanted something I could open in a browser, tap, and understand in a few seconds — so I drew one myself.</p>
-    <p>The result is a schematic map, not a satellite photo. Shapes are simplified and labelled, which makes the important things — where the teaching buildings sit, how the student dorms line the eastern edge, how the teacher buildings sit around the lake — easier to read at any size.</p>
+    <p>The result is a schematic map, not a satellite photo. Shapes are simplified and labelled, which makes the important things — where the teaching buildings sit, how the student dorms line the eastern edge, how the restaurant and teacher dormitories sit around the lake — easier to read at any size.</p>
 
     <h2>What is on the site</h2>
     <ul>
       <li><strong>Home</strong> — a short introduction and a preview of the campus.</li>
-      <li><strong>Map</strong> — the main page: 13 places, a search box, category filters, and a details panel for every building.</li>
+      <li><strong>Map</strong> — the main page: 14 buildings and 10 places inside them, a search box, category filters, and a details panel with a photo of whatever you click.</li>
       <li><strong>Buildings</strong> — the same places as cards, with English and Chinese names.</li>
       <li><strong>About</strong> — this page.</li>
     </ul>
@@ -67,21 +67,23 @@
       <li><strong>One stylesheet</strong> — colours, spacing and category colours live in CSS custom properties, so the four pages look like one site.</li>
       <li><strong>Vanilla JavaScript</strong> — a single small file reads the building data, handles clicks and keyboard input, and filters the map. No libraries.</li>
       <li><strong>Responsive by default</strong> — the SVG scales with its container; on a narrow screen the map becomes scrollable instead of shrinking to nothing.</li>
-      <li><strong>Accessible controls</strong> — every building is a keyboard-focusable button, the filter buttons report their pressed state, and the details panel announces changes.</li>
+      <li><strong>Accessible controls</strong> — every building is a keyboard-focusable button, the markers inside buildings are buttons of their own, the filter buttons report their pressed state, and the details panel announces changes.</li>
+      <li><strong>Photos on demand</strong> — the panel builds its <code>&lt;img&gt;</code> only when you click something, so opening the map downloads no photographs at all.</li>
     </ul>
 
     <h2>What I learned</h2>
     <ul>
       <li>How to plan an SVG with a coordinate system, and why a <code>viewBox</code> makes a drawing responsive for free.</li>
       <li>How to keep a map interaction simple: select, filter, describe — no framework needed.</li>
-      <li>How much easier a project becomes when the scope is small on purpose. Four pages, 13 places, one clear job.</li>
+      <li>What a photograph weighs. Full-size pictures are 2–5 MB each, so a page that loads one on demand feels very different from one that loads twenty.</li>
+      <li>How much easier a project becomes when the scope is small on purpose. Four pages, one clear job.</li>
     </ul>
 
     <h2>What I would add next</h2>
     <ul>
-      <li>Photos of each building, taken on a walk around campus.</li>
+      <li>A photo of the lake, and a closer look inside the teaching buildings.</li>
       <li>A simple route hint: “You are at the Welcome Center; the Student Center is this way.”</li>
-      <li>More places — the canteen, the library, the main gate — once their names are confirmed.</li>
+      <li>More places — the library, the main gate — once their names are confirmed.</li>
     </ul>
 
     <div class="callout">
@@ -90,7 +92,8 @@
 
     <div class="credits">
       <p><strong>Credits and sources</strong></p>
-      <p>The map is a schematic drawn from scratch in SVG, based on the campus plan and my own walks around campus. No third-party photographs or map tiles are used on this site.</p>
+      <p>The map is a schematic drawn from scratch in SVG, based on the campus plan and my own walks around campus. No third-party map tiles are used on this site.</p>
+      <p>The photographs were taken by me on walks around campus in November 2026 and are used only here. They are stored at full size in <code>photos/</code>, and the index in <code>photos/README.md</code> records where each one was taken.</p>
       <p>Typefaces are the ones already on your device (system fonts). Built for Web Technologies 2026 at BiUH.</p>
     </div>
   </div>
