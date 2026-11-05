@@ -112,7 +112,7 @@ code {
 .brand:hover { color: var(--ink); }
 .brand svg { width: 26px; height: 26px; color: var(--teal); flex: none; }
 
-.site-nav { display: flex; gap: 3px; flex-wrap: wrap; }
+.site-nav { display: flex; gap: 3px; flex-wrap: wrap; margin-left: auto; }
 .site-nav a {
   padding: 8px 13px;
   border-radius: 999px;
@@ -123,6 +123,38 @@ code {
 }
 .site-nav a:hover { background: var(--paper-2); color: var(--ink); }
 .site-nav a[aria-current="page"] { background: var(--teal); color: #fff; }
+
+/* ------------------------------------------------------- language switch */
+
+.lang-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+.lang-switch button {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dim);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+.lang-switch button:hover { color: var(--ink); }
+.lang-switch button[aria-pressed="true"] {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(20, 32, 28, 0.12);
+}
+
+@media (max-width: 520px) {
+  .lang-switch { margin-left: auto; }
+}
 
 /* ------------------------------------------------------------ typography */
 
@@ -605,6 +637,7 @@ h3 { letter-spacing: -0.01em; }
   text-transform: uppercase;
 }
 .panel-breadcrumb strong { color: var(--ink); }
+[data-lang="zh"] .panel-breadcrumb { text-transform: none; letter-spacing: 0; }
 
 .spot-strip {
   display: flex;
@@ -705,13 +738,20 @@ h3 { letter-spacing: -0.01em; }
 
 /* ------------------------------------------------------------- buildings */
 
-.building-group { margin: 0 0 42px; }
+.building-group { margin: 0 0 34px; }
+
+.building-group + .building-group {
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
 .building-group > h2 {
   display: flex;
   align-items: center;
   gap: 10px;
   margin: 0 0 14px;
-  font-size: 1.28rem;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--cat-line);
+  font-size: 1.26rem;
 }
 .group-dot {
   width: 13px;
@@ -723,13 +763,17 @@ h3 { letter-spacing: -0.01em; }
 
 .building-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   gap: 14px;
+  /* Each card keeps its natural height; the tallest in a category is placed
+     first so the row reads as a deliberate cascade rather than a ragged edge. */
+  align-items: start;
 }
 
 .building-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 45% 1fr;
+  align-content: start;
   padding: 0;
   border: 1px solid var(--line);
   border-top: 4px solid var(--cat-line);
@@ -740,6 +784,8 @@ h3 { letter-spacing: -0.01em; }
 }
 
 .building-photo {
+  grid-column: 1;
+  align-self: start;
   display: block;
   background: var(--paper-2);
   cursor: zoom-in;
@@ -766,19 +812,27 @@ h3 { letter-spacing: -0.01em; }
 }
 
 .building-body {
+  grid-column: 2;
   display: flex;
-  flex: 1;
   flex-direction: column;
-  gap: 9px;
-  padding: 15px 18px 18px;
+  gap: 5px;
+  padding: 12px 14px 12px;
 }
 
-.building-inside { margin-top: 2px; }
+.building-card h3 { font-size: 1rem; }
+.building-card .zh { font-size: 0.84rem; }
+.building-card .desc { font-size: 0.82rem; line-height: 1.4; }
+.building-card .where { font-size: 0.74rem; line-height: 1.38; }
+
+.building-inside {
+  grid-column: 1 / -1;
+  padding: 0 14px 12px;
+}
 
 .inside-label {
-  margin: 0 0 8px;
+  margin: 0 0 7px;
   color: var(--dim);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 750;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -793,7 +847,7 @@ h3 { letter-spacing: -0.01em; }
   list-style: none;
 }
 
-.inside-item { width: 84px; }
+.inside-item { width: 92px; }
 
 .inside-photo {
   display: block;
@@ -801,8 +855,8 @@ h3 { letter-spacing: -0.01em; }
 }
 .inside-photo img {
   display: block;
-  width: 84px;
-  height: 63px;
+  width: 92px;
+  height: 69px;
   border: 1px solid var(--line);
   border-radius: 6px;
   object-fit: cover;
@@ -817,8 +871,18 @@ h3 { letter-spacing: -0.01em; }
 }
 .inside-link:hover .inside-name { color: var(--teal-dark); text-decoration: underline; }
 
-.inside-name { display: block; font-size: 0.72rem; font-weight: 650; line-height: 1.25; }
-.inside-zh { display: block; color: var(--dim); font-size: 0.68rem; line-height: 1.25; }
+""
+
+# narrow screens: stack the photo on top instead of squeezing the text column
+@media (max-width: 560px) {
+  .building-card { grid-template-columns: 1fr; }
+  .building-photo { grid-column: 1; }
+  .building-body { grid-column: 1; padding-top: 14px; }
+  .building-inside { padding-top: 2px; }
+}
+
+.inside-name { display: block; font-size: 0.74rem; font-weight: 650; line-height: 1.25; }
+.inside-zh { display: block; color: var(--dim); font-size: 0.7rem; line-height: 1.25; }
 .building-card h3 { margin: 0; font-size: 1.04rem; }
 .building-card .zh { margin: 0; color: var(--dim); font-size: 0.9rem; }
 .building-card .desc { margin: 0; color: var(--dim); font-size: 0.9rem; }
@@ -829,7 +893,6 @@ h3 { letter-spacing: -0.01em; }
 }
 .building-card .card-link {
   align-self: flex-start;
-  margin-top: auto;
   color: var(--teal);
   font-size: 0.85rem;
   font-weight: 700;

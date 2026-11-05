@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BiUH Campus Map</title>
+<title data-zh="BiUH 校园地图">BiUH Campus Map</title>
 <meta name="description" content="A simple, hand-drawn map of the BiUH campus. Find every teaching building, dormitory and sports ground in one place.">
 <meta name="theme-color" content="#0f766e">
 
@@ -32,11 +32,15 @@
       BiUH Campus Map
     </a>
     <nav class="site-nav" aria-label="Main">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="map.html">Map</a>
-      <a href="buildings.html">Buildings</a>
-      <a href="about.html">About</a>
+      <a href="index.html" aria-current="page" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
     </nav>
+    <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+    </div>
   </div>
 </header>
 
@@ -45,16 +49,16 @@
     <div class="hero-grid">
       <div>
         <p class="kicker">Web Technologies 2026 · BiUH</p>
-        <h1>Find your way around campus.</h1>
-        <p class="lead">A simple, hand-drawn map of the BiUH campus: every teaching building, dormitory and sports ground in one place — with English and Chinese names.</p>
+        <h1 data-zh="在校园里找到方向。">Find your way around campus.</h1>
+        <p class="lead" data-zh="一张手绘的 BiUH 校园地图：教学楼、宿舍、运动场都在一处，中英文名称齐全。">A simple, hand-drawn map of the BiUH campus: every teaching building, dormitory and sports ground in one place — with English and Chinese names.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="map.html">Open the map</a>
-          <a class="btn btn-ghost" href="buildings.html">Browse buildings</a>
+          <a class="btn btn-primary" href="map.html" data-zh="打开地图">Open the map</a>
+          <a class="btn btn-ghost" href="buildings.html" data-zh="浏览建筑">Browse buildings</a>
         </div>
         <div class="stats">
-          <div class="stat"><strong>25</strong><span>places mapped</span></div>
-          <div class="stat"><strong>25</strong><span>photos</span></div>
-          <div class="stat"><strong>5</strong><span>categories</span></div>
+          <div class="stat"><strong>25</strong><span data-zh="个地点">places mapped</span></div>
+          <div class="stat"><strong>25</strong><span data-zh="张照片">photos</span></div>
+          <div class="stat"><strong>5</strong><span data-zh="个分类">categories</span></div>
         </div>
       </div>
 
@@ -191,16 +195,16 @@
             <circle cy="-5" r="6.5" fill="#fbfaf7"/>
           </g>
         </svg>
-        <p class="hero-caption">A hand-drawn SVG map — click a building, get its story.</p>
+        <p class="hero-caption" data-zh="手绘 SVG 地图——点一栋楼，看它的照片。">A hand-drawn SVG map — click a building, get its story.</p>
       </div>
     </div>
   </section>
 
   <section class="section wrap">
     <div class="section-head">
-      <p class="kicker">The campus, at a glance</p>
-      <h2>Small enough to learn in a week.</h2>
-      <p>Sport runs along the west edge: the track first, then the badminton and basketball courts. Teaching Buildings A and B sit at the top of campus, with the Training Building and Student Center to their east. The student dormitories line the eastern edge, and below the Student Center the teacher dormitories and the Lakeside Restaurant sit around a small lake.</p>
+      <p class="kicker" data-zh="校园概览">The campus, at a glance</p>
+      <h2 data-zh="一周就能走遍的校园。">Small enough to learn in a week.</h2>
+      <p data-zh="运动区在校园西侧：先是操场，然后是羽毛球场和篮球场。教学楼 A、B 位于校园北侧，实训楼和学生中心在它们东边。学生宿舍沿东侧排列，学生中心下方则是湖边的一圈教师公寓和湖畔坊餐厅。">Sport runs along the west edge: the track first, then the badminton and basketball courts. Teaching Buildings A and B sit at the top of campus, with the Training Building and Student Center to their east. The student dormitories line the eastern edge, and below the Student Center the teacher dormitories and the Lakeside Restaurant sit around a small lake.</p>
     </div>
 
     <div class="cards">
@@ -210,8 +214,8 @@
             <path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
           </svg>
         </div>
-        <h3>Click a building</h3>
-        <p>Every shape on the map opens a short description, tells you where it sits, and shows a photo of it.</p>
+        <h3 data-zh="点开任意一栋楼">Click a building</h3>
+        <p data-zh="地图上的每个图形都能打开简短介绍、位置说明和实拍照片。">Every shape on the map opens a short description, tells you where it sits, and shows a photo of it.</p>
       </article>
 
       <article class="card">
@@ -220,8 +224,8 @@
             <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
           </svg>
         </div>
-        <h3>Search in two languages</h3>
-        <p>Type English or Chinese — “teaching”, “dorm”, “湖” — and the map narrows down.</p>
+        <h3 data-zh="中英文都能搜">Search in two languages</h3>
+        <p data-zh="输入英文或中文——「teaching」「宿舍」「湖」——地图会即时筛选。">Type English or Chinese — “teaching”, “dorm”, “湖” — and the map narrows down.</p>
       </article>
 
       <article class="card">
@@ -230,8 +234,8 @@
             <rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>
           </svg>
         </div>
-        <h3>Works on a phone</h3>
-        <p>The map scales and scrolls, so it still works on the way to class.</p>
+        <h3 data-zh="手机上也能用">Works on a phone</h3>
+        <p data-zh="地图会随屏幕缩放、可横向滑动，去上课的路上也能用。">The map scales and scrolls, so it still works on the way to class.</p>
       </article>
 
       <article class="card">
@@ -240,8 +244,8 @@
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
           </svg>
         </div>
-        <h3>No app, no login</h3>
-        <p>A static website: nothing to install, no account, and no data collected.</p>
+        <h3 data-zh="无需安装，无需登录">No app, no login</h3>
+        <p data-zh="纯静态网站：不装应用、不注册、不收集任何数据。">A static website: nothing to install, no account, and no data collected.</p>
       </article>
     </div>
   </section>
@@ -249,14 +253,15 @@
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p><strong>BiUH Campus Map</strong> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</p>
+    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图为手绘 SVG。"> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</span></p>
     <nav aria-label="Footer">
-      <a href="index.html">Home</a>
-      <a href="map.html">Map</a>
-      <a href="buildings.html">Buildings</a>
-      <a href="about.html">About</a>
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
     </nav>
   </div>
 </footer>
+<script src="i18n.js"></script>
 </body>
 </html>

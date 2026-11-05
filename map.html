@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Campus Map · BiUH Campus Map</title>
+<title data-zh="校园地图 · BiUH 校园地图">Campus Map · BiUH Campus Map</title>
 <meta name="description" content="Interactive schematic map of the BiUH campus. Click a building to see its name, purpose and location.">
 <meta name="theme-color" content="#0f766e">
 
@@ -32,44 +32,48 @@
       BiUH Campus Map
     </a>
     <nav class="site-nav" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="map.html" aria-current="page">Map</a>
-      <a href="buildings.html">Buildings</a>
-      <a href="about.html">About</a>
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" aria-current="page" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
     </nav>
+    <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+    </div>
   </div>
 </header>
 
 <main id="main" class="wrap wrap-wide">
   <header class="page-head">
-    <p class="kicker">Campus map</p>
-    <h1>Find your way around campus.</h1>
-    <p class="lead">Click any building to see its name, what it is used for, where it sits — and a photo of it. The small round markers open the places inside a building: the canteen, the gyms, the shops in the dormitories. Use the search box or the category buttons to narrow the map down.</p>
+    <p class="kicker" data-zh="校园地图">Campus map</p>
+    <h1 data-zh="在校园里找到方向。">Find your way around campus.</h1>
+    <p class="lead" data-zh="点击任意建筑，查看名称、用途、位置和实拍照片。楼内的小圆点可以打开里面的具体场所：学生餐厅、健身房、宿舍楼下的商铺。也可以用搜索框或分类按钮筛选。">Click any building to see its name, what it is used for, where it sits — and a photo of it. The small round markers open the places inside a building: the canteen, the gyms, the shops in the dormitories. Use the search box or the category buttons to narrow the map down.</p>
   </header>
 
   <div class="map-toolbar">
     <div class="search">
-      <label for="map-search">Find a building</label>
-      <input id="map-search" type="search" placeholder="Try “teaching” or “宿舍”" autocomplete="off">
+      <label for="map-search" data-zh="查找建筑">Find a building</label>
+      <input id="map-search" type="search" placeholder="Try “teaching” or “宿舍”" data-ph-zh="试试「teaching」或「宿舍」" autocomplete="off">
     </div>
     <div class="legend" role="group" aria-label="Filter by category">
       <button class="legend-btn" type="button" data-category="all" aria-pressed="true">
-        <span class="swatch swatch-all" aria-hidden="true"></span>All
+        <span class="swatch swatch-all" aria-hidden="true"></span><span data-zh="全部">All</span>
       </button>
       <button class="legend-btn" type="button" data-category="academic" aria-pressed="false">
-        <span class="swatch" aria-hidden="true"></span>Academic
+        <span class="swatch" aria-hidden="true"></span><span data-zh="教学">Academic</span>
       </button>
       <button class="legend-btn" type="button" data-category="student-life" aria-pressed="false">
-        <span class="swatch" aria-hidden="true"></span>Student life
+        <span class="swatch" aria-hidden="true"></span><span data-zh="生活">Student life</span>
       </button>
       <button class="legend-btn" type="button" data-category="residence" aria-pressed="false">
-        <span class="swatch" aria-hidden="true"></span>Residence
+        <span class="swatch" aria-hidden="true"></span><span data-zh="住宿">Residence</span>
       </button>
       <button class="legend-btn" type="button" data-category="sports" aria-pressed="false">
-        <span class="swatch" aria-hidden="true"></span>Sport
+        <span class="swatch" aria-hidden="true"></span><span data-zh="运动">Sport</span>
       </button>
       <button class="legend-btn" type="button" data-category="landmark" aria-pressed="false">
-        <span class="swatch" aria-hidden="true"></span>Landmark
+        <span class="swatch" aria-hidden="true"></span><span data-zh="地标">Landmark</span>
       </button>
     </div>
   </div>
@@ -417,17 +421,17 @@
         <g class="map-spots" id="map-spots" aria-label="Places inside buildings"></g>
       </svg>
     </div>
-    <p class="map-hint">Schematic map — not to scale. On a small screen, swipe the map sideways to see the whole campus.</p>
+    <p class="map-hint" data-zh="示意图，非等比例。小屏幕上可左右滑动查看整个校园。">Schematic map — not to scale. On a small screen, swipe the map sideways to see the whole campus.</p>
   </div>
 
   <aside class="map-panel" id="map-panel" aria-live="polite" tabindex="-1">
     <div class="panel-empty">
-      <h2>Pick a place</h2>
-      <p>Click any building on the map to see what it is, where it sits and what it looks like. The small round markers open the places inside a building.</p>
+      <h2 data-zh="选择一个地点">Pick a place</h2>
+      <p data-zh="点击地图上的建筑，查看它是什么、在哪里、长什么样。小圆点可以打开建筑内部的场所。">Click any building on the map to see what it is, where it sits and what it looks like. The small round markers open the places inside a building.</p>
       <ul class="panel-tips">
-        <li><b>1</b><span>Click a building to open its details and photo.</span></li>
-        <li><b>2</b><span>Click a marker to see the canteen, gym or shop inside.</span></li>
-        <li><b>3</b><span>Search in English or Chinese.</span></li>
+        <li><b>1</b><span data-zh="点击建筑，查看介绍和照片。">Click a building to open its details and photo.</span></li>
+        <li><b>2</b><span data-zh="点击圆点，看楼内的餐厅、健身房或商铺。">Click a marker to see the canteen, gym or shop inside.</span></li>
+        <li><b>3</b><span data-zh="支持中英文搜索。">Search in English or Chinese.</span></li>
       </ul>
     </div>
   </aside>
@@ -435,7 +439,7 @@
 
 <dialog class="lightbox" id="photo-lightbox" aria-label="Photo viewer">
   <form method="dialog">
-    <button class="lightbox-close" type="submit" aria-label="Close the photo">×</button>
+    <button class="lightbox-close" type="submit" aria-label="Close the photo" data-al-zh="关闭照片">×</button>
   </form>
   <img alt="">
   <p class="lightbox-caption"></p>
@@ -443,16 +447,17 @@
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p><strong>BiUH Campus Map</strong> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</p>
+    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图为手绘 SVG。"> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</span></p>
     <nav aria-label="Footer">
-      <a href="index.html">Home</a>
-      <a href="map.html">Map</a>
-      <a href="buildings.html">Buildings</a>
-      <a href="about.html">About</a>
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
     </nav>
   </div>
 </footer>
 
+<script src="i18n.js"></script>
 <script src="lightbox.js"></script>
 <script src="map.js"></script>
 </body>

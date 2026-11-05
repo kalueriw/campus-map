@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About · BiUH Campus Map</title>
+<title data-zh="关于 · BiUH 校园地图">About · BiUH Campus Map</title>
 <meta name="description" content="Why and how I built the BiUH Campus Map for my Web Technologies 2026 project.">
 <meta name="theme-color" content="#0f766e">
 
@@ -32,83 +32,89 @@
       BiUH Campus Map
     </a>
     <nav class="site-nav" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="map.html">Map</a>
-      <a href="buildings.html">Buildings</a>
-      <a href="about.html" aria-current="page">About</a>
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" aria-current="page" data-zh="关于">About</a>
     </nav>
+    <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+    </div>
   </div>
 </header>
 
 <main id="main" class="wrap">
   <header class="page-head">
     <p class="kicker">About</p>
-    <h1>About this map.</h1>
-    <p class="lead">A small website with one job: help a new student or a visitor find the right building without asking around.</p>
+    <h1 data-zh="关于这张地图。">About this map.</h1>
+    <p class="lead" data-zh="一个小网站，只做一件事：让新生或访客不用到处问，就能找到要去的那栋楼。">A small website with one job: help a new student or a visitor find the right building without asking around.</p>
   </header>
 
   <div class="prose">
-    <h2>Why I built it</h2>
-    <p>When I arrived on campus, the map I had was a flat plan: useful in a meeting room, awkward on a phone. The buildings all looked similar, and the names were easy to mix up. I wanted something I could open in a browser, tap, and understand in a few seconds — so I drew one myself.</p>
-    <p>The result is a schematic map, not a satellite photo. Shapes are simplified and labelled, which makes the important things — where the teaching buildings sit, how the student dorms line the eastern edge, how the restaurant and teacher dormitories sit around the lake — easier to read at any size.</p>
+    <h2 data-zh="为什么做这个网站">Why I built it</h2>
+    <p data-zh="刚来学校时，我手上的地图是一张平面图：在会议室里好用，在手机上很别扭。楼长得都差不多，名字也容易记混。我想要一个能在浏览器里打开、点一下、几秒钟就看明白的东西，于是自己画了一张。">When I arrived on campus, the map I had was a flat plan: useful in a meeting room, awkward on a phone. The buildings all looked similar, and the names were easy to mix up. I wanted something I could open in a browser, tap, and understand in a few seconds — so I drew one myself.</p>
+    <p data-zh="结果是示意图，而不是卫星照片。形状被简化并标注，这样重要的信息——教学楼在哪一侧、学生宿舍怎么沿东边排开、餐厅和教师公寓怎么围着湖——在任何尺寸下都更容易读。">The result is a schematic map, not a satellite photo. Shapes are simplified and labelled, which makes the important things — where the teaching buildings sit, how the student dorms line the eastern edge, how the restaurant and teacher dormitories sit around the lake — easier to read at any size.</p>
 
-    <h2>What is on the site</h2>
+    <h2 data-zh="网站有什么">What is on the site</h2>
     <ul>
-      <li><strong>Home</strong> — a short introduction and a preview of the campus.</li>
-      <li><strong>Map</strong> — the main page: 14 buildings and 11 places inside them, a search box, category filters, and a details panel with a photo of whatever you click.</li>
-      <li><strong>Buildings</strong> — the same places as cards, each with its photograph and the rooms inside it.</li>
-      <li><strong>About</strong> — this page.</li>
+      <li><strong>Home</strong><span data-zh="——简短介绍和校园预览。"> — a short introduction and a preview of the campus.</span></li>
+      <li><strong>Map</strong><span data-zh="——主页面：14 栋建筑和它们内部的 11 个场所，配有搜索框、分类筛选，以及点开后带照片的详情面板。"> — the main page: 14 buildings and 11 places inside them, a search box, category filters, and a details panel with a photo of whatever you click.</span></li>
+      <li><strong>Buildings</strong><span data-zh="——同样的地点做成卡片，每张都带照片和楼内场所。"> — the same places as cards, each with its photograph and the rooms inside it.</span></li>
+      <li><strong>About</strong><span data-zh="——本页。"> — this page.</span></li>
     </ul>
 
-    <h2>How it works</h2>
-    <p>Everything is static. There is no server and no database, and the site does not collect any data.</p>
+    <h2 data-zh="它是怎么实现的">How it works</h2>
+    <p data-zh="全部是静态的。没有服务器，没有数据库，也不收集任何数据。">Everything is static. There is no server and no database, and the site does not collect any data.</p>
     <ul>
-      <li><strong>Semantic HTML</strong> — one <code>&lt;header&gt;</code>, one <code>&lt;main&gt;</code>, one <code>&lt;footer&gt;</code>; the map is an inline SVG with a title and description.</li>
-      <li><strong>One stylesheet</strong> — colours, spacing and category colours live in CSS custom properties, so the four pages look like one site.</li>
-      <li><strong>Vanilla JavaScript</strong> — a single small file reads the building data, handles clicks and keyboard input, and filters the map. No libraries.</li>
-      <li><strong>Responsive by default</strong> — the SVG scales with its container; on a narrow screen the map becomes scrollable instead of shrinking to nothing.</li>
-      <li><strong>Accessible controls</strong> — every building is a keyboard-focusable button, the markers inside buildings are buttons of their own, the filter buttons report their pressed state, and the details panel announces changes.</li>
-      <li><strong>Photos on demand</strong> — the panel builds its <code>&lt;img&gt;</code> only when you click something, so opening the map downloads no photographs at all.</li>
+      <li><strong>Semantic HTML</strong><span data-zh="——一个 &lt;header&gt;、一个 &lt;main&gt;、一个 &lt;footer&gt;；地图是带标题和描述的内联 SVG。"> — one <code>&lt;header&gt;</code>, one <code>&lt;main&gt;</code>, one <code>&lt;footer&gt;</code>; the map is an inline SVG with a title and description.</span></li>
+      <li><strong>One stylesheet</strong><span data-zh="——颜色、间距和分类配色都放在 CSS 自定义属性里，四个页面看起来像一个网站。"> — colours, spacing and category colours live in CSS custom properties, so the four pages look like one site.</span></li>
+      <li><strong>Vanilla JavaScript</strong><span data-zh="——一个小文件读取建筑数据、处理点击和键盘输入、筛选地图，不用任何框架。"> — a single small file reads the building data, handles clicks and keyboard input, and filters the map. No libraries.</span></li>
+      <li><strong>Responsive by default</strong><span data-zh="——SVG 随容器缩放；窄屏时地图改为横向滚动，而不是缩到看不清。"> — the SVG scales with its container; on a narrow screen the map becomes scrollable instead of shrinking to nothing.</span></li>
+      <li><strong>Accessible controls</strong><span data-zh="——每栋建筑都是可键盘聚焦的按钮，楼内场所也是独立按钮，筛选按钮会报告按下状态，详情面板会播报变化。"> — every building is a keyboard-focusable button, the markers inside buildings are buttons of their own, the filter buttons report their pressed state, and the details panel announces changes.</span></li>
+      <li><strong>Photos on demand</strong><span data-zh="——面板只在你点击时才创建 &lt;img&gt;，所以打开地图本身不会下载任何照片。"> — the panel builds its <code>&lt;img&gt;</code> only when you click something, so opening the map downloads no photographs at all.</span></li>
+      <li><strong>English / 中文</strong><span data-zh="——右上角的开关切换整站语言，并记住你的选择。"> — the switch in the header changes the language of the whole site, and remembers your choice.</span></li>
     </ul>
 
-    <h2>What I learned</h2>
+    <h2 data-zh="我学到了什么">What I learned</h2>
     <ul>
-      <li>How to plan an SVG with a coordinate system, and why a <code>viewBox</code> makes a drawing responsive for free.</li>
-      <li>How to keep a map interaction simple: select, filter, describe — no framework needed.</li>
-      <li>What a photograph weighs. Full-size pictures are 2–5 MB each, so a page that loads one on demand feels very different from one that loads twenty.</li>
-      <li>How much easier a project becomes when the scope is small on purpose. Four pages, one clear job.</li>
+      <li data-zh="如何用坐标系规划一张 SVG，以及为什么一个 viewBox 就能让画布自动响应式。">How to plan an SVG with a coordinate system, and why a <code>viewBox</code> makes a drawing responsive for free.</li>
+      <li data-zh="如何把地图交互保持简单：选择、筛选、描述——不需要框架。">How to keep a map interaction simple: select, filter, describe — no framework needed.</li>
+      <li data-zh="一张照片有多重。原图每张 2–5 MB，所以按需加载和一次加载二十张是完全不同的体验。">What a photograph weighs. Full-size pictures are 2–5 MB each, so a page that loads one on demand feels very different from one that loads twenty.</li>
+      <li data-zh="主动缩小范围，项目会容易多少。四个页面，一件清楚的事。">How much easier a project becomes when the scope is small on purpose. Four pages, one clear job.</li>
     </ul>
 
-    <h2>What I would add next</h2>
+    <h2 data-zh="接下来想做的">What I would add next</h2>
     <ul>
-      <li>More rooms inside the teaching buildings, and a photo of the Student Center from outside.</li>
-      <li>A simple route hint: “You are at the Welcome Center; the Student Center is this way.”</li>
-      <li>More places — the library, the main gate — once their names are confirmed.</li>
+      <li data-zh="教学楼里更多的房间。">More rooms inside the teaching buildings.</li>
+      <li data-zh="一个简单的路线提示：「你在欢迎中心，学生中心在那边。」">A simple route hint: “You are at the Welcome Center; the Student Center is this way.”</li>
+      <li data-zh="更多地点——图书馆、校门——在名字确认之后。">More places — the library, the main gate — once their names are confirmed.</li>
     </ul>
 
     <div class="callout">
-      <p><strong>Please check the details.</strong> Building names were taken from the campus plan and my own walk around. If a name or location is wrong, tell me and I will correct it.</p>
+      <p><strong data-zh="请帮忙核对细节。">Please check the details.</strong><span data-zh="建筑名称来自校园平面图和我自己走的一圈。如果名字或位置有误，告诉我，我会改。"> Building names were taken from the campus plan and my own walk around. If a name or location is wrong, tell me and I will correct it.</span></p>
     </div>
 
     <div class="credits">
-      <p><strong>Credits and sources</strong></p>
-      <p>The map is a schematic drawn from scratch in SVG, based on the campus plan and my own walks around campus. No third-party map tiles are used on this site.</p>
-      <p>The photographs were taken by me on walks around campus in November 2026 and are used only here. They are stored at full size in <code>photos/</code>, and the index in <code>photos/README.md</code> records where each one was taken.</p>
-      <p>Typefaces are the ones already on your device (system fonts). Built for Web Technologies 2026 at BiUH.</p>
+      <p><strong data-zh="素材与来源">Credits and sources</strong></p>
+      <p data-zh="地图是从零手绘的 SVG 示意图，依据校园平面图和我自己在校园里的走动。本站没有使用任何第三方地图瓦片。">The map is a schematic drawn from scratch in SVG, based on the campus plan and my own walks around campus. No third-party map tiles are used on this site.</p>
+      <p data-zh="照片是我 2026 年 11 月在校园里拍摄的，只用在这里。原图存放在 photos/ 目录下，photos/README.md 记录了每张的拍摄位置。">The photographs were taken by me on walks around campus in November 2026 and are used only here. They are stored at full size in <code>photos/</code>, and the index in <code>photos/README.md</code> records where each one was taken.</p>
+      <p data-zh="字体使用设备自带的系统字体。为 BiUH 的 Web Technologies 2026 课程制作。">Typefaces are the ones already on your device (system fonts). Built for Web Technologies 2026 at BiUH.</p>
     </div>
   </div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p><strong>BiUH Campus Map</strong> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</p>
+    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图为手绘 SVG。"> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</span></p>
     <nav aria-label="Footer">
-      <a href="index.html">Home</a>
-      <a href="map.html">Map</a>
-      <a href="buildings.html">Buildings</a>
-      <a href="about.html">About</a>
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
     </nav>
   </div>
 </footer>
+<script src="i18n.js"></script>
 </body>
 </html>

@@ -13,6 +13,8 @@ The site is a schematic map of the campus — the sports field, teaching buildin
 | Buildings | `buildings.html` | Every place as a card with its photo, grouped by category, with a link back to the map |
 | About | `about.html` | Why and how the site was built, plus credits |
 
+Every page has an **EN / 中文** switch in the header. English appears in the markup; the Chinese lives in `data-zh` attributes, and `i18n.js` swaps them. The choice is stored in `localStorage` and the first visit follows the browser language. `?lang=zh` or `?lang=en` forces one.
+
 ## Project structure
 
 ```
@@ -24,6 +26,7 @@ campus-map/
 ├── style.css          one shared stylesheet
 ├── map.js             map data + interactions (vanilla JavaScript)
 ├── lightbox.js        the photo dialog, shared by map.html and buildings.html
+├── i18n.js            the English / 中文 switch, shared by all four pages
 ├── photos/
 │   ├── README.md              which photo was taken where
 │   ├── *.jpg                  25 originals, 4080 × 3060 or 4096 × 3072, 82.2 MB
