@@ -66,14 +66,14 @@
       spots: [
         {
           id: 'study-room',
-          en: 'Study Room',
-          zh: '自习室',
+          en: 'Study Room 1',
+          zh: '自习室1',
           glyph: '习',
           x: 700,
           y: 340,
           desc: 'A quiet room for individual study, open between classes.',
           where: 'Ground floor of Teaching Building A.',
-          aliases: 'study room quiet revise 自习室 自习',
+          aliases: 'study room quiet revise 自习室1 自习室 自习 学习',
           photo: 'photos/teaching-a-study-room.jpg'
         }
       ]
@@ -103,7 +103,7 @@
       en: 'Student Center',
       zh: '学生中心',
       category: 'student-life',
-      desc: 'Student services, clubs and a place to meet between classes. Two restaurants, a sports hall and two gyms are inside.',
+      desc: 'Student services, clubs and a place to meet between classes. Two restaurants, a sports hall, two gyms and a study room are inside.',
       where: 'East side of campus, right of the training building.',
       aliases: 'student center services clubs 学生中心',
       photo: 'photos/student-center.jpg',
@@ -134,14 +134,14 @@
         },
         {
           id: 'gym-hall',
-          en: 'Indoor Sports Hall',
-          zh: '室内体育馆',
+          en: 'Indoor Sports Hall 209',
+          zh: '室内体育馆209',
           glyph: '馆',
           x: 1560,
           y: 90,
           desc: 'The indoor hall above the canteen, used for badminton and PE on rainy days.',
-          where: 'North half of the building, second floor — directly above the canteen.',
-          aliases: 'indoor sports hall gym badminton pe 室内体育馆 体育馆 室内',
+          where: 'Room 209, north half of the building, second floor — directly above the canteen.',
+          aliases: 'indoor sports hall gym badminton pe 室内体育馆209 室内体育馆 体育馆 室内 209',
           photo: 'photos/student-center-gym-hall.jpg'
         },
         {
@@ -161,12 +161,24 @@
           en: 'Gym 304',
           zh: '健身房304',
           glyph: '304',
-          x: 1620,
-          y: 205,
+          x: 1638,
+          y: 200,
           desc: 'The second gym, with aerobic machines and a mirrored floor.',
           where: 'Room 304, south half of the building.',
           aliases: 'gym fitness aerobic 健身房304 健身房 健身 304',
           photo: 'photos/student-center-gym-304.jpg'
+        },
+        {
+          id: 'study-room-2',
+          en: 'Study Room 2',
+          zh: '自习室2',
+          glyph: '习',
+          x: 1582,
+          y: 200,
+          desc: 'A study room with rows of desks, directly under the second gym.',
+          where: 'South half of the building, second floor — directly below Gym 304.',
+          aliases: 'study room quiet revise 自习室2 自习室 自习 学习 学生中心自习室',
+          photo: 'photos/student-center-study-room.jpg'
         }
       ]
     },
@@ -283,7 +295,7 @@
       desc: 'A small lake with a landscaped walkway, at the south-east corner of campus.',
       where: 'South-east of campus, beside the teacher center.',
       aliases: 'lake water pond 小湖 湖',
-      photo: null
+      photo: 'photos/lake.jpg'
     }
   ];
 
@@ -305,6 +317,8 @@
   var search = document.getElementById('map-search');
   var status = document.getElementById('map-status');
   var legendButtons = Array.prototype.slice.call(document.querySelectorAll('.legend-btn'));
+  /* The shared lightbox.js owns the dialog; map.js only asks whether it is
+     open, so that Escape does not also step back a panel level. */
   var lightbox = document.getElementById('photo-lightbox');
 
   if (!svg || !panel || !search || !status) {
@@ -514,8 +528,11 @@
   }
 
   function renderBuilding(building) {
+    var emptyText = (building.spots && building.spots.length)
+      ? 'No photo of the outside yet — pick a place inside to see one.'
+      : 'No photo of this place yet — it is still on the to-do list.';
     panel.innerHTML = [
-      photoMarkup(building.photo, building.en + ' · ' + building.zh, 'No photo of this place yet — it is still on the to-do list.'),
+      photoMarkup(building.photo, building.en + ' · ' + building.zh, emptyText),
       spotChipsMarkup(building),
       '<div class="panel-grid">',
       '  <div>',
@@ -782,61 +799,6 @@
 
   buildSpotMarkers();
 
-  /* ---- lightbox ---------------------------------------------------------- */
-
-  var lightboxImg = lightbox ? lightbox.querySelector('img') : null;
-  var lightboxCaption = lightbox ? lightbox.querySelector('.lightbox-caption') : null;
-  var lastTrigger = null;
-
-  function openLightbox(link) {
-    var img = link.querySelector('img');
-    var src = link.getAttribute('href');
-    var caption = link.getAttribute('data-caption') || '';
-    lastTrigger = link;
-
-    if (!lightbox || typeof lightbox.showModal !== 'function') {
-      /* Safari before 15.4 has no showModal() — open the photo in a new tab. */
-      window.open(src, '_blank');
-      return;
-    }
-    if (lightbox.open) {
-      return;
-    }
-    lightboxImg.src = src;
-    lightboxImg.alt = img ? img.alt : caption;
-    if (lightboxCaption) {
-      lightboxCaption.textContent = caption;
-    }
-    /* iOS keeps scrolling the page behind a modal dialog; lock it while open. */
-    document.body.classList.add('has-dialog');
-    /* showModal() moves focus to the close button by itself. */
-    lightbox.showModal();
-  }
-
-  if (lightbox) {
-    lightbox.addEventListener('click', function (event) {
-      if (event.target !== lightbox) {
-        return;
-      }
-      var rect = lightbox.getBoundingClientRect();
-      var outside = event.clientX < rect.left || event.clientX > rect.right ||
-                    event.clientY < rect.top || event.clientY > rect.bottom;
-      if (outside) {
-        lightbox.close();
-      }
-    });
-
-    lightbox.addEventListener('close', function () {
-      document.body.classList.remove('has-dialog');
-      /* Drop the source so the browser can release the decoded image. */
-      lightboxImg.removeAttribute('src');
-      if (lastTrigger) {
-        lastTrigger.focus();
-        lastTrigger = null;
-      }
-    });
-  }
-
   /* ---- panel interactions ------------------------------------------------ */
 
   panel.addEventListener('click', function (event) {
@@ -858,12 +820,6 @@
     if (chip) {
       selectSpot(chip.getAttribute('data-spot'));
       return;
-    }
-
-    var link = target.closest('[data-lightbox]');
-    if (link) {
-      event.preventDefault();
-      openLightbox(link);
     }
   });
 

@@ -730,17 +730,98 @@ h3 { letter-spacing: -0.01em; }
 .building-card {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  padding: 18px;
+  padding: 0;
   border: 1px solid var(--line);
   border-top: 4px solid var(--cat-line);
   border-radius: 12px;
   background: #fff;
+  overflow: hidden;
   scroll-margin-top: 92px;
 }
+
+.building-photo {
+  display: block;
+  background: var(--paper-2);
+  cursor: zoom-in;
+}
+.building-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* The Student Center has no photograph of the outside, only its rooms. */
+.building-photo--none {
+  display: grid;
+  place-items: center;
+  min-height: 92px;
+  margin: 0;
+  padding: 12px 18px;
+  color: var(--dim);
+  font-size: 0.8rem;
+  text-align: center;
+  cursor: auto;
+}
+
+.building-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 9px;
+  padding: 15px 18px 18px;
+}
+
+.building-inside { margin-top: 2px; }
+
+.inside-label {
+  margin: 0 0 8px;
+  color: var(--dim);
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.inside-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inside-item { width: 84px; }
+
+.inside-photo {
+  display: block;
+  cursor: zoom-in;
+}
+.inside-photo img {
+  display: block;
+  width: 84px;
+  height: 63px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  object-fit: cover;
+}
+.inside-photo:hover img { border-color: var(--teal); }
+
+.inside-link {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.inside-link:hover .inside-name { color: var(--teal-dark); text-decoration: underline; }
+
+.inside-name { display: block; font-size: 0.72rem; font-weight: 650; line-height: 1.25; }
+.inside-zh { display: block; color: var(--dim); font-size: 0.68rem; line-height: 1.25; }
 .building-card h3 { margin: 0; font-size: 1.04rem; }
 .building-card .zh { margin: 0; color: var(--dim); font-size: 0.9rem; }
-.building-card .desc { flex: 1; margin: 0; color: var(--dim); font-size: 0.9rem; }
+.building-card .desc { margin: 0; color: var(--dim); font-size: 0.9rem; }
 .building-card .where {
   margin: 0;
   color: var(--dim);
@@ -748,12 +829,75 @@ h3 { letter-spacing: -0.01em; }
 }
 .building-card .card-link {
   align-self: flex-start;
+  margin-top: auto;
   color: var(--teal);
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
 }
 .building-card .card-link:hover { color: var(--teal-dark); text-decoration: underline; }
+
+/* ---------------------------------------------------------------- photos */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+.photo-card {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--cat-line);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.photo-card-link {
+  display: block;
+  background: var(--paper-2);
+  cursor: zoom-in;
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.photo-card figcaption {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px 14px;
+}
+
+.photo-card strong { font-size: 0.98rem; letter-spacing: -0.01em; }
+.photo-card .zh { color: var(--dim); font-size: 0.86rem; }
+
+.photo-where {
+  margin: 6px 0 0;
+  color: var(--dim);
+  font-size: 0.78rem;
+}
+
+.photo-link {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 10px;
+  color: var(--teal);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.photo-link:hover { color: var(--teal-dark); text-decoration: underline; }
 
 /* ----------------------------------------------------------------- about */
 

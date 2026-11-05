@@ -10,7 +10,7 @@ The site is a schematic map of the campus — the sports field, teaching buildin
 | --- | --- | --- |
 | Home | `index.html` | Introduction, campus overview, preview illustration |
 | Map | `map.html` | Interactive SVG map: select a building or a place inside it, see its photo, search, filter by category |
-| Buildings | `buildings.html` | Every place as a card, grouped by category, with a link back to the map |
+| Buildings | `buildings.html` | Every place as a card with its photo, grouped by category, with a link back to the map |
 | About | `about.html` | Why and how the site was built, plus credits |
 
 ## Project structure
@@ -23,9 +23,11 @@ campus-map/
 ├── about.html
 ├── style.css          one shared stylesheet
 ├── map.js             map data + interactions (vanilla JavaScript)
+├── lightbox.js        the photo dialog, shared by map.html and buildings.html
 ├── photos/
 │   ├── README.md              which photo was taken where
-│   └── *.jpg                  22 photos, 4080 × 3060 or 4096 × 3072, 72.7 MB
+│   ├── *.jpg                  25 originals, 4080 × 3060 or 4096 × 3072, 82.2 MB
+│   └── thumbs/*.jpg           640 × 480 previews for the photo grid, 1.4 MB
 ├── images/
 │   ├── og-image.jpg          1200 × 630, under 100 KB
 │   ├── favicon-32.png        32 × 32
