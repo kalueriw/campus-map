@@ -29,7 +29,7 @@ records where the photo was taken.
 | `student-center-study-room.jpg` | `自习室2（…学生中心下半部分2楼，也就是健身房正下方）.jpg` | Study Room 2, south half of the Student Center, 2F |
 | `student-center-gym-303.jpg` | `健身房1（…上半部分右方…303）.jpg` | Gym, room 303, north half |
 | `student-center-gym-304.jpg` | `健身房2（学生中心下半部分304）.jpg` | Gym, room 304, south half |
-| `dorm-1-meiyijia.jpg` | `美宜佳超市（…1栋学生公寓最左上角）.jpg` | Meiyijia supermarket, NW corner of Dormitory 1 |
+| `dorm-1-meiyijia.jpg` | `美宜佳超市（…1栋学生公寓最左上角）.jpg` | Meiyijia supermarket, SW corner of Dormitory 1 |
 | `dorm-1-gmc.jpg` | `GMC咖啡（…1栋学生公寓右上角的快递驿站左边）.jpg` | GMC Coffee, east end of Dormitory 1, left of the parcel station |
 | `dorm-1-parcel.jpg` | `快递驿站（…1栋学生公寓最右上角）.jpg` | Parcel station, NE corner of Dormitory 1 |
 | `dorm-2-tingning.jpg` | `听柠果果（…2栋学生公寓最右下角的左边一家店.jpg` | Tingning Guoguo fruit shop, SE corner of Dormitory 2 |

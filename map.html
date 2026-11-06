@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title data-zh="校园地图 · BiUH 校园地图">Campus Map · BiUH Campus Map</title>
-<meta name="description" content="Interactive schematic map of the BiUH campus. Click a building to see its name, purpose and location.">
+<title data-zh="地图 · BiUH 校园地图">Map · BiUH Campus Map</title>
+<meta name="description" content="Interactive schematic map of the BiUH campus. Click a building or a room inside it to see its name, purpose, location and a photograph — in English or Chinese.">
 <meta name="theme-color" content="#0f766e">
 
 <!-- Open Graph — update these if the username or repository changes. -->
-<meta property="og:title" content="Campus Map · BiUH Campus Map">
-<meta property="og:description" content="Interactive schematic map of the BiUH campus. Click a building to see its name and purpose.">
+<meta property="og:title" content="Map · BiUH Campus Map">
+<meta property="og:description" content="Interactive schematic map of the BiUH campus. Click a building to see its name, purpose, location and a photograph.">
 <meta property="og:image" content="https://kalueriw.github.io/campus-map/images/og-image.jpg">
 <meta property="og:url" content="https://kalueriw.github.io/campus-map/map.html">
 <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main" data-zh="跳到主要内容">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap header-inner">
@@ -82,8 +82,8 @@
   <div class="map-card">
     <div class="map-scroller" tabindex="0" role="region" aria-label="Campus map. On a narrow screen, scroll sideways to see the whole campus.">
       <svg id="campus-svg" viewBox="0 0 1964 700" role="group" aria-labelledby="map-svg-title map-svg-desc" focusable="false">
-        <title id="map-svg-title">Schematic map of the BiUH campus</title>
-        <desc id="map-svg-desc">The sports field, badminton courts and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with student dormitories 1 and 2 stacked on the eastern edge. Below the student center are a lake and a group of smaller buildings: teacher dormitories A and B, with the Lakeside Restaurant beside the lake. Small round markers open the places inside a building, such as the canteen, the gyms and the shops on the ground floor of the dormitories.</desc>
+        <title id="map-svg-title" data-zh="BiUH 校园示意图">Schematic map of the BiUH campus</title>
+        <desc id="map-svg-desc" data-zh="运动场、羽毛球场和篮球场在校园西侧。教学楼 A、B 位于北侧，实训楼在 B 楼东北。实训楼东边是学生中心；学生宿舍沿东侧上下排列，2 栋在上、1 栋在下。学生中心下方是小湖和一组小楼：教师宿舍 A、B，湖畔坊餐厅就在湖边。小圆点可以打开建筑内部的场所，例如学生餐厅、健身房，以及宿舍楼一层的商铺。">The sports field, badminton courts and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with the student dormitories stacked on the eastern edge, Dormitory 2 above Dormitory 1. Below the student center are a lake and a group of smaller buildings: teacher dormitories A and B, with the Lakeside Restaurant beside the lake. Small round markers open the places inside a building, such as the canteen, the gyms and the shops on the ground floor of the dormitories.</desc>
 
         <defs>
           <pattern id="glassGrid" width="18" height="18" patternUnits="userSpaceOnUse">
@@ -235,12 +235,12 @@
           <title>Sports Field · 运动场</title>
           <ellipse class="b-shape b-shape--track" cx="175" cy="434" rx="125" ry="197"/>
           <ellipse cx="175" cy="434" rx="112" ry="181" fill="none" stroke="#f6e7df" stroke-width="2"/>
-          <rect x="140" y="322" width="130" height="240" rx="65" fill="#cfe6b8"/>
-          <line x1="152" y1="442" x2="258" y2="442" stroke="#b7d8a0" stroke-width="2"/>
-          <circle cx="205" cy="442" r="20" fill="none" stroke="#b7d8a0" stroke-width="2"/>
+          <rect x="110" y="314" width="130" height="240" rx="65" fill="#cfe6b8"/>
+          <line x1="118" y1="434" x2="232" y2="434" stroke="#b7d8a0" stroke-width="2"/>
+          <circle cx="175" cy="434" r="20" fill="none" stroke="#b7d8a0" stroke-width="2"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="200" y="428">Sports Field</tspan>
-            <tspan class="zh" x="200" y="450">运动场</tspan>
+            <tspan class="en" x="175" y="386" data-zh="运动场">Sports Field</tspan>
+            <tspan class="zh" x="175" y="408" data-zh="Sports Field">运动场</tspan>
           </text>
         </g>
 
@@ -262,8 +262,8 @@
             <rect x="505" y="543" width="34" height="84" rx="3"/>
           </g>
           <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="430" y="286">Basketball Courts</tspan>
-            <tspan class="zh" x="430" y="304">篮球场</tspan>
+            <tspan class="en" x="430" y="286" data-zh="篮球场">Basketball Courts</tspan>
+            <tspan class="zh" x="430" y="304" data-zh="Basketball Courts">篮球场</tspan>
           </text>
         </g>
 
@@ -275,8 +275,8 @@
           <use href="#badminton" x="441" y="442" width="50" height="84"/>
           <rect x="505" y="442" width="34" height="84" rx="3" fill="#cfe3f2" stroke="#8fb3c8" stroke-width="1.5"/>
           <text class="b-label b-label--minor" text-anchor="middle">
-            <tspan class="en" x="430" y="467">Badminton Courts</tspan>
-            <tspan class="zh" x="430" y="483">羽毛球场</tspan>
+            <tspan class="en" x="430" y="467" data-zh="羽毛球场">Badminton Courts</tspan>
+            <tspan class="zh" x="430" y="483" data-zh="Badminton Courts">羽毛球场</tspan>
           </text>
         </g>
 
@@ -285,8 +285,8 @@
           <rect class="b-shape" x="675" y="456" width="214" height="144" rx="6"/>
           <rect x="691" y="472" width="182" height="112" rx="3" fill="url(#diagLines)" opacity="0.55"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="782" y="520">Welcome Center</tspan>
-            <tspan class="zh" x="782" y="542">欢迎中心</tspan>
+            <tspan class="en" x="782" y="520" data-zh="欢迎中心">Welcome Center</tspan>
+            <tspan class="zh" x="782" y="542" data-zh="Welcome Center">欢迎中心</tspan>
           </text>
         </g>
 
@@ -296,8 +296,8 @@
           <rect x="700" y="250" width="170" height="56" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
           <rect x="878" y="240" width="16" height="100" rx="2" fill="url(#diagLines)" opacity="0.5"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="785" y="292">Teaching Building A</tspan>
-            <tspan class="zh" x="785" y="314">教学楼A</tspan>
+            <tspan class="en" x="785" y="292" data-zh="教学楼A">Teaching Building A</tspan>
+            <tspan class="zh" x="785" y="314" data-zh="Teaching Building A">教学楼A</tspan>
           </text>
         </g>
 
@@ -307,8 +307,8 @@
           <rect x="1090" y="250" width="182" height="56" rx="3" fill="url(#glassGrid)" opacity="0.6"/>
           <rect x="1069" y="240" width="16" height="100" rx="2" fill="url(#diagLines)" opacity="0.5"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="1185" y="292">Teaching Building B</tspan>
-            <tspan class="zh" x="1185" y="314">教学楼B</tspan>
+            <tspan class="en" x="1185" y="292" data-zh="教学楼B">Teaching Building B</tspan>
+            <tspan class="zh" x="1185" y="314" data-zh="Teaching Building B">教学楼B</tspan>
           </text>
         </g>
 
@@ -324,8 +324,8 @@
           <circle cx="1390" cy="121" r="19" fill="#fbfaf7" stroke="#9db9c8" stroke-width="1.5"/>
           <rect x="1400" y="81" width="13" height="85" fill="#cfe3f2" opacity="0.9"/>
           <text class="b-label" text-anchor="middle">
-            <tspan class="en" x="1305" y="116">Training Building</tspan>
-            <tspan class="zh" x="1305" y="138">实训楼</tspan>
+            <tspan class="en" x="1305" y="116" data-zh="实训楼">Training Building</tspan>
+            <tspan class="zh" x="1305" y="138" data-zh="Training Building">实训楼</tspan>
           </text>
         </g>
 
@@ -337,26 +337,26 @@
           <rect x="1558" y="237" width="96" height="20" rx="3" fill="#e6dfd2" stroke="#b9ae99" stroke-width="1.5"/>
           <path class="b-leader" d="M1677 178H1746"/>
           <text class="b-label b-label--small b-label--outside" text-anchor="middle">
-            <tspan class="en" x="1802" y="172">Student Center</tspan>
-            <tspan class="zh" x="1802" y="188">学生中心</tspan>
+            <tspan class="en" x="1802" y="172" data-zh="学生中心">Student Center</tspan>
+            <tspan class="zh" x="1802" y="188" data-zh="Student Center">学生中心</tspan>
           </text>
         </g>
 
-        <g class="building" data-building="dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory 1, 学生宿舍1">
-          <title>Student Dormitory 1 · 学生宿舍1</title>
+        <g class="building" data-building="dorm-b" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory 2, 学生宿舍2">
+          <title>Student Dormitory 2 · 学生宿舍2</title>
           <rect class="b-shape" x="1745" y="70" width="148" height="67" rx="5"/>
           <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="1819" y="120">Student Dorm 1</tspan>
-            <tspan class="zh" x="1819" y="133">学生宿舍1</tspan>
+            <tspan class="en" x="1819" y="96" data-zh="学生宿舍2">Student Dorm 2</tspan>
+            <tspan class="zh" x="1819" y="109" data-zh="Student Dorm 2">学生宿舍2</tspan>
           </text>
         </g>
 
-        <g class="building" data-building="dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory 2, 学生宿舍2">
-          <title>Student Dormitory 2 · 学生宿舍2</title>
+        <g class="building" data-building="dorm-a" data-category="residence" role="button" tabindex="0" aria-label="Student Dormitory 1, 学生宿舍1">
+          <title>Student Dormitory 1 · 学生宿舍1</title>
           <rect class="b-shape" x="1745" y="220" width="148" height="67" rx="5"/>
           <text class="b-label b-label--small" text-anchor="middle">
-            <tspan class="en" x="1819" y="243">Student Dorm 2</tspan>
-            <tspan class="zh" x="1819" y="256">学生宿舍2</tspan>
+            <tspan class="en" x="1819" y="262" data-zh="学生宿舍1">Student Dorm 1</tspan>
+            <tspan class="zh" x="1819" y="275" data-zh="Student Dorm 1">学生宿舍1</tspan>
           </text>
         </g>
 
@@ -366,8 +366,8 @@
           <rect x="1638" y="358" width="62" height="18" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.2"/>
           <path class="b-leader" d="M1722 374H1768"/>
           <text class="b-label b-label--minor b-label--outside" text-anchor="middle">
-            <tspan class="en" x="1836" y="371">Teacher Dorm A</tspan>
-            <tspan class="zh" x="1836" y="386">教师宿舍A</tspan>
+            <tspan class="en" x="1836" y="371" data-zh="教师宿舍A">Teacher Dorm A</tspan>
+            <tspan class="zh" x="1836" y="386" data-zh="Teacher Dorm A">教师宿舍A</tspan>
           </text>
         </g>
 
@@ -377,8 +377,8 @@
           <rect x="1642" y="472" width="66" height="16" rx="2" fill="#e3eef5" stroke="#9db9c8" stroke-width="1.2"/>
           <path class="b-leader" d="M1727 487H1768"/>
           <text class="b-label b-label--minor b-label--outside" text-anchor="middle">
-            <tspan class="en" x="1836" y="484">Teacher Dorm B</tspan>
-            <tspan class="zh" x="1836" y="499">教师宿舍B</tspan>
+            <tspan class="en" x="1836" y="484" data-zh="教师宿舍B">Teacher Dorm B</tspan>
+            <tspan class="zh" x="1836" y="499" data-zh="Teacher Dorm B">教师宿舍B</tspan>
           </text>
         </g>
 
@@ -392,8 +392,8 @@
           <path d="M1526 501L1559 514L1592 501M1559 514V530" fill="none" stroke="#c2b7a2" stroke-width="1.5"/>
           <path class="b-leader" d="M1548 540V556H1588"/>
           <text class="b-label b-label--minor b-label--outside" text-anchor="middle">
-            <tspan class="en" x="1662" y="561">Lakeside Restaurant</tspan>
-            <tspan class="zh" x="1662" y="576">湖畔坊餐厅</tspan>
+            <tspan class="en" x="1662" y="561" data-zh="湖畔坊餐厅">Lakeside Restaurant</tspan>
+            <tspan class="zh" x="1662" y="576" data-zh="Lakeside Restaurant">湖畔坊餐厅</tspan>
           </text>
         </g>
 
@@ -403,8 +403,8 @@
           <path d="M1470 392C1492 384 1514 392 1526 408" fill="none" stroke="#c9e8f1" stroke-width="4" stroke-linecap="round"/>
           <path d="M1466 466C1484 458 1502 464 1512 480" fill="none" stroke="#c9e8f1" stroke-width="3" stroke-linecap="round"/>
           <text class="b-label b-label--water" text-anchor="middle">
-            <tspan class="en" x="1506" y="428">Lake</tspan>
-            <tspan class="zh" x="1506" y="445">小湖</tspan>
+            <tspan class="en" x="1506" y="428" data-zh="小湖">Lake</tspan>
+            <tspan class="zh" x="1506" y="445" data-zh="Lake">小湖</tspan>
           </text>
         </g>
 

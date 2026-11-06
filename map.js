@@ -122,7 +122,7 @@
       desc: 'Student services, clubs and a place to meet between classes. Two restaurants, a sports hall, two gyms and a study room are inside.',
       descZh: '学生服务、社团和课后碰面的地方。里面有餐厅、风味餐厅、体育馆、两间健身房和一间自习室。',
       where: 'East side of campus, right of the training building.',
-      whereZh: '校园东侧，实训楼右边。',
+      whereZh: '校园东侧，实训楼以东。',
       aliases: 'student center services clubs 学生中心',
       photo: 'photos/student-center.jpg',
       spots: [
@@ -217,13 +217,41 @@
          is 1栋, the lower block is 2栋. Keep the ids (dorm-b / dorm-a) so old
          links and the buildings page anchors keep working. */
       id: 'dorm-b',
+      en: 'Student Dormitory 2',
+      zh: '学生宿舍2',
+      category: 'residence',
+      desc: 'Student housing on the eastern edge of campus, with a fruit shop on its south side.',
+      descZh: '校园东侧的学生宿舍，南侧有一家水果店。',
+      where: 'Northern of the two student dormitories, on the eastern edge.',
+      whereZh: '东侧靠北的那栋宿舍。',
+      aliases: 'student dormitory dorm housing 2栋 二栋 学生宿舍2 学生公寓 宿舍',
+      photo: 'photos/dorm-2.jpg',
+      spots: [
+        {
+          id: 'tingning',
+          en: 'Tingning Guoguo',
+          zh: '听柠果果',
+          glyph: '果',
+          x: 1870,
+          y: 126,
+          desc: 'A fruit and juice shop on the south side of the block.',
+          descZh: '宿舍楼南侧的水果与果茶店。',
+          where: 'Ground floor, south edge, one shop in from the south-east corner.',
+          whereZh: '一楼南侧，东南角往里一家。',
+          aliases: 'fruit juice shop 听柠果果 水果 果茶',
+          photo: 'photos/dorm-2-tingning.jpg'
+        }
+      ]
+    },
+    {
+      id: 'dorm-a',
       en: 'Student Dormitory 1',
       zh: '学生宿舍1',
       category: 'residence',
-      desc: 'Student housing on the eastern edge of campus, with a row of shops along its north side.',
-      descZh: '校园东侧的学生宿舍，北侧一溜商铺。',
-      where: 'Northern of the two student dormitories, on the eastern edge.',
-      whereZh: '东侧靠北的那栋宿舍。',
+      desc: 'Student housing on the eastern edge of campus, with a coffee shop and a parcel station along its north side, and a supermarket at the south-west corner.',
+      descZh: '校园东侧的学生宿舍，北侧是咖啡店和快递驿站，西南角是美宜佳超市。',
+      where: 'Southern of the two student dormitories, below Student Dormitory 2.',
+      whereZh: '东侧靠南的那栋宿舍，在 2 栋下方。',
       aliases: 'student dormitory dorm housing 1栋 一栋 学生宿舍1 学生公寓 宿舍',
       photo: 'photos/dorm-1.jpg',
       spots: [
@@ -232,12 +260,12 @@
           en: 'Meiyijia Supermarket',
           zh: '美宜佳超市',
           glyph: '超',
-          x: 1762,
-          y: 88,
+          x: 1756,
+          y: 282,
           desc: 'The convenience store: drinks, snacks and everyday things.',
           descZh: '便利店：饮料、零食和日用品。',
-          where: 'Ground floor, north-west corner, facing the road.',
-          whereZh: '一楼，西北角，朝马路。',
+          where: 'Ground floor, south-west corner, facing the road.',
+          whereZh: '一楼，西南角，朝马路。',
           aliases: 'supermarket shop convenience store 美宜佳 超市 便利店',
           photo: 'photos/dorm-1-meiyijia.jpg'
         },
@@ -247,7 +275,7 @@
           zh: 'GMC咖啡',
           glyph: '咖',
           x: 1819,
-          y: 88,
+          y: 228,
           desc: 'A coffee shop on the north side of the block.',
           descZh: '宿舍楼北侧的咖啡店。',
           where: 'Ground floor, north side, just left of the parcel station.',
@@ -261,41 +289,13 @@
           zh: '快递驿站',
           glyph: '驿',
           x: 1876,
-          y: 88,
+          y: 228,
           desc: 'Where deliveries are collected — couriers drop parcels here.',
           descZh: '收寄快递的地方，快递员在这里派件。',
           where: 'Ground floor, north-east corner.',
           whereZh: '一楼，东北角。',
           aliases: 'parcel delivery courier post 快递 驿站 取件 包裹',
           photo: 'photos/dorm-1-parcel.jpg'
-        }
-      ]
-    },
-    {
-      id: 'dorm-a',
-      en: 'Student Dormitory 2',
-      zh: '学生宿舍2',
-      category: 'residence',
-      desc: 'Student housing on the eastern edge of campus, south of Dormitory 1.',
-      descZh: '校园东侧的学生宿舍，在 1 栋南边。',
-      where: 'Southern of the two student dormitories, below Dormitory 1.',
-      whereZh: '东侧靠南的那栋宿舍，在 1 栋下方。',
-      aliases: 'student dormitory dorm housing 2栋 二栋 学生宿舍2 学生公寓 宿舍',
-      photo: 'photos/dorm-2.jpg',
-      spots: [
-        {
-          id: 'tingning',
-          en: 'Tingning Guoguo',
-          zh: '听柠果果',
-          glyph: '果',
-          x: 1876,
-          y: 276,
-          desc: 'A fruit and juice shop on the south side of the block.',
-          descZh: '宿舍楼南侧的水果与果茶店。',
-          where: 'Ground floor, south edge, one shop in from the south-east corner.',
-          whereZh: '一楼南侧，东南角往里一家。',
-          aliases: 'fruit juice shop 听柠果果 水果 果茶',
-          photo: 'photos/dorm-2-tingning.jpg'
         }
       ]
     },
@@ -342,7 +342,7 @@
       category: 'landmark',
       desc: 'A small lake with a landscaped walkway, at the south-east corner of campus.',
       descZh: '带环湖步道的小湖，在校园东南角。',
-      where: 'South-east of campus, beside the teacher center.',
+      where: 'South-east of campus, beside the teacher dormitories.',
       whereZh: '校园东南方向，教师公寓旁边。',
       aliases: 'lake water pond 小湖 湖',
       photo: 'photos/lake.jpg'
