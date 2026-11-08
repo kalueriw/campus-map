@@ -18,6 +18,18 @@
 <link rel="icon" href="images/favicon-32.png" sizes="32x32">
 <link rel="canonical" href="https://kalueriw.github.io/campus-map/buildings.html">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+  /* Choose the theme before the page paints, so a dark page never flashes
+     white: the saved choice first, otherwise the system setting. */
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('campus-map-theme'); } catch (error) {}
+    if (theme !== 'dark' && theme !== 'light') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -38,9 +50,15 @@
       <a href="buildings.html" aria-current="page" data-zh="建筑">Buildings</a>
       <a href="about.html" data-zh="关于">About</a>
     </nav>
-    <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
-      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+        <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" data-al-zh="深色模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </div>
 </header>
@@ -48,346 +66,17 @@
 <main id="main" class="wrap">
   <header class="page-head">
     <p class="kicker" data-zh="建筑与照片">Buildings &amp; photos</p>
-    <h1 data-zh="每个地点，都有照片。">Every place, with its photo.</h1>
+    <h1><span data-zh="每个地点，都有">Every place, with its </span><span class="hl" data-zh="照片">photo</span><span data-zh="。">.</span></h1>
     <p class="lead" data-zh="地图上的 14 个地点，每个都有照片、用途说明和位置。卡片下方的小图是建筑内部的场所——餐厅、健身房、自习室，以及宿舍楼下的商铺。点击任意照片可查看大图。">The 14 places on the map, each with its photograph, what it is used for and where it sits. The small pictures are the places inside — the canteen, the gyms, the study rooms, the shops. Click any photo to see it full size.</p>
   </header>
 
-  <section class="building-group" data-category="academic" aria-labelledby="group-academic">
-    <h2 id="group-academic"><span class="group-dot" aria-hidden="true"></span><span data-zh="教学">Academic</span></h2>
-    <div class="building-list">
-
-      <article class="building-card" id="teaching-a" data-category="academic">
-        <a class="building-photo" href="photos/teaching-a.jpg" data-lightbox data-caption="Teaching Building A · 教学楼A">
-          <img src="photos/thumbs/teaching-a.jpg" alt="Teaching Building A, 教学楼A" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="教学楼A">Teaching Building A</h3>
-          <p class="zh" data-zh="Teaching Building A">教学楼A</p>
-          <p class="desc" data-zh="通用教室与阶梯教室，有连廊与 B 楼相连。">General classrooms and lecture rooms, connected to Building B by a covered walkway.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="校园北侧中部。"> North side of campus, at the center.</span></p>
-          <a class="card-link" href="map.html?building=teaching-a" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-        <div class="building-inside">
-          <p class="inside-label" data-zh="内部">Inside</p>
-          <ul class="inside-list">
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/teaching-a-study-room.jpg" data-lightbox data-caption="Study Room 1 · 自习室1" aria-label="Open the photo of Study Room 1" data-al-zh="查看自习室1的照片">
-                <img src="photos/thumbs/teaching-a-study-room.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=teaching-a&amp;spot=study-room">
-                <span class="inside-name" data-zh="自习室1">Study Room 1</span>
-                <span class="inside-zh" data-zh="Study Room 1">自习室1</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="building-card" id="teaching-b" data-category="academic">
-        <a class="building-photo" href="photos/teaching-b.jpg" data-lightbox data-caption="Teaching Building B · 教学楼B">
-          <img src="photos/thumbs/teaching-b.jpg" alt="Teaching Building B, 教学楼B" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="教学楼B">Teaching Building B</h3>
-          <p class="zh" data-zh="Teaching Building B">教学楼B</p>
-          <p class="desc" data-zh="教室与研讨室，通过连廊与 A 楼相连。">Classrooms and seminar rooms, linked to Building A by a covered walkway.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="校园北侧，教学楼 A 以东。"> North side of campus, east of Teaching Building A.</span></p>
-          <a class="card-link" href="map.html?building=teaching-b" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-      <article class="building-card" id="training" data-category="academic">
-        <a class="building-photo" href="photos/training.jpg" data-lightbox data-caption="Training Building · 实训楼">
-          <img src="photos/thumbs/training.jpg" alt="Training Building, 实训楼" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="实训楼">Training Building</h3>
-          <p class="zh" data-zh="Training Building">实训楼</p>
-          <p class="desc" data-zh="实训实验室与动手课程的操作车间。">Laboratories and practical training workshops for hands-on courses.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="教学楼 B 东北侧。"> North-east of Teaching Building B.</span></p>
-          <a class="card-link" href="map.html?building=training" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <section class="building-group" data-category="student-life" aria-labelledby="group-student-life">
-    <h2 id="group-student-life"><span class="group-dot" aria-hidden="true"></span><span data-zh="生活">Student life</span></h2>
-    <div class="building-list">
-
-      <article class="building-card" id="student-center" data-category="student-life">
-        <a class="building-photo" href="photos/student-center.jpg" data-lightbox data-caption="Student Center · 学生中心">
-          <img src="photos/thumbs/student-center.jpg" alt="Student Center, 学生中心" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="学生中心">Student Center</h3>
-          <p class="zh" data-zh="Student Center">学生中心</p>
-          <p class="desc" data-zh="学生服务、社团和课后碰面的地方，里面有餐厅、风味餐厅、体育馆、两间健身房和一间自习室。">Student services, clubs and a place to meet between classes — plus two restaurants, a sports hall, two gyms and a study room inside.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="校园东侧，实训楼以东。"> East side of campus, right of the training building.</span></p>
-          <a class="card-link" href="map.html?building=student-center" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-        <div class="building-inside">
-          <p class="inside-label" data-zh="内部">Inside</p>
-          <ul class="inside-list">
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/student-center-canteen.jpg" data-lightbox data-caption="Student Canteen · 学生餐厅" aria-label="Open the photo of Student Canteen" data-al-zh="查看学生餐厅的照片">
-                <img src="photos/thumbs/student-center-canteen.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=student-center&amp;spot=canteen">
-                <span class="inside-name" data-zh="学生餐厅">Canteen</span>
-                <span class="inside-zh" data-zh="Canteen">学生餐厅</span>
-              </a>
-            </li>
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/student-center-flavour.jpg" data-lightbox data-caption="Flavour Restaurant · 风味餐厅" aria-label="Open the photo of Flavour Restaurant" data-al-zh="查看风味餐厅的照片">
-                <img src="photos/thumbs/student-center-flavour.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=student-center&amp;spot=flavour">
-                <span class="inside-name" data-zh="风味餐厅">Flavour</span>
-                <span class="inside-zh" data-zh="Flavour">风味餐厅</span>
-              </a>
-            </li>
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/student-center-gym-hall.jpg" data-lightbox data-caption="Indoor Sports Hall 209 · 室内体育馆209" aria-label="Open the photo of Indoor Sports Hall 209" data-al-zh="查看室内体育馆209的照片">
-                <img src="photos/thumbs/student-center-gym-hall.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=student-center&amp;spot=gym-hall">
-                <span class="inside-name" data-zh="室内体育馆209">Hall 209</span>
-                <span class="inside-zh" data-zh="Hall 209">室内体育馆209</span>
-              </a>
-            </li>
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/student-center-study-room.jpg" data-lightbox data-caption="Study Room 2 · 自习室2" aria-label="Open the photo of Study Room 2" data-al-zh="查看自习室2的照片">
-                <img src="photos/thumbs/student-center-study-room.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=student-center&amp;spot=study-room-2">
-                <span class="inside-name" data-zh="自习室2">Study Room 2</span>
-                <span class="inside-zh" data-zh="Study Room 2">自习室2</span>
-              </a>
-            </li>
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/student-center-gym-303.jpg" data-lightbox data-caption="Gym 303 · 健身房303" aria-label="Open the photo of Gym 303" data-al-zh="查看健身房303的照片">
-                <img src="photos/thumbs/student-center-gym-303.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=student-center&amp;spot=gym-303">
-                <span class="inside-name" data-zh="健身房303">Gym 303</span>
-                <span class="inside-zh" data-zh="Gym 303">健身房303</span>
-              </a>
-            </li>
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/student-center-gym-304.jpg" data-lightbox data-caption="Gym 304 · 健身房304" aria-label="Open the photo of Gym 304" data-al-zh="查看健身房304的照片">
-                <img src="photos/thumbs/student-center-gym-304.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=student-center&amp;spot=gym-304">
-                <span class="inside-name" data-zh="健身房304">Gym 304</span>
-                <span class="inside-zh" data-zh="Gym 304">健身房304</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="building-card" id="welcome-center" data-category="student-life">
-        <a class="building-photo" href="photos/welcome-center.jpg" data-lightbox data-caption="Welcome Center · 欢迎中心">
-          <img src="photos/thumbs/welcome-center.jpg" alt="Welcome Center, 欢迎中心" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="欢迎中心">Welcome Center</h3>
-          <p class="zh" data-zh="Welcome Center">欢迎中心</p>
-          <p class="desc" data-zh="访客和新生报到的地方：接待、咨询和校园参观都从这里开始。">The first stop for visitors and new students: reception, information and campus tours.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="教学楼以南，球场旁边。"> South of the teaching buildings, beside the courts.</span></p>
-          <a class="card-link" href="map.html?building=welcome-center" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-
-      <article class="building-card" id="lakeside-restaurant" data-category="student-life">
-        <a class="building-photo" href="photos/lakeside-restaurant.jpg" data-lightbox data-caption="Lakeside Restaurant · 湖畔坊餐厅">
-          <img src="photos/thumbs/lakeside-restaurant.jpg" alt="Lakeside Restaurant, 湖畔坊餐厅" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="湖畔坊餐厅">Lakeside Restaurant</h3>
-          <p class="zh" data-zh="Lakeside Restaurant">湖畔坊餐厅</p>
-          <p class="desc" data-zh="校园餐厅，在学生中心下方的湖边。">The campus restaurant, on the edge of the lake below the student center.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="湖的东岸，学生中心下方。"> On the east bank of the lake, below the student center.</span></p>
-          <a class="card-link" href="map.html?building=lakeside-restaurant" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <section class="building-group" data-category="residence" aria-labelledby="group-residence">
-    <h2 id="group-residence"><span class="group-dot" aria-hidden="true"></span><span data-zh="住宿">Residence</span></h2>
-    <div class="building-list">
-
-      <article class="building-card" id="dorm-a" data-category="residence">
-        <a class="building-photo" href="photos/dorm-1.jpg" data-lightbox data-caption="Student Dormitory 1 · 学生宿舍1">
-          <img src="photos/thumbs/dorm-1.jpg" alt="Student Dormitory 1, 学生宿舍1" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="学生宿舍1">Student Dormitory 1</h3>
-          <p class="zh" data-zh="Student Dormitory 1">学生宿舍1</p>
-          <p class="desc" data-zh="校园东侧的学生宿舍，北侧是咖啡店和快递驿站，西南角是美宜佳超市。">Student housing on the eastern edge of campus, with a coffee shop and a parcel station along its north side, and a supermarket at the south-west corner.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="东侧靠南的那栋宿舍。"> Eastern edge, the southern of the two dormitory blocks.</span></p>
-          <a class="card-link" href="map.html?building=dorm-a" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-        <div class="building-inside">
-          <p class="inside-label" data-zh="内部">Inside</p>
-          <ul class="inside-list">
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/dorm-1-meiyijia.jpg" data-lightbox data-caption="Meiyijia Supermarket · 美宜佳超市" aria-label="Open the photo of Meiyijia Supermarket" data-al-zh="查看美宜佳超市的照片">
-                <img src="photos/thumbs/dorm-1-meiyijia.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=dorm-a&amp;spot=meiyijia">
-                <span class="inside-name" data-zh="美宜佳超市">Meiyijia</span>
-                <span class="inside-zh" data-zh="Meiyijia">美宜佳超市</span>
-              </a>
-            </li>
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/dorm-1-gmc.jpg" data-lightbox data-caption="GMC Coffee · GMC咖啡" aria-label="Open the photo of GMC Coffee" data-al-zh="查看GMC咖啡的照片">
-                <img src="photos/thumbs/dorm-1-gmc.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=dorm-a&amp;spot=gmc">
-                <span class="inside-name" data-zh="GMC咖啡">GMC Coffee</span>
-                <span class="inside-zh" data-zh="GMC Coffee">GMC咖啡</span>
-              </a>
-            </li>
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/dorm-1-parcel.jpg" data-lightbox data-caption="Parcel Station · 快递驿站" aria-label="Open the photo of Parcel Station" data-al-zh="查看快递驿站的照片">
-                <img src="photos/thumbs/dorm-1-parcel.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=dorm-a&amp;spot=parcel">
-                <span class="inside-name" data-zh="快递驿站">Parcel Station</span>
-                <span class="inside-zh" data-zh="Parcel Station">快递驿站</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="building-card" id="dorm-b" data-category="residence">
-        <a class="building-photo" href="photos/dorm-2.jpg" data-lightbox data-caption="Student Dormitory 2 · 学生宿舍2">
-          <img src="photos/thumbs/dorm-2.jpg" alt="Student Dormitory 2, 学生宿舍2" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="学生宿舍2">Student Dormitory 2</h3>
-          <p class="zh" data-zh="Student Dormitory 2">学生宿舍2</p>
-          <p class="desc" data-zh="校园东侧的学生宿舍，南侧有一家水果店。">Student housing on the eastern edge of campus, with a fruit shop on its south side.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="东侧靠北的那栋宿舍。"> Eastern edge, above Student Dormitory 1.</span></p>
-          <a class="card-link" href="map.html?building=dorm-b" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-        <div class="building-inside">
-          <p class="inside-label" data-zh="内部">Inside</p>
-          <ul class="inside-list">
-            <li class="inside-item">
-              <a class="inside-photo" href="photos/dorm-2-tingning.jpg" data-lightbox data-caption="Tingning Guoguo · 听柠果果" aria-label="Open the photo of Tingning Guoguo" data-al-zh="查看听柠果果的照片">
-                <img src="photos/thumbs/dorm-2-tingning.jpg" alt="" width="640" height="480" loading="lazy" decoding="async">
-              </a>
-              <a class="inside-link" href="map.html?building=dorm-b&amp;spot=tingning">
-                <span class="inside-name" data-zh="听柠果果">Tingning Guoguo</span>
-                <span class="inside-zh" data-zh="Tingning Guoguo">听柠果果</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="building-card" id="teacher-dorm-a" data-category="residence">
-        <a class="building-photo" href="photos/teacher-dorm-a.jpg" data-lightbox data-caption="Teacher Dormitory A · 教师宿舍A">
-          <img src="photos/thumbs/teacher-dorm-a.jpg" alt="Teacher Dormitory A, 教师宿舍A" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="教师宿舍A">Teacher Dormitory A</h3>
-          <p class="zh" data-zh="Teacher Dormitory A">教师宿舍A</p>
-          <p class="desc" data-zh="湖畔的教职工公寓。">Staff housing in the lakeside cluster, directly below the student center.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="学生中心下方，湖的东侧。"> Below the student center, on the east side of the lake.</span></p>
-          <a class="card-link" href="map.html?building=teacher-dorm-a" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-      <article class="building-card" id="teacher-dorm-b" data-category="residence">
-        <a class="building-photo" href="photos/teacher-dorm-b.jpg" data-lightbox data-caption="Teacher Dormitory B · 教师宿舍B">
-          <img src="photos/thumbs/teacher-dorm-b.jpg" alt="Teacher Dormitory B, 教师宿舍B" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="教师宿舍B">Teacher Dormitory B</h3>
-          <p class="zh" data-zh="Teacher Dormitory B">教师宿舍B</p>
-          <p class="desc" data-zh="湖畔的教职工公寓，在 A 栋下方。">Staff housing in the lakeside cluster, below Teacher Dormitory A.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="教师宿舍 A 下方，湖的东侧。"> Below Teacher Dormitory A, on the east side of the lake.</span></p>
-          <a class="card-link" href="map.html?building=teacher-dorm-b" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <section class="building-group" data-category="sports" aria-labelledby="group-sports">
-    <h2 id="group-sports"><span class="group-dot" aria-hidden="true"></span><span data-zh="运动">Sport</span></h2>
-    <div class="building-list">
-
-      <article class="building-card" id="sports-field" data-category="sports">
-        <a class="building-photo" href="photos/sports-field.jpg" data-lightbox data-caption="Sports Field · 运动场">
-          <img src="photos/thumbs/sports-field.jpg" alt="Sports Field, 运动场" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="运动场">Sports Field</h3>
-          <p class="zh" data-zh="Sports Field">运动场</p>
-          <p class="desc" data-zh="校园西端的跑道和足球场，体育课、晨跑和运动会都在这里。">The running track and football pitch at the west end of campus. Used for PE lessons, morning runs and sports day.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="校园西端，羽毛球场和篮球场旁边。"> West end of campus, beside the badminton and basketball courts.</span></p>
-          <a class="card-link" href="map.html?building=sports-field" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-      <article class="building-card" id="badminton-court" data-category="sports">
-        <a class="building-photo" href="photos/badminton-court.jpg" data-lightbox data-caption="Badminton Courts · 羽毛球场">
-          <img src="photos/thumbs/badminton-court.jpg" alt="Badminton Courts, 羽毛球场" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="羽毛球场">Badminton Courts</h3>
-          <p class="zh" data-zh="Badminton Courts">羽毛球场</p>
-          <p class="desc" data-zh="嵌在篮球场之间的一排露天羽毛球场，紧邻跑道。">A row of outdoor badminton courts set among the basketball courts, next to the track.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="球场区从上往下数第二排，运动场旁边。"> The second row up from the bottom of the courts area, beside the sports field.</span></p>
-          <a class="card-link" href="map.html?building=badminton-court" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-      <article class="building-card" id="basketball-court" data-category="sports">
-        <a class="building-photo" href="photos/basketball-court.jpg" data-lightbox data-caption="Basketball Courts · 篮球场">
-          <img src="photos/thumbs/basketball-court.jpg" alt="Basketball Courts, 篮球场" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="篮球场">Basketball Courts</h3>
-          <p class="zh" data-zh="Basketball Courts">篮球场</p>
-          <p class="desc" data-zh="跑道旁边的露天篮球场，共三排，下课和周末都有人。">Outdoor basketball courts next to the track, three rows of them. Busy after class and at weekends.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="运动场和欢迎中心之间，羽毛球场靠下。"> Between the sports field and the welcome center, with the badminton row near the bottom.</span></p>
-          <a class="card-link" href="map.html?building=basketball-court" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <section class="building-group" data-category="landmark" aria-labelledby="group-landmark">
-    <h2 id="group-landmark"><span class="group-dot" aria-hidden="true"></span><span data-zh="地标">Landmark</span></h2>
-    <div class="building-list">
-
-      <article class="building-card" id="lake" data-category="landmark">
-        <a class="building-photo" href="photos/lake.jpg" data-lightbox data-caption="Lake · 小湖">
-          <img src="photos/thumbs/lake.jpg" alt="Lake, 小湖" width="640" height="480" loading="lazy" decoding="async">
-        </a>
-        <div class="building-body">
-          <h3 data-zh="小湖">Lake</h3>
-          <p class="zh" data-zh="Lake">小湖</p>
-          <p class="desc" data-zh="带环湖步道的小湖，在校园东南角。">A small lake with a landscaped walkway, at the south-east corner of campus.</p>
-          <p class="where"><strong data-zh="位置：">Where:</strong><span data-zh="校园东南方向，教师公寓旁边。"> South-east of campus, beside the teacher dormitories.</span></p>
-          <a class="card-link" href="map.html?building=lake" data-zh="在地图上查看 →">Show on map →</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
+  <!-- The cards are built by buildings.js from data.js, the same list the map
+       uses, so a name or a description is only written once. -->
+  <div class="building-groups" id="building-groups">
+    <noscript>
+      <p class="callout">This page builds its cards with JavaScript — turn it on to see the buildings and their photos. 本页的卡片由 JavaScript 生成，请开启 JavaScript 查看。</p>
+    </noscript>
+  </div>
 </main>
 
 <footer class="site-footer">
@@ -410,7 +99,10 @@
   <p class="lightbox-caption"></p>
 </dialog>
 
+<script src="site.js"></script>
 <script src="i18n.js"></script>
 <script src="lightbox.js"></script>
+<script src="data.js"></script>
+<script src="buildings.js"></script>
 </body>
 </html>

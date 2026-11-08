@@ -14,6 +14,43 @@
   --orange: #c2410c;
   --radius: 14px;
   --shadow: 0 1px 2px rgba(20, 32, 28, 0.05), 0 10px 30px rgba(20, 32, 28, 0.06);
+
+  /* surfaces and text that change with the theme */
+  --surface: #fff;
+  --pill: #fff;
+  --body-ink: #2c332f;
+  --header-bg: rgba(251, 250, 247, 0.93);
+  --hover-shadow: rgba(20, 32, 28, 0.35);
+  --marker: rgba(244, 178, 84, 0.55);
+  /* teal behind white text: the same in both themes, so the contrast holds */
+  --accent: #0f766e;
+  --accent-top: #13887f;
+  --accent-strong: #0b4f49;
+  --footer-bg: #14201c;
+  color-scheme: light;
+}
+
+/* Dark theme. map.js-free pages set data-theme from the stored choice or the
+   system setting before the stylesheet paints (see the script in <head>). */
+[data-theme="dark"] {
+  --ink: #e4ebe7;
+  --paper: #0e1513;
+  --paper-2: #18221f;
+  --dim: #9eaca5;
+  --line: #2b3934;
+  --teal: #4fd1c1;
+  --teal-dark: #8fe3d8;
+  --orange: #f08a4b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 30px rgba(0, 0, 0, 0.28);
+
+  --surface: #141e1b;
+  --pill: #24312d;
+  --body-ink: #cdd7d2;
+  --header-bg: rgba(14, 21, 19, 0.88);
+  --hover-shadow: rgba(0, 0, 0, 0.65);
+  --marker: rgba(214, 140, 40, 0.42);
+  --footer-bg: #080d0c;
+  color-scheme: dark;
 }
 
 /* Category colours — inherited by map shapes, chips, dots and card borders. */
@@ -80,7 +117,7 @@ code {
   z-index: 100;
   padding: 10px 16px;
   border-radius: 8px;
-  background: var(--ink);
+  background: var(--accent);
   color: #fff;
   font-weight: 700;
   text-decoration: none;
@@ -101,7 +138,7 @@ code {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(251, 250, 247, 0.93);
+  background: var(--header-bg);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(8px);
 }
@@ -138,7 +175,7 @@ code {
   text-decoration: none;
 }
 .site-nav a:hover { background: var(--paper-2); color: var(--ink); }
-.site-nav a[aria-current="page"] { background: var(--teal); color: #fff; }
+.site-nav a[aria-current="page"] { background: var(--accent); color: #fff; }
 
 /* ------------------------------------------------------- language switch */
 
@@ -163,7 +200,7 @@ code {
 }
 .lang-switch button:hover { color: var(--ink); }
 .lang-switch button[aria-pressed="true"] {
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   box-shadow: 0 1px 2px rgba(20, 32, 28, 0.12);
 }
@@ -171,7 +208,7 @@ code {
 /* Phones: the brand and the language switch share the first line, the
    navigation gets the whole second line (was three stacked rows). */
 @media (max-width: 520px) {
-  .lang-switch { order: 2; margin-left: auto; }
+  .header-tools { order: 2; margin-left: auto; }
   .site-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
 }
 
@@ -239,12 +276,43 @@ h3 { letter-spacing: -0.01em; }
   text-decoration: none;
   cursor: pointer;
 }
-.btn-primary { background: var(--teal); color: #fff; }
-.btn-primary:hover { background: var(--teal-dark); color: #fff; }
-.btn-ghost { border-color: var(--line); background: #fff; color: var(--ink); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-strong); color: #fff; }
+.btn-ghost { border-color: var(--line); background: var(--surface); color: var(--ink); }
 .btn-ghost:hover { border-color: var(--teal); color: var(--teal-dark); }
 
-.hero-map { position: relative; }
+.hero-map {
+  position: relative;
+  display: block;
+  border-radius: 18px;
+  color: inherit;
+  text-decoration: none;
+}
+.hero-map:focus-visible { outline-offset: 5px; border-radius: 18px; }
+
+/* The preview is a way into the map: a label sits on it the whole time, so
+   touch screens see it too, and turns teal when the pointer is over it. */
+.hero-map-cta {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 8px 15px;
+  border: 1px solid rgba(20, 32, 28, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #0b4f49;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 8px 20px -10px rgba(20, 32, 28, 0.45);
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.hero-map:hover .hero-map-cta,
+.hero-map:focus-visible .hero-map-cta {
+  border-color: transparent;
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
 .hero-map svg {
   display: block;
   width: 100%;
@@ -292,7 +360,7 @@ h3 { letter-spacing: -0.01em; }
   padding: 22px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #fff;
+  background: var(--surface);
   box-shadow: 0 1px 2px rgba(20, 32, 28, 0.04);
 }
 .card h3 { margin: 0 0 8px; font-size: 1.06rem; }
@@ -356,7 +424,7 @@ h3 { letter-spacing: -0.01em; }
   padding: 11px 14px;
   border: 1.5px solid var(--line);
   border-radius: 10px;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   font: inherit;
 }
@@ -374,7 +442,7 @@ h3 { letter-spacing: -0.01em; }
   padding: 7px 11px;
   border: 1.5px solid var(--line);
   border-radius: 999px;
-  background: #fff;
+  background: var(--surface);
   color: var(--dim);
   font: inherit;
   font-size: 0.82rem;
@@ -413,7 +481,7 @@ h3 { letter-spacing: -0.01em; }
   padding: 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #fff;
+  background: var(--surface);
   box-shadow: var(--shadow);
 }
 
@@ -432,6 +500,13 @@ h3 { letter-spacing: -0.01em; }
 }
 
 /* ------------------------------------------------------------- map artwork */
+
+/* The drawing is a printed map: its colours do not follow the theme, so the
+   hover outline (var(--ink)) stays dark even on a dark page. */
+.map-scroller,
+.hero-map { --ink: #14201c; }
+[data-theme="dark"] .map-scroller,
+[data-theme="dark"] .hero-map svg { filter: brightness(0.9) saturate(0.95); }
 
 .map-scroller text {
   font-family: inherit;
@@ -453,7 +528,7 @@ h3 { letter-spacing: -0.01em; }
   stroke-width: 3.5;
 }
 .building.is-selected .b-shape {
-  stroke: var(--teal-dark);
+  stroke: var(--accent-strong);
   stroke-width: 5;
   filter: drop-shadow(0 0 10px rgba(15, 118, 110, 0.55));
 }
@@ -494,8 +569,8 @@ h3 { letter-spacing: -0.01em; }
 .map-spot:hover .spot-dot,
 .map-spot:focus-visible .spot-dot { stroke: var(--ink); stroke-width: 3.5; }
 .map-spot.is-active .spot-dot {
-  fill: var(--teal);
-  stroke: var(--teal-dark);
+  fill: var(--accent);
+  stroke: var(--accent-strong);
   stroke-width: 3;
 }
 
@@ -522,7 +597,7 @@ h3 { letter-spacing: -0.01em; }
   padding: clamp(18px, 3vw, 26px);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #fff;
+  background: var(--surface);
   box-shadow: var(--shadow);
   scroll-margin-top: 92px;
 }
@@ -621,7 +696,7 @@ h3 { letter-spacing: -0.01em; }
   display: grid;
   /* The photo column grows with the window so the picture stays readable;
      it stops at 460px so the map keeps most of the width. */
-  grid-template-columns: minmax(0, 1fr) clamp(340px, 34vw, 460px);
+  grid-template-columns: minmax(0, 1fr) clamp(250px, 32vw, 460px);
   gap: 16px;
   align-items: start;
 }
@@ -630,7 +705,7 @@ h3 { letter-spacing: -0.01em; }
   padding: 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #fff;
+  background: var(--surface);
   box-shadow: var(--shadow);
 }
 
@@ -684,7 +759,9 @@ h3 { letter-spacing: -0.01em; }
   text-align: center;
 }
 
-@media (max-width: 1180px) {
+/* The photo stays beside the map on anything wider than a phone; only a
+   phone stacks it under the map, where there is no room beside it. */
+@media (max-width: 760px) {
   /* minmax(0, …) so the map scroller can stay narrower than the SVG */
   .map-layout { grid-template-columns: minmax(0, 1fr); }
   /* Stacked, an empty photo box only pushes the details further down; the
@@ -719,7 +796,7 @@ h3 { letter-spacing: -0.01em; }
   padding: 5px 13px 5px 5px;
   border: 1.5px solid var(--line);
   border-radius: 999px;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   font: inherit;
   font-size: 0.85rem;
@@ -728,8 +805,8 @@ h3 { letter-spacing: -0.01em; }
 }
 .spot-chip:hover { border-color: var(--teal); color: var(--teal-dark); }
 .spot-chip.is-active {
-  border-color: var(--teal-dark);
-  background: var(--teal);
+  border-color: var(--accent-strong);
+  background: var(--accent);
   color: #fff;
 }
 
@@ -800,12 +877,12 @@ h3 { letter-spacing: -0.01em; }
   line-height: 1;
   cursor: pointer;
 }
-.lightbox-close:hover { background: var(--teal); }
+.lightbox-close:hover { background: var(--accent); }
 
 /* ------------------------------------------------------------- buildings */
 
 .building-group { margin: 0 0 40px; }
-.page-head + .building-group { margin-top: 18px; }
+.building-groups { margin-top: 18px; }
 
 .building-group + .building-group {
   padding-top: 30px;
@@ -844,7 +921,7 @@ h3 { letter-spacing: -0.01em; }
   border: 1px solid var(--line);
   border-top: 4px solid var(--cat-line);
   border-radius: 12px;
-  background: #fff;
+  background: var(--surface);
   overflow: hidden;
   scroll-margin-top: 92px;
 }
@@ -889,7 +966,7 @@ h3 { letter-spacing: -0.01em; }
 .building-card .desc {
   max-width: 78ch;
   margin: 0 0 4px;
-  color: #2c332f;
+  color: var(--body-ink);
   font-size: 0.95rem;
   line-height: 1.55;
 }
@@ -987,7 +1064,7 @@ h3 { letter-spacing: -0.01em; }
 }
 .prose h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
 .prose p { margin: 0 0 1em; }
-.prose p, .prose li { color: #2c332f; }
+.prose p, .prose li { color: var(--body-ink); }
 .prose ul { margin: 0 0 1em; padding-left: 1.2em; }
 .prose li { margin: 0.45em 0; }
 .prose li::marker { color: var(--teal); }
@@ -1009,7 +1086,7 @@ h3 { letter-spacing: -0.01em; }
   padding: 18px 20px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: #fff;
+  background: var(--surface);
   color: var(--dim);
   font-size: 0.9rem;
 }
@@ -1038,6 +1115,389 @@ h3 { letter-spacing: -0.01em; }
 .site-footer a { color: var(--dim); text-decoration: none; }
 .site-footer a:hover { color: var(--ink); text-decoration: underline; }
 
+/* ================================================================ polish
+   Character and motion, layered over the base styles above. Everything that
+   moves is switched off again in the prefers-reduced-motion block at the end.
+   ======================================================================== */
+
+::selection { background: rgba(15, 118, 110, 0.18); }
+
+/* A faint map grid behind the top of every page, fading out before the
+   content gets long — a nod to graph paper without hurting the text. */
+/* The footer sits at the bottom of the window even on a short page. */
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+body > main { flex: 1 0 auto; width: 100%; }
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 760px;
+  background:
+    radial-gradient(ellipse 55% 65% at 88% 0%, rgba(15, 118, 110, 0.11), transparent 70%),
+    radial-gradient(ellipse 40% 55% at 0% 8%, rgba(217, 150, 60, 0.10), transparent 70%),
+    radial-gradient(rgba(15, 118, 110, 0.16) 1px, transparent 1.5px) 0 0 / 24px 24px;
+  -webkit-mask-image: linear-gradient(#000 35%, transparent);
+  mask-image: linear-gradient(#000 35%, transparent);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------- page transitions */
+
+/* Moving between pages cross-fades instead of flashing white; the header
+   has its own name so it stays put while the page underneath changes. */
+@view-transition { navigation: auto; }
+.site-header { view-transition-name: site-header; }
+::view-transition-old(root) { animation: vt-out 0.16s ease both; }
+::view-transition-new(root) { animation: vt-in 0.26s ease both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; } }
+
+/* Each page settles in: heading first, then what follows it. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+}
+@keyframes fade-in { from { opacity: 0; } }
+
+.page-head > *,
+.hero-grid > div:first-child > *,
+.hero-map,
+.map-toolbar,
+.map-layout,
+.map-panel,
+.section-head,
+.cards > .card,
+.building-group,
+.prose > * {
+  animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.page-head > :nth-child(2),
+.hero-grid > div:first-child > :nth-child(2) { animation-delay: 0.05s; }
+.page-head > :nth-child(3),
+.hero-grid > div:first-child > :nth-child(3) { animation-delay: 0.1s; }
+.hero-grid > div:first-child > :nth-child(4),
+.map-toolbar { animation-delay: 0.15s; }
+.hero-grid > div:first-child > :nth-child(5),
+.hero-map,
+.map-layout { animation-delay: 0.2s; }
+.map-panel { animation-delay: 0.26s; }
+.cards > .card:nth-child(2) { animation-delay: 0.06s; }
+.cards > .card:nth-child(3) { animation-delay: 0.12s; }
+.cards > .card:nth-child(4) { animation-delay: 0.18s; }
+.building-group:nth-of-type(2) { animation-delay: 0.06s; }
+.building-group:nth-of-type(n+3) { animation-delay: 0.12s; }
+.prose > * { animation-duration: 0.45s; animation-delay: 0.12s; }
+
+/* -------------------------------------------------------------- headings */
+
+/* One word in each page title gets a marker stroke, drawn in after load. */
+.hl {
+  padding: 0 0.06em;
+  background: linear-gradient(transparent 58%, var(--marker) 58% 90%, transparent 90%)
+              no-repeat 0 0 / 100% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: mark 0.7s 0.35s cubic-bezier(0.6, 0, 0.2, 1) both;
+}
+@keyframes mark { from { background-size: 0% 100%; } }
+/* a Chinese phrase this short reads as one word: never break it */
+[data-lang="zh"] .hl { white-space: nowrap; }
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.kicker::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--orange);
+}
+
+/* ---------------------------------------------------------------- header */
+
+.site-nav a {
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+.site-nav a:active { transform: scale(0.95); }
+.site-nav a[aria-current="page"] {
+  box-shadow: 0 6px 14px -8px rgba(15, 118, 110, 0.9);
+}
+.brand svg { transition: transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.brand:hover svg { transform: translateY(-2px) rotate(-8deg); }
+
+/* The language switch is one sliding pill rather than two separate ones. */
+.lang-switch {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+}
+.lang-switch::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc((100% - 6px) / 2);
+  border-radius: 999px;
+  background: var(--pill);
+  box-shadow: 0 1px 3px rgba(20, 32, 28, 0.16);
+  transition: transform 0.25s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+[data-lang="zh"] .lang-switch::before { transform: translateX(calc(100% + 2px)); }
+.lang-switch button {
+  position: relative;
+  min-width: 3.2em;
+  transition: color 0.2s ease;
+}
+.lang-switch button[aria-pressed="true"] { background: transparent; box-shadow: none; }
+
+/* --------------------------------------------------------------- buttons */
+
+.btn {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease,
+              border-color 0.15s ease, color 0.15s ease;
+}
+.btn:active { transform: translateY(1px) scale(0.97); }
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--accent-top), var(--accent));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 20px -10px rgba(15, 118, 110, 0.85);
+}
+.btn-primary::after {
+  content: "→";
+  transition: transform 0.18s ease;
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 24px -12px rgba(15, 118, 110, 0.95);
+  transform: translateY(-1px);
+}
+.btn-primary:hover::after { transform: translateX(3px); }
+
+.btn-ghost:hover {
+  box-shadow: 0 8px 18px -12px rgba(20, 32, 28, 0.5);
+  transform: translateY(-1px);
+}
+
+.legend-btn,
+.spot-chip {
+  transition: transform 0.12s ease, border-color 0.15s ease, background-color 0.15s ease,
+              color 0.15s ease;
+}
+.legend-btn:active,
+.spot-chip:active { transform: scale(0.95); }
+
+.search input { transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+
+/* ----------------------------------------------------------------- cards */
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card:hover {
+  border-color: rgba(15, 118, 110, 0.35);
+  box-shadow: 0 16px 30px -18px var(--hover-shadow);
+  transform: translateY(-3px);
+}
+.card-icon { background: rgba(15, 118, 110, 0.09); }
+
+.stat strong { color: var(--teal-dark); }
+
+/* ---------------------------------------------------------- home preview */
+
+.hero-map svg { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.hero-map:hover svg {
+  transform: translateY(-3px);
+  box-shadow: 0 1px 2px rgba(20, 32, 28, 0.05), 0 22px 40px -16px rgba(20, 32, 28, 0.28);
+}
+
+.hero-pin-drop { animation: pin-drop 0.6s 0.45s cubic-bezier(0.3, 1.5, 0.5, 1) both; }
+@keyframes pin-drop {
+  from { opacity: 0; transform: translateY(-46px); }
+  60% { opacity: 1; }
+}
+.hero-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: pulse 2.4s 1.05s ease-out infinite;
+}
+@keyframes pulse {
+  0% { opacity: 0.55; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+
+/* -------------------------------------------------------------- map page */
+
+/* The panel and the photo are re-rendered on every click; let them ease in. */
+.panel-grid,
+.panel-empty { animation: rise 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.map-photo-link,
+.map-photo-name,
+.map-photo-zh,
+.map-photo-hint { animation: fade-in 0.35s ease both; }
+.map-photo-link {
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--paper-2);
+}
+.map-photo img { transition: transform 0.4s ease; }
+.map-photo-link:hover img { transform: scale(1.03); }
+
+.map-spot.is-active .spot-dot { animation: spot-pop 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.map-spot .spot-dot { transform-box: fill-box; transform-origin: center; }
+@keyframes spot-pop { from { transform: scale(0.6); } }
+
+/* ---------------------------------------------------------- buildings page */
+
+.building-card { transition: box-shadow 0.2s ease, border-color 0.2s ease; }
+.building-card:hover { box-shadow: 0 14px 30px -20px var(--hover-shadow); }
+.building-photo { overflow: hidden; }
+.building-photo img,
+.inside-photo img { transition: transform 0.4s ease; }
+.building-photo:hover img { transform: scale(1.05); }
+.inside-photo { overflow: hidden; border-radius: 6px; }
+.inside-photo:hover img { transform: scale(1.06); }
+
+/* Arriving from "Open in guide" on the map: flash the card that was asked for. */
+.building-card:target { animation: target-ring 1.8s ease 0.2s both; }
+@keyframes target-ring {
+  0%, 40% { box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.35), 0 14px 30px -18px rgba(20, 32, 28, 0.4); }
+  100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
+}
+
+/* -------------------------------------------------------------- lightbox */
+
+.lightbox[open] { animation: pop 0.24s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.lightbox[open]::backdrop { animation: fade-in 0.24s ease; }
+@keyframes pop { from { opacity: 0; transform: scale(0.96); } }
+.lightbox-close { transition: background-color 0.15s ease, transform 0.15s ease; }
+.lightbox-close:hover { transform: rotate(90deg); }
+
+/* ---------------------------------------------------------------- footer */
+
+/* A dark band closes every page, with a dashed "road" along its top edge. */
+.site-footer {
+  margin-top: 80px;
+  padding: 40px 0 46px;
+  border-top: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 50%, transparent 0) 0 0 / 26px 3px repeat-x,
+    var(--footer-bg);
+  color: #aebbb4;
+}
+.site-footer strong { color: #fff; }
+.site-footer a { color: #cfd9d4; transition: color 0.15s ease; }
+.site-footer a:hover { color: #fff; }
+.site-footer a[href^="mailto"] { color: #8fd3c9; }
+
+
+/* ------------------------------------------------- theme switch, header */
+
+.header-tools { display: flex; align-items: center; gap: 8px; }
+
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--dim);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.theme-toggle:hover { border-color: var(--dim); color: var(--ink); }
+.theme-toggle:active { transform: scale(0.9); }
+/* the two icons share one cell and swap with a quarter turn */
+.theme-toggle svg {
+  grid-area: 1 / 1;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.35s cubic-bezier(0.3, 1.4, 0.5, 1), opacity 0.2s ease;
+}
+.icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+[data-theme="dark"] .icon-sun { opacity: 1; transform: none; }
+[data-theme="dark"] .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
+
+/* once the page scrolls, a soft shadow replaces the hairline under the header */
+.site-header { transition: box-shadow 0.2s ease, border-color 0.2s ease; }
+.site-header.is-scrolled {
+  border-bottom-color: transparent;
+  box-shadow: 0 10px 28px -18px rgba(20, 32, 28, 0.55);
+}
+[data-theme="dark"] .site-header.is-scrolled { box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.9); }
+
+
+/* ------------------------------------------------------------------- 404 */
+
+.notfound h1 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); }
+.notfound {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+  min-height: min(62vh, 560px);
+  padding: clamp(36px, 6vw, 72px) 0 20px;
+}
+@media (max-width: 860px) { .notfound { grid-template-columns: 1fr; min-height: 0; } }
+
+.notfound-copy > * { animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.notfound-copy > :nth-child(2) { animation-delay: 0.05s; }
+.notfound-copy > :nth-child(3) { animation-delay: 0.1s; }
+.notfound-copy > :nth-child(4) { animation-delay: 0.15s; }
+
+/* the drawing is a printed map, like the real one: same colours in both themes */
+.lost-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  animation: rise 0.6s 0.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+[data-theme="dark"] .lost-map { filter: brightness(0.9) saturate(0.95); }
+.lost-paper { fill: #f6f4ee; stroke: #dcd8d0; stroke-width: 2; }
+.lost-road { fill: none; stroke: #ece6d8; stroke-width: 16; }
+.lost-block { stroke-width: 2; }
+.lost-block--academic { fill: #cfe3f2; stroke: #4a7c9b; }
+.lost-block--life { fill: #f7e0c4; stroke: #b45309; }
+.lost-block--residence { fill: #ece0b8; stroke: #8a6d1f; }
+.lost-tree { fill: #7fb35a; stroke: #a8cf83; stroke-width: 2; }
+.lost-route {
+  fill: none;
+  stroke: #0f766e;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 9;
+  animation: march 1.2s linear infinite;
+}
+@keyframes march { to { stroke-dashoffset: -22; } }
+.lost-pin-body {
+  filter: drop-shadow(0 6px 6px rgba(194, 65, 12, 0.35));
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: pin-drop 0.6s 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) both,
+             wobble 2.8s 1.2s ease-in-out infinite;
+}
+.lost-pin-body path { fill: #c2410c; }
+.lost-pin-body text { fill: #fff; font-size: 26px; font-weight: 700; }
+@keyframes wobble {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-7deg); }
+  75% { transform: rotate(7deg); }
+}
+
 /* --------------------------------------------------------- small screens */
 
 @media (max-width: 900px) {
@@ -1062,5 +1522,12 @@ h3 { letter-spacing: -0.01em; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { transition: none !important; }
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  @view-transition { navigation: none; }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
 }

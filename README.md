@@ -12,8 +12,11 @@ The site is a schematic map of the campus — the sports field, teaching buildin
 | Map | `map.html` | Interactive SVG map: select a building or a place inside it, see its photo, search, filter by category |
 | Buildings | `buildings.html` | Every place as a card with its photo, grouped by category, with a link back to the map |
 | About | `about.html` | Why and how the site was built, plus credits |
+| Not found | `404.html` | Shown by GitHub Pages for any missing address, with a way back |
 
 Every page has an **EN / 中文** switch in the header. English appears in the markup; the Chinese lives in `data-zh` attributes, and `i18n.js` swaps them. The choice is stored in `localStorage` and the first visit follows the browser language. `?lang=zh` or `?lang=en` forces one.
+
+Every page also has a **light / dark** switch. The first visit follows the system setting; a small script in `<head>` applies the theme before the page paints, so a dark page never flashes white. The map drawing keeps its own printed-map colours in both themes.
 
 ## Project structure
 
@@ -23,12 +26,16 @@ campus-map/
 ├── map.html
 ├── buildings.html
 ├── about.html
+├── 404.html           "not on the map" page for missing addresses
 ├── sitemap.xml
 ├── robots.txt
 ├── style.css          one shared stylesheet
-├── map.js             map data + interactions (vanilla JavaScript)
+├── data.js            the places: names, descriptions, photos — the one copy
+├── map.js             map interactions (vanilla JavaScript), reads data.js
+├── buildings.js       builds the buildings page cards from data.js
 ├── lightbox.js        the photo dialog, shared by map.html and buildings.html
-├── i18n.js            the English / 中文 switch, shared by all four pages
+├── i18n.js            the English / 中文 switch, shared by every page
+├── site.js            the light / dark switch and the header shadow
 ├── photos/
 │   ├── README.md              which photo was taken where
 │   ├── *.jpg                  25 originals, 4080 × 3060 or 4096 × 3072, 82.2 MB
@@ -87,14 +94,16 @@ Suggested text for the course platform — edit it so the words are yours.
 ## Built with
 
 - Semantic HTML, one shared CSS file, and vanilla JavaScript.
+- One data file (`data.js`) for both the map and the buildings page, so the two can never disagree.
 - An inline **SVG** map with a `viewBox`, so it scales with its container.
 - No server, no database, no libraries, no tracking.
-- System fonts and CSS custom properties for colour.
+- System fonts and CSS custom properties for colour, which is also how the dark theme works.
+- Page-to-page and theme cross-fades with the View Transitions API; browsers without it simply switch, and nothing moves when the system asks for reduced motion.
 
 ## Credits
 
 The map is a schematic drawn from scratch in SVG for this project. No third-party map tiles or icon sets are used. Campus names were taken from the campus plan and checked on site.
 
-The photographs in `photos/` were taken by me around campus in November 2026. They are kept at full size; the site loads one only when you click the place it belongs to.
+The photographs in `photos/` were taken by me around campus in November 2026. They are kept at full size; the pages show the 640 × 480 copies in `photos/thumbs/`, and the original loads only when a photo is opened in the viewer.
 
 Built for Web Technologies 2026 at BiUH.

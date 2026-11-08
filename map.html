@@ -18,6 +18,18 @@
 <link rel="icon" href="images/favicon-32.png" sizes="32x32">
 <link rel="canonical" href="https://kalueriw.github.io/campus-map/map.html">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+  /* Choose the theme before the page paints, so a dark page never flashes
+     white: the saved choice first, otherwise the system setting. */
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('campus-map-theme'); } catch (error) {}
+    if (theme !== 'dark' && theme !== 'light') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -38,9 +50,15 @@
       <a href="buildings.html" data-zh="建筑">Buildings</a>
       <a href="about.html" data-zh="关于">About</a>
     </nav>
-    <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
-      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+        <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" data-al-zh="深色模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </div>
 </header>
@@ -48,7 +66,7 @@
 <main id="main" class="wrap wrap-wide">
   <header class="page-head">
     <p class="kicker" data-zh="校园地图">Campus map</p>
-    <h1 data-zh="点一栋楼，看看它是哪里。">Click a building to explore it.</h1>
+    <h1><span data-zh="点一栋楼，看看">Click a building to </span><span class="hl" data-zh="它是哪里">explore it</span><span data-zh="。">.</span></h1>
     <p class="lead" data-zh="每栋楼都有介绍和实拍照片；楼上的小圆点是里面的餐厅、健身房和商铺。">Every building opens a short description and a photo; the small round markers are the canteens, gyms and shops inside.</p>
   </header>
 
@@ -463,8 +481,10 @@
   </div>
 </footer>
 
+<script src="site.js"></script>
 <script src="i18n.js"></script>
 <script src="lightbox.js"></script>
+<script src="data.js"></script>
 <script src="map.js"></script>
 </body>
 </html>

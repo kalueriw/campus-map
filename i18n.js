@@ -104,8 +104,23 @@
 
   document.addEventListener('click', function (event) {
     var button = event.target.closest ? event.target.closest('[data-lang-btn]') : null;
-    if (button) {
-      set(button.getAttribute('data-lang-btn'));
+    if (!button) {
+      return;
+    }
+    var next = button.getAttribute('data-lang-btn');
+    if (next === lang) {
+      return;
+    }
+    /* Cross-fade the switch instead of every word jumping at once. Browsers
+       without view transitions, or users who ask for less motion, get the
+       plain swap. */
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (document.startViewTransition && !calm) {
+      document.startViewTransition(function () {
+        set(next);
+      });
+    } else {
+      set(next);
     }
   });
 

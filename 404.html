@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-zh="找不到页面 · BiUH 校园地图">Page not found · BiUH Campus Map</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f766e">
+<script>
+  /* GitHub Pages serves this page for every missing address, including nested
+     ones like /campus-map/a/b/. A <base> points the relative links below back
+     at the site root, wherever the visitor landed. */
+  (function () {
+    var base = document.createElement('base');
+    base.href = /\.github\.io$/.test(window.location.hostname) ? '/campus-map/' : '/';
+    document.head.appendChild(base);
+  })();
+</script>
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+  /* Choose the theme before the page paints, so a dark page never flashes
+     white: the saved choice first, otherwise the system setting. */
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('campus-map-theme'); } catch (error) {}
+    if (theme !== 'dark' && theme !== 'light') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- with a <base>, "#main" alone would point at the home page -->
+<a class="skip-link" href="404.html#main" data-zh="跳到主要内容">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Z" fill="currentColor"/>
+        <circle cx="12" cy="9" r="2.6" fill="#fbfaf7"/>
+      </svg>
+      BiUH Campus Map
+    </a>
+    <nav class="site-nav" aria-label="Main" data-al-zh="主导航">
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+        <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" data-al-zh="深色模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="notfound">
+    <div class="notfound-copy">
+      <p class="kicker" data-zh="404 · 找不到页面">404 · Page not found</p>
+      <h1><span data-zh="这个地方">This place is </span><span class="hl" data-zh="不在地图上">not on the map</span><span data-zh="。">.</span></h1>
+      <p class="lead" data-zh="可能是地址拼错了，或者这一页已经搬走了。从下面任意一处继续吧。">The address may be mistyped, or the page has moved. Pick up from one of these instead.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="map.html" data-zh="打开地图">Open the map</a>
+        <a class="btn btn-ghost" href="buildings.html" data-zh="浏览建筑">Browse buildings</a>
+        <a class="btn btn-ghost" href="index.html" data-zh="回到首页">Back to home</a>
+      </div>
+    </div>
+
+    <!-- a route that wanders off the drawn campus to a pin with a question mark -->
+    <svg class="lost-map" viewBox="0 0 360 240" aria-hidden="true" focusable="false">
+      <rect class="lost-paper" x="1" y="1" width="358" height="238" rx="18"/>
+      <path class="lost-road" d="M0 168 H360 M118 0 V240"/>
+      <rect class="lost-block lost-block--academic" x="30" y="34" width="70" height="44" rx="6"/>
+      <rect class="lost-block lost-block--academic" x="136" y="34" width="70" height="44" rx="6"/>
+      <rect class="lost-block lost-block--life" x="30" y="186" width="66" height="36" rx="6"/>
+      <rect class="lost-block lost-block--residence" x="252" y="186" width="80" height="36" rx="6"/>
+      <circle class="lost-tree" cx="236" cy="56" r="6"/>
+      <circle class="lost-tree" cx="160" cy="118" r="6"/>
+      <circle class="lost-tree" cx="58" cy="128" r="6"/>
+      <path class="lost-route" d="M66 92 C 72 150, 150 156, 180 128 S 250 92, 286 112"/>
+      <g class="lost-pin" transform="translate(292 102)">
+        <g class="lost-pin-body">
+          <path d="M0 -34C-14 -34 -25 -23 -25 -9C-25 9 0 32 0 32S25 9 25 -9C25 -23 14 -34 0 -34Z"/>
+          <text y="-1" text-anchor="middle">?</text>
+        </g>
+      </g>
+    </svg>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图以 SVG 绘制。"> — a student project for Web Technologies 2026. Map drawn as SVG.</span></p>
+    <nav aria-label="Footer" data-al-zh="页脚导航">
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
+    </nav>
+  </div>
+</footer>
+<script src="site.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>

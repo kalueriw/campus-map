@@ -18,6 +18,18 @@
 <link rel="icon" href="images/favicon-32.png" sizes="32x32">
 <link rel="canonical" href="https://kalueriw.github.io/campus-map/">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+  /* Choose the theme before the page paints, so a dark page never flashes
+     white: the saved choice first, otherwise the system setting. */
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('campus-map-theme'); } catch (error) {}
+    if (theme !== 'dark' && theme !== 'light') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -38,9 +50,15 @@
       <a href="buildings.html" data-zh="建筑">Buildings</a>
       <a href="about.html" data-zh="关于">About</a>
     </nav>
-    <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
-      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+        <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" data-al-zh="深色模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </div>
 </header>
@@ -50,7 +68,7 @@
     <div class="hero-grid">
       <div>
         <p class="kicker">Web Technologies 2026 · BiUH</p>
-        <h1 data-zh="在校园里找到方向。">Find your way around campus.</h1>
+        <h1><span data-zh="在校园里">Find your way around </span><span class="hl" data-zh="找到方向">campus</span><span data-zh="。">.</span></h1>
         <p class="lead" data-zh="一张简洁的 BiUH 校园示意图：教学楼、宿舍、运动场都在一处，中英文名称齐全。">A simple schematic map of the BiUH campus: every teaching building, dormitory and sports ground in one place — with English and Chinese names.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="map.html" data-zh="打开地图">Open the map</a>
@@ -63,7 +81,7 @@
         </div>
       </div>
 
-      <div class="hero-map">
+      <a class="hero-map" href="map.html" aria-label="Open the campus map" data-al-zh="打开校园地图">
         <svg viewBox="0 0 700 420" aria-hidden="true" focusable="false">
           <rect width="700" height="420" fill="#f6f4ee"/>
           <path d="M0 165H200V154H428V99H517V90H700V420H0Z" fill="#eef3e2"/>
@@ -192,11 +210,15 @@
           <rect x="541" y="261" width="29" height="15" rx="2" fill="#f7e0c4" stroke="#b45309" stroke-width="1.2"/>
 
           <g class="hero-pin" transform="translate(350 152)">
-            <path d="M0 -23C-10.5 -23 -19 -14.5 -19 -4C-19 10 0 27 0 27S19 10 19 -4C19 -14.5 10.5 -23 0 -23Z" fill="#0f766e"/>
-            <circle cy="-5" r="6.5" fill="#fbfaf7"/>
+            <ellipse class="hero-pulse" cy="27" rx="16" ry="6" fill="none" stroke="#0f766e" stroke-width="2"/>
+            <g class="hero-pin-drop">
+              <path d="M0 -23C-10.5 -23 -19 -14.5 -19 -4C-19 10 0 27 0 27S19 10 19 -4C19 -14.5 10.5 -23 0 -23Z" fill="#0f766e"/>
+              <circle cy="-5" r="6.5" fill="#fbfaf7"/>
+            </g>
           </g>
         </svg>
-      </div>
+        <span class="hero-map-cta" aria-hidden="true" data-zh="打开地图 →">Open the map →</span>
+      </a>
     </div>
   </section>
 
@@ -262,6 +284,7 @@
     </nav>
   </div>
 </footer>
+<script src="site.js"></script>
 <script src="i18n.js"></script>
 </body>
 </html>

@@ -18,6 +18,18 @@
 <link rel="icon" href="images/favicon-32.png" sizes="32x32">
 <link rel="canonical" href="https://kalueriw.github.io/campus-map/about.html">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+  /* Choose the theme before the page paints, so a dark page never flashes
+     white: the saved choice first, otherwise the system setting. */
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('campus-map-theme'); } catch (error) {}
+    if (theme !== 'dark' && theme !== 'light') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -38,9 +50,15 @@
       <a href="buildings.html" data-zh="建筑">Buildings</a>
       <a href="about.html" aria-current="page" data-zh="关于">About</a>
     </nav>
-    <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
-      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+        <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" data-al-zh="深色模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </div>
 </header>
@@ -48,7 +66,7 @@
 <main id="main" class="wrap">
   <header class="page-head">
     <p class="kicker" data-zh="关于">About</p>
-    <h1 data-zh="关于这张地图。">About this map.</h1>
+    <h1><span data-zh="关于这张">About this </span><span class="hl" data-zh="地图">map</span><span data-zh="。">.</span></h1>
     <p class="lead" data-zh="一个小网站，只做一件事：让新生或访客不用到处问，就能找到要去的那栋楼。">A small website with one job: help a new student or a visitor find the right building without asking around.</p>
   </header>
 
@@ -70,11 +88,12 @@
     <ul>
       <li><strong>Semantic HTML</strong><span data-zh="——一个 &lt;header&gt;、一个 &lt;main&gt;、一个 &lt;footer&gt;；地图是带标题和描述的内联 SVG。"> — one <code>&lt;header&gt;</code>, one <code>&lt;main&gt;</code>, one <code>&lt;footer&gt;</code>; the map is an inline SVG with a title and description.</span></li>
       <li><strong>One stylesheet</strong><span data-zh="——颜色、间距和分类配色都放在 CSS 自定义属性里，四个页面看起来像一个网站。"> — colours, spacing and category colours live in CSS custom properties, so the four pages look like one site.</span></li>
-      <li><strong>Vanilla JavaScript</strong><span data-zh="——一个小文件读取建筑数据、处理点击和键盘输入、筛选地图，不用任何框架。"> — a single small file reads the building data, handles clicks and keyboard input, and filters the map. No libraries.</span></li>
+      <li><strong>Vanilla JavaScript</strong><span data-zh="——所有地点只写在一个数据文件里，地图和建筑页都从它读取，所以两边永远一致；点击、键盘操作和筛选也都不用任何框架。"> — every place is written once, in one data file that both the map and the buildings page read, so the two always agree. Clicks, keyboard input and filtering need no libraries.</span></li>
       <li><strong>Responsive by default</strong><span data-zh="——SVG 随容器缩放；窄屏时地图改为横向滚动，而不是缩到看不清。"> — the SVG scales with its container; on a narrow screen the map becomes scrollable instead of shrinking to nothing.</span></li>
       <li><strong>Accessible controls</strong><span data-zh="——每栋建筑都是可键盘聚焦的按钮，楼内场所也是独立按钮，筛选按钮会报告按下状态，详情面板会播报变化。"> — every building is a keyboard-focusable button, the markers inside buildings are buttons of their own, the filter buttons report their pressed state, and the details panel announces changes.</span></li>
-      <li><strong>Photos on demand</strong><span data-zh="——只有点击建筑时才会请求照片，照片显示在地图右侧的图片栏；打开地图本身不会下载任何照片。"> — a photograph is requested only when you click a building, and it appears in the column beside the map; opening the map downloads none at all.</span></li>
+      <li><strong>Photos on demand</strong><span data-zh="——页面上显示的是每张约 55 KB 的小图，只有在查看器里打开照片时才会下载 2–5 MB 的原图；打开地图本身不会下载任何照片。"> — the pages show small copies of about 55 KB each, and the 2–5 MB original downloads only when a photo is opened in the viewer; opening the map downloads none at all.</span></li>
       <li><strong>English / 中文</strong><span data-zh="——右上角的开关切换整站语言，并记住你的选择。"> — the switch in the header changes the language of the whole site, and remembers your choice.</span></li>
+      <li><strong>Light and dark</strong><span data-zh="——默认跟随系统设置，也可以用右上角的按钮切换；颜色都放在 CSS 变量里，换主题只是换一组变量。地图本身保持纸质地图的配色。"> — the theme follows the system setting, or the button in the header; every colour is a CSS variable, so a theme is just another set of them. The map drawing keeps its paper colours.</span></li>
     </ul>
 
     <h2 data-zh="我学到了什么">What I learned</h2>
@@ -117,6 +136,7 @@
     </nav>
   </div>
 </footer>
+<script src="site.js"></script>
 <script src="i18n.js"></script>
 </body>
 </html>
