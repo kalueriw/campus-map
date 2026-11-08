@@ -784,4 +784,11 @@
   }
 
   applyFilters();
+
+  /* A phone shows only a slice of the drawing. Open on the middle of campus —
+     the teaching buildings and the welcome center — instead of the sports
+     field at the western edge, which is what scrollLeft 0 lands on. */
+  if (!selectedId && mapScroller && mapScroller.scrollWidth > mapScroller.clientWidth) {
+    mapScroller.scrollLeft = (mapScroller.scrollWidth - mapScroller.clientWidth) / 2;
+  }
 })();

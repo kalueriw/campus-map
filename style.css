@@ -269,7 +269,11 @@ h3 { letter-spacing: -0.01em; }
   gap: clamp(28px, 5vw, 64px);
   align-items: center;
 }
-@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+/* Stacked: the preview leads, so a phone shows the map before the words. */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-map { order: -1; }
+}
 
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
