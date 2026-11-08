@@ -50,13 +50,21 @@
   function card(place) {
     var inside = '';
     if (place.spots && place.spots.length) {
+      var count = place.spots.length;
+      var countEn = count + (count === 1 ? ' place' : ' places');
+      var countZh = count + ' 个场所';
+      /* Folded, like a drawer: the photograph and the words stay short, and
+         the rooms inside open only when they are asked for. */
       inside = [
-        '<div class="building-inside">',
-        '  <p class="inside-label" data-zh="内部">Inside</p>',
+        '<details class="building-inside">',
+        '  <summary>',
+        '    <span class="inside-label" data-zh="内部">Inside</span>',
+        '    <span class="inside-count" data-zh="' + escapeHtml(countZh) + '">' + escapeHtml(countEn) + '</span>',
+        '  </summary>',
         '  <ul class="inside-list">',
         place.spots.map(function (spot) { return insideItem(place, spot); }).join('\n'),
         '  </ul>',
-        '</div>'
+        '</details>'
       ].join('\n');
     }
 
