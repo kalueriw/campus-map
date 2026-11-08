@@ -84,13 +84,21 @@
     if (!places.length) {
       return '';
     }
+    var countEn = places.length + (places.length === 1 ? ' place' : ' places');
+    var countZh = places.length + ' 个地点';
     return [
-      '<section class="building-group" data-category="' + escapeHtml(category.id) + '" aria-labelledby="group-' + escapeHtml(category.id) + '">',
-      '  <h2 id="group-' + escapeHtml(category.id) + '"><span class="group-dot" aria-hidden="true"></span><span data-zh="' + escapeHtml(category.zh) + '">' + escapeHtml(category.en) + '</span></h2>',
+      /* Folded by default: the page opens as five short rows, and the count
+         says what is inside before anything is opened. */
+      '<details class="building-group" data-category="' + escapeHtml(category.id) + '">',
+      '  <summary>',
+      '    <span class="group-dot" aria-hidden="true"></span>',
+      '    <span class="group-name" data-zh="' + escapeHtml(category.zh) + '">' + escapeHtml(category.en) + '</span>',
+      '    <span class="group-count" data-zh="' + escapeHtml(countZh) + '">' + escapeHtml(countEn) + '</span>',
+      '  </summary>',
       '  <div class="building-list">',
       places.map(card).join('\n'),
       '  </div>',
-      '</section>'
+      '</details>'
     ].join('\n');
   }).join('\n');
 
@@ -99,10 +107,15 @@
   }
 
   /* The cards did not exist when the browser first looked for #student-center
-     in a link from the map, so go to it now that they do. */
+     in a link from the map, so go to it now that they do. A card inside a
+     folded category is not on screen, so open its group first. */
   if (window.location.hash.length > 1) {
     var target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
     if (target) {
+      var group = target.closest('details');
+      if (group) {
+        group.open = true;
+      }
       target.scrollIntoView();
     }
   }

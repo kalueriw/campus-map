@@ -234,7 +234,7 @@
         var active = spot.id === selectedSpotId;
         return [
           '<button class="spot-chip' + (active ? ' is-active' : '') + '" type="button" data-spot="' + escapeHtml(spot.id) + '" aria-pressed="' + (active ? 'true' : 'false') + '">',
-          '  <span class="spot-chip-glyph" aria-hidden="true">' + escapeHtml(spot.glyph) + '</span>',
+          '  <svg class="spot-chip-glyph" viewBox="0 0 16 16" aria-hidden="true">' + (SPOT_ICONS[spot.icon] || '') + '</svg>',
           '  <span>' + escapeHtml(pick(spot.en, spot.zh)) + '</span>',
           '</button>'
         ].join('');
@@ -463,6 +463,22 @@
 
   /* ---- the small markers for places inside a building -------------------- */
 
+  /* Small line drawings for the English page: a letter tells nobody what is
+     inside, while a fork, a dumbbell or a book reads without words. Each is
+     drawn in a 16 × 16 box and centred on the marker. Chinese keeps its
+     single character (餐, 习, 馆 …). */
+  var SPOT_ICONS = {
+    fork: '<path d="M4.5 2v4M6.5 2v4M8.5 2v4M4.5 6h4M6.5 6v8"/><path d="M11.5 2c1.8 2 1.8 5.2 0 7v5"/>',
+    bowl: '<path d="M2.8 8.6h10.4a5.2 5.2 0 0 1-10.4 0Z"/><path d="M6.2 2.4 10 6.4M8.6 1.8 12.4 5.8"/>',
+    ball: '<circle cx="8" cy="8" r="5.5"/><path d="M8 2.5v11M4.2 3.3c2 2.8 2 6.6 0 9.4M11.8 3.3c-2 2.8-2 6.6 0 9.4"/>',
+    dumbbell: '<path d="M3.5 5.5v5M5.5 4.5v7M10.5 4.5v7M12.5 5.5v5M5.5 8h5"/>',
+    book: '<path d="M8 4.5C6.4 3.2 4.4 3 3 3.6v8.2c1.4-.6 3.4-.4 5 .9 1.6-1.3 3.6-1.5 5-.9V3.6c-1.4-.6-3.4-.4-5 .9Z"/><path d="M8 4.5v8.2"/>',
+    bag: '<path d="M4 6h8l-.9 7.2a1 1 0 0 1-1 .8H5.9a1 1 0 0 1-1-.8Z"/><path d="M6 6V4.6a2 2 0 0 1 4 0V6"/>',
+    coffee: '<path d="M4 6h6.5v2.4a3.25 3.25 0 0 1-6.5 0Z"/><path d="M10.5 7h1.1a1.7 1.7 0 0 1 0 3.4h-1.1"/><path d="M5.8 3.6c0-.7.7-.7.7-1.4M8.2 3.6c0-.7.7-.7.7-1.4"/>',
+    parcel: '<path d="M3 5.4 8 2.8l5 2.6v5.4L8 13.4l-5-2.6Z"/><path d="M3 5.4 8 8l5-2.6M8 8v5.4"/>',
+    fruit: '<path d="M8 6.3c1.4-1.4 3.9-1 4.4 1.2.5 2.2-1 5.2-3 5.7-1 .2-1.4-.4-1.4-.4s-.4.6-1.4.4c-2-.5-3.5-3.5-3-5.7C4.1 5.3 6.6 4.9 8 6.3Z"/><path d="M8 6.3V4.1"/><path d="M8 4.1c1-1.4 2.4-1.3 3-1 0 .9-1.3 1.8-3 1.6Z"/>'
+  };
+
   /* Markers are siblings of the building shapes, not children: a `role="button"`
      inside another `role="button"` is dropped by screen readers, and a nested
      click would select both the spot and its building. Drawn afterwards in the
@@ -493,16 +509,16 @@
       dot.setAttribute('class', 'spot-dot');
       dot.setAttribute('r', '13');
 
-      var glyph = document.createElementNS(SVG_NS, 'text');
-      glyph.setAttribute('class', 'spot-glyph' + (spot.glyph.length > 1 ? ' spot-glyph--tiny' : ''));
-      glyph.setAttribute('text-anchor', 'middle');
-      glyph.setAttribute('dominant-baseline', 'central');
-      glyph.textContent = spot.glyph;
+      var icon = document.createElementNS(SVG_NS, 'g');
+      icon.setAttribute('class', 'spot-icon');
+      icon.setAttribute('aria-hidden', 'true');
+      icon.setAttribute('transform', 'translate(-9.2 -9.2) scale(1.15)');
+      icon.innerHTML = SPOT_ICONS[spot.icon] || '';
 
       group.appendChild(title);
       group.appendChild(hit);
       group.appendChild(dot);
-      group.appendChild(glyph);
+      group.appendChild(icon);
       spotLayer.appendChild(group);
 
       spotEls[spot.id] = group;
@@ -568,13 +584,12 @@
     return selectedId ? byId(selectedId) : null;
   }
 
-  /* Below the map layout breakpoint the photograph cannot sit beside the map
-     — there is no beside — so it floats next to the shape that was clicked.
-     A wide window keeps the column it has always had. */
+  /* The photograph floats next to the shape that was just clicked, at every
+     width: it lands where the eye already is, and the map keeps the whole
+     width instead of sharing it with a column. */
   var mapLayout = document.querySelector('.map-layout');
   var mapCard = document.querySelector('.map-card');
   var mapScroller = document.querySelector('.map-scroller');
-  var narrow = window.matchMedia ? window.matchMedia('(max-width: 760px)') : null;
 
   function photoAnchor() {
     if (selectedSpotId && spotEls[selectedSpotId]) {
@@ -584,7 +599,7 @@
   }
 
   function placePhoto() {
-    if (!photoBox || !mapLayout || !mapCard || !narrow || !narrow.matches) {
+    if (!photoBox || !mapLayout || !mapCard) {
       return;
     }
     var anchor = photoAnchor();
@@ -599,15 +614,25 @@
     var gap = 12;
     var margin = 8;
 
+    var minTop = cr.top - lr.top + margin;
+    var maxTop = cr.bottom - lr.top - margin - h;
+
     var top = a.bottom - lr.top + gap;
-    if (top + h > cr.bottom - lr.top - margin) {
+    if (top > maxTop) {
       top = a.top - lr.top - gap - h;
-    }
-    if (top < cr.top - lr.top + margin) {
-      top = cr.top - lr.top + margin;
     }
 
     var left = (a.left + a.right) / 2 - lr.left - w / 2;
+    if (top < minTop) {
+      /* A tall shape near the top of the map leaves no room above or below,
+         so sit beside it instead of covering part of it. */
+      top = Math.max(minTop, Math.min(a.top - lr.top + (a.height - h) / 2, maxTop));
+      left = a.right - lr.left + gap;
+      if (left + w > cr.right - lr.left - margin) {
+        left = a.left - lr.left - gap - w;
+      }
+    }
+
     var minLeft = cr.left - lr.left + margin;
     var maxLeft = cr.right - lr.left - margin - w;
     left = Math.max(minLeft, Math.min(left, maxLeft));
@@ -625,7 +650,7 @@
   /* If the shape was near the bottom of the screen, the popover below it
      would open out of sight; nudge the page just far enough to show both. */
   function revealPhoto() {
-    if (!photoBox || !narrow || !narrow.matches || photoBox.classList.contains('is-empty')) {
+    if (!photoBox || photoBox.classList.contains('is-empty')) {
       return;
     }
     var rect = photoBox.getBoundingClientRect();
@@ -659,9 +684,7 @@
       '  <img src="' + escapeHtml(thumbPath(item.photo)) + '" alt="' + escapeHtml(caption) + '" width="640" height="480" decoding="async">',
       '</a>',
       '<p class="map-photo-name">' + escapeHtml(pick(item.en, item.zh)) + '</p>',
-      '<p class="map-photo-zh" lang="' + pick('zh', 'en') + '">' + escapeHtml(pick(item.zh, item.en)) + '</p>',
-      '<p class="map-photo-hint">' + pick('Click the photo to see it full size.', '点击照片查看大图。') + '</p>',
-      '<button class="map-photo-close" type="button" aria-label="' + pick('Close the photo', '关闭照片') + '" data-photo-close>×</button>'
+      '<p class="map-photo-zh" lang="' + pick('zh', 'en') + '">' + escapeHtml(pick(item.zh, item.en)) + '</p>'
     ].join('');
     /* the picture has to be laid out before it can be measured */
     placePhoto();
@@ -706,28 +729,18 @@
     mapScroller.addEventListener('scroll', schedulePlacePhoto, { passive: true });
   }
   window.addEventListener('resize', schedulePlacePhoto);
-  if (narrow) {
-    var onNarrowChange = function () {
-      photoBox.classList.toggle('is-popover', narrow.matches);
-      if (narrow.matches) {
-        placePhoto();
-      } else {
-        photoBox.style.left = '';
-        photoBox.style.top = '';
-      }
-    };
-    if (narrow.addEventListener) {
-      narrow.addEventListener('change', onNarrowChange);
-    } else if (narrow.addListener) {
-      narrow.addListener(onNarrowChange);
-    }
-    photoBox.classList.toggle('is-popover', narrow.matches);
-  }
 
-  photoBox.addEventListener('click', function (event) {
-    if (event.target.closest('[data-photo-close]')) {
-      clearSelection();
+  /* Clicking away from the photograph puts it away. Anything that is itself
+     a choice — a building, a marker, a filter — is left alone. */
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!selectedId || !(target instanceof Element)) {
+      return;
     }
+    if (target.closest('#map-photo, #map-panel, #photo-lightbox, .building, .map-spot, .search, .legend, .site-header')) {
+      return;
+    }
+    clearSelection();
   });
 
   search.addEventListener('input', function () {

@@ -581,14 +581,17 @@ h3 { letter-spacing: -0.01em; }
   stroke-width: 3;
 }
 
-.spot-glyph {
-  fill: var(--cat-ink);
-  font-size: 14px;
-  font-weight: 700;
+/* Markers carry a small line drawing — a fork, a dumbbell, a book. Words do
+   not fit inside a dot, and a single letter says nothing in either language. */
+.spot-icon {
+  fill: none;
+  stroke: var(--cat-ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   pointer-events: none;
 }
-.spot-glyph--tiny { font-size: 10.5px; }
-.map-spot.is-active .spot-glyph { fill: #fff; }
+.map-spot.is-active .spot-icon { stroke: #fff; }
 
 .map-spot.is-dimmed { opacity: 0.18; pointer-events: none; }
 
@@ -701,19 +704,36 @@ h3 { letter-spacing: -0.01em; }
 
 .map-layout {
   display: grid;
-  /* The photo column grows with the window so the picture stays readable;
-     it stops at 460px so the map keeps most of the width. */
-  grid-template-columns: minmax(0, 1fr) clamp(250px, 32vw, 460px);
+  /* minmax(0, …) so the map scroller can stay narrower than the SVG */
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   align-items: start;
+  position: relative;
 }
 
+/* The photograph floats beside the shape that was just clicked — on a wide
+   screen as well as a phone. It lands where the eye already is, and the map
+   keeps the full width instead of sharing it with a column. map.js places it
+   and keeps it there while the map is swiped. */
 .map-photo {
-  padding: 10px;
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  width: clamp(200px, 22vw, 320px);
+  max-width: 58%;
+  padding: 6px 6px 8px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 12px;
   background: var(--surface);
-  box-shadow: var(--shadow);
+  box-shadow: 0 18px 36px -14px rgba(20, 32, 28, 0.55), 0 2px 6px rgba(20, 32, 28, 0.14);
+  animation: pop 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.map-photo.is-away {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
 }
 
 .map-photo-link {
@@ -730,97 +750,19 @@ h3 { letter-spacing: -0.01em; }
 }
 
 .map-photo-name {
-  margin: 10px 4px 0;
-  font-size: 0.98rem;
+  margin: 7px 3px 0;
+  font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.25;
 }
 .map-photo-zh {
-  margin: 1px 4px 0;
+  margin: 0 3px;
   color: var(--dim);
-  font-size: 0.86rem;
-}
-.map-photo-hint {
-  margin: 10px 4px 2px;
-  color: var(--dim);
-  font-size: 0.76rem;
+  font-size: 0.8rem;
 }
 
-/* before anything is picked, the empty card matches the height of the map */
-.map-photo.is-empty {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-}
-.map-photo.is-empty .photo-empty { flex: 1; min-height: 0; }
-
-.photo-empty {
-  display: grid;
-  place-items: center;
-  min-height: 240px;
-  padding: 18px;
-  border: 2px dashed var(--line);
-  border-radius: 10px;
-  color: var(--dim);
-  font-size: 0.86rem;
-  text-align: center;
-}
-
-/* The photo stays beside the map on anything wider than a phone. */
-@media (max-width: 760px) {
-  /* minmax(0, …) so the map scroller can stay narrower than the SVG */
-  .map-layout { grid-template-columns: minmax(0, 1fr); position: relative; }
-
-  /* A phone has no room beside the map, and putting the picture under it
-     meant scrolling away from what was just tapped. It floats next to the
-     shape instead, and map.js keeps it there while the map is swiped. */
-  .map-photo.is-empty { display: none; }
-  .map-photo.is-popover {
-    position: absolute;
-    z-index: 6;
-    top: 0;
-    left: 0;
-    width: min(196px, 58%);
-    padding: 6px 6px 8px;
-    border-radius: 12px;
-    box-shadow: 0 18px 36px -14px rgba(20, 32, 28, 0.55), 0 2px 6px rgba(20, 32, 28, 0.14);
-    animation: pop 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-  .map-photo.is-popover.is-away {
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.96);
-  }
-  .map-photo.is-popover { transition: opacity 0.18s ease, transform 0.18s ease; }
-  .map-photo.is-popover .map-photo-name { margin: 7px 3px 0; font-size: 0.86rem; }
-  .map-photo.is-popover .map-photo-zh { margin: 0 3px; font-size: 0.78rem; }
-  .map-photo.is-popover .map-photo-hint { display: none; }
-  .map-photo-close {
-    position: absolute;
-    top: -9px;
-    right: -9px;
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: var(--ink);
-    color: var(--paper);
-    font: inherit;
-    font-size: 1.05rem;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(20, 32, 28, 0.35);
-  }
-}
-
-/* the close button belongs to the phone popover only */
-.map-photo-close { display: none; }
-@media (max-width: 760px) {
-  .map-photo.is-popover .map-photo-close { display: grid; }
-}
+/* nothing picked yet, so there is nothing to float */
+.map-photo.is-empty { display: none; }
 
 .panel-breadcrumb {
   margin: 0 0 14px;
@@ -862,20 +804,21 @@ h3 { letter-spacing: -0.01em; }
 }
 
 .spot-chip-glyph {
-  display: inline-grid;
-  place-items: center;
-  min-width: 24px;
+  flex: none;
+  width: 24px;
   height: 24px;
-  padding: 0 5px;
+  padding: 4px;
   border-radius: 999px;
   background: var(--paper-2);
-  color: var(--teal-dark);
-  font-size: 0.7rem;
-  font-weight: 700;
+  fill: none;
+  stroke: var(--teal-dark);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .spot-chip.is-active .spot-chip-glyph {
   background: rgba(255, 255, 255, 0.22);
-  color: #fff;
+  stroke: #fff;
 }
 
 /* --------------------------------------------------------------- lightbox */
@@ -932,21 +875,48 @@ h3 { letter-spacing: -0.01em; }
 
 /* ------------------------------------------------------------- buildings */
 
-.building-group { margin: 0 0 40px; }
 .building-groups { margin-top: 18px; }
 
-.building-group + .building-group {
-  padding-top: 30px;
-  border-top: 1px solid var(--line);
+/* Categories fold away, so the page opens as five short rows instead of one
+   very long scroll. The count says what is inside before it is opened. */
+.building-group {
+  margin: 0;
+  border-bottom: 1px solid var(--line);
 }
-.building-group > h2 {
+.building-group:first-of-type { border-top: 1px solid var(--line); }
+
+.building-group > summary {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 14px;
-  padding-bottom: 9px;
-  border-bottom: 2px solid var(--cat-line);
+  gap: 11px;
+  padding: 15px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+.building-group > summary::-webkit-details-marker { display: none; }
+.building-group > summary:hover { background: var(--paper-2); }
+.building-group > summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--dim);
+  border-bottom: 2px solid var(--dim);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.building-group[open] > summary::after { transform: rotate(225deg); }
+
+.group-name {
   font-size: 1.26rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+.group-count {
+  margin-left: auto;
+  color: var(--dim);
+  font-size: 0.85rem;
 }
 .group-dot {
   width: 13px;
@@ -960,15 +930,16 @@ h3 { letter-spacing: -0.01em; }
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 10px;
+  margin: 0 0 30px;
 }
 
 /* One place per row: the words run across the page, the photograph is a
    small square on the right, the rooms inside sit on a second row below. */
 .building-card {
   display: grid;
-  /* The picture grows with the window, so a wide screen gives it more room
-     without the words on the left getting squeezed. */
-  grid-template-columns: minmax(0, 1fr) clamp(200px, 23vw, 330px);
+  /* A wide, short photograph beside the words: it grows with the window and
+     stops short of a square, so a row stays low. */
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 30vw, 440px);
   align-content: start;
   padding: 0;
   border: 1px solid var(--line);
@@ -982,7 +953,9 @@ h3 { letter-spacing: -0.01em; }
 .building-photo {
   grid-column: 2;
   grid-row: 1;
-  align-self: start;
+  /* fills the row beside the words, so no strip of empty card is left under
+     the picture when the text is taller than the photograph */
+  align-self: stretch;
   display: block;
   background: var(--paper-2);
   cursor: zoom-in;
@@ -990,10 +963,10 @@ h3 { letter-spacing: -0.01em; }
 .building-photo img {
   display: block;
   width: 100%;
-  height: auto;
-  /* 4:3 is the shape the photographs were taken in, so almost none of the
-     building is cropped, and the picture lines up with the words beside it. */
-  aspect-ratio: 4 / 3;
+  height: 100%;
+  /* Wider than the 4:3 original, so the row is shorter; the crop keeps the
+     middle of the building, which is what the photograph is of. */
+  aspect-ratio: 1.9 / 1;
   object-fit: cover;
 }
 
@@ -1005,7 +978,7 @@ h3 { letter-spacing: -0.01em; }
   align-content: center;
   align-items: baseline;
   gap: 2px 18px;
-  padding: 18px 24px;
+  padding: 16px 22px;
 }
 
 /* "Where" and the map link share the last line, so a row stays short. */
@@ -1041,12 +1014,12 @@ h3 { letter-spacing: -0.01em; }
 .building-inside {
   grid-column: 1 / -1;
   grid-row: 2;
-  padding: 14px 24px 20px;
+  padding: 12px 22px 16px;
   border-top: 1px dashed var(--line);
 }
 
 .inside-label {
-  margin: 0 0 9px;
+  margin: 0 0 7px;
   color: var(--dim);
   font-size: 0.76rem;
   font-weight: 700;
@@ -1095,7 +1068,7 @@ h3 { letter-spacing: -0.01em; }
 @media (max-width: 560px) {
   .building-card { grid-template-columns: 1fr; }
   .building-photo { grid-column: 1; grid-row: 1; }
-  .building-photo img { aspect-ratio: 4 / 3; }
+  .building-photo img { height: auto; aspect-ratio: 4 / 3; }
   .building-body { grid-column: 1; grid-row: 2; padding: 16px 18px; }
   .building-inside { padding: 12px 18px 18px; }
   .building-inside { grid-row: 3; }
@@ -1398,8 +1371,7 @@ body::before {
 .panel-empty { animation: rise 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 .map-photo-link,
 .map-photo-name,
-.map-photo-zh,
-.map-photo-hint { animation: fade-in 0.35s ease both; }
+.map-photo-zh { animation: fade-in 0.35s ease both; }
 .map-photo-link {
   overflow: hidden;
   border-radius: 8px;

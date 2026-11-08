@@ -14,7 +14,7 @@ records where the photo was taken.
 | `welcome-center.jpg` | `欢迎中心.jpg` | Welcome Center |
 | `teaching-a.jpg` | `A教学楼.jpg` | Teaching Building A |
 | `teaching-b.jpg` | `B教学楼.jpg` | Teaching Building B |
-| `training.jpg` | `C实训楼.jpg` | Training Building |
+| `training.jpg` | `C实训楼.jpg` | Training Building C |
 | `student-center.jpg` | `学生中心.jpg` | The Student Center courtyard |
 | `lakeside-restaurant.jpg` | `湖畔坊餐厅.jpg` | Inside the Lakeside Restaurant |
 | `lake.jpg` | `小湖.jpg` | The lake and its waterfront deck |
