@@ -33,10 +33,26 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
+  /* Latin first, then a Chinese face for each platform. Only 400/600/700 are
+     used: Segoe UI has no 650/750, and Windows rounds 750 up to Black. */
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
-        "PingFang SC", "Microsoft YaHei", sans-serif;
+        "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei",
+        "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
+
+/* Chinese reads better with a little more leading and no tight tracking.
+   Letter-spacing made for Latin capitals only spreads Chinese apart. */
+[data-lang="zh"] body { line-height: 1.75; }
+[data-lang="zh"] :is(h1, h2, h3, .brand) { letter-spacing: 0; }
+[data-lang="zh"] h1 { line-height: 1.18; }
+[data-lang="zh"] :is(.kicker, .search label, .inside-label, .chip, .panel-meta strong) {
+  letter-spacing: 0.04em;
+}
+[data-lang="zh"] .kicker { font-size: 0.86rem; }
+[data-lang="zh"] .inside-label { font-size: 0.76rem; }
 
 img, svg { max-width: 100%; }
 
@@ -105,7 +121,7 @@ code {
   align-items: center;
   gap: 9px;
   color: var(--ink);
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: -0.015em;
   text-decoration: none;
 }
@@ -118,7 +134,7 @@ code {
   border-radius: 999px;
   color: var(--dim);
   font-size: 0.94rem;
-  font-weight: 650;
+  font-weight: 600;
   text-decoration: none;
 }
 .site-nav a:hover { background: var(--paper-2); color: var(--ink); }
@@ -142,7 +158,7 @@ code {
   color: var(--dim);
   font: inherit;
   font-size: 0.76rem;
-  font-weight: 750;
+  font-weight: 700;
   cursor: pointer;
 }
 .lang-switch button:hover { color: var(--ink); }
@@ -152,8 +168,11 @@ code {
   box-shadow: 0 1px 2px rgba(20, 32, 28, 0.12);
 }
 
+/* Phones: the brand and the language switch share the first line, the
+   navigation gets the whole second line (was three stacked rows). */
 @media (max-width: 520px) {
-  .lang-switch { margin-left: auto; }
+  .lang-switch { order: 2; margin-left: auto; }
+  .site-nav { order: 3; width: 100%; margin-left: 0; justify-content: space-between; }
 }
 
 /* ------------------------------------------------------------ typography */
@@ -177,7 +196,7 @@ h3 { letter-spacing: -0.01em; }
   margin: 0 0 13px;
   color: var(--teal);
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -246,8 +265,10 @@ h3 { letter-spacing: -0.01em; }
 }
 .stat strong {
   display: block;
-  font-size: 1.45rem;
+  font-size: 1.6rem;
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 .stat span { color: var(--dim); font-size: 0.86rem; }
 
@@ -286,9 +307,22 @@ h3 { letter-spacing: -0.01em; }
   border-radius: 10px;
   background: var(--paper-2);
   color: var(--teal);
-  font-weight: 800;
+  font-weight: 700;
 }
 .card-icon svg { width: 21px; height: 21px; }
+.card p { line-height: 1.6; }
+
+/* Phones: icon beside the text, so four cards do not fill three screens. */
+@media (max-width: 560px) {
+  .card {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 16px 18px;
+  }
+  .card-icon { grid-row: span 2; margin: 0; }
+  .card h3 { margin: 6px 0 4px; }
+}
 
 /* ------------------------------------------------------------ page head */
 
@@ -313,7 +347,7 @@ h3 { letter-spacing: -0.01em; }
   margin-bottom: 6px;
   color: var(--dim);
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -344,7 +378,7 @@ h3 { letter-spacing: -0.01em; }
   color: var(--dim);
   font: inherit;
   font-size: 0.82rem;
-  font-weight: 650;
+  font-weight: 600;
   cursor: pointer;
 }
 .legend-btn:hover { border-color: var(--dim); color: var(--ink); }
@@ -427,13 +461,15 @@ h3 { letter-spacing: -0.01em; }
 
 .b-label { paint-order: stroke; stroke: rgba(251, 250, 247, 0.9); stroke-width: 4px; }
 .b-label .en { fill: #14201c; font-weight: 700; font-size: 22px; }
-.b-label .zh { fill: #3f4a43; font-size: 15px; font-weight: 500; }
+/* The second line (the other language) used to render at ~6px on a laptop;
+   these sizes keep it legible without running into the first line. */
+.b-label .zh { fill: #3f4a43; font-size: 17px; font-weight: 600; }
 .b-label--small .en { font-size: 18px; }
-.b-label--small .zh { font-size: 13px; }
+.b-label--small .zh { font-size: 14px; }
 .b-label--minor .en { font-size: 21px; }
-.b-label--minor .zh { font-size: 13px; }
+.b-label--minor .zh { font-size: 14.5px; }
 .b-label--water .en { fill: var(--cat-ink); font-style: italic; font-size: 21px; }
-.b-label--water .zh { fill: var(--cat-ink); font-size: 13px; }
+.b-label--water .zh { fill: var(--cat-ink); font-size: 15px; }
 .b-label--outside { stroke-width: 5px; }
 
 .b-leader {
@@ -482,7 +518,6 @@ h3 { letter-spacing: -0.01em; }
 /* --------------------------------------------------------------- map panel */
 
 .map-panel {
-  min-height: 156px;
   margin-top: 16px;
   padding: clamp(18px, 3vw, 26px);
   border: 1px solid var(--line);
@@ -540,7 +575,7 @@ h3 { letter-spacing: -0.01em; }
   background: var(--cat);
   color: var(--cat-ink);
   font-size: 0.74rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -652,7 +687,9 @@ h3 { letter-spacing: -0.01em; }
 @media (max-width: 1180px) {
   /* minmax(0, …) so the map scroller can stay narrower than the SVG */
   .map-layout { grid-template-columns: minmax(0, 1fr); }
-  .photo-empty { min-height: 150px; }
+  /* Stacked, an empty photo box only pushes the details further down; the
+     panel below already says what to click. */
+  .map-photo.is-empty { display: none; }
   /* Stacked, the photo would fill the whole page width; keep it a figure. */
   .map-photo { width: 100%; max-width: 640px; justify-self: center; }
 }
@@ -661,7 +698,7 @@ h3 { letter-spacing: -0.01em; }
   margin: 0 0 14px;
   color: var(--dim);
   font-size: 0.76rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -686,7 +723,7 @@ h3 { letter-spacing: -0.01em; }
   color: var(--ink);
   font: inherit;
   font-size: 0.85rem;
-  font-weight: 650;
+  font-weight: 600;
   cursor: pointer;
 }
 .spot-chip:hover { border-color: var(--teal); color: var(--teal-dark); }
@@ -706,7 +743,7 @@ h3 { letter-spacing: -0.01em; }
   background: var(--paper-2);
   color: var(--teal-dark);
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 .spot-chip.is-active .spot-chip-glyph {
   background: rgba(255, 255, 255, 0.22);
@@ -767,7 +804,8 @@ h3 { letter-spacing: -0.01em; }
 
 /* ------------------------------------------------------------- buildings */
 
-.building-group { margin: 0 0 34px; }
+.building-group { margin: 0 0 40px; }
+.page-head + .building-group { margin-top: 18px; }
 
 .building-group + .building-group {
   padding-top: 30px;
@@ -792,16 +830,15 @@ h3 { letter-spacing: -0.01em; }
 
 .building-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr));
-  gap: 14px;
-  /* Each card keeps its natural height; the tallest in a category is placed
-     first so the row reads as a deliberate cascade rather than a ragged edge. */
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
 }
 
+/* One place per row: the words run across the page, the photograph is a
+   small square on the right, the rooms inside sit on a second row below. */
 .building-card {
   display: grid;
-  grid-template-columns: 45% 1fr;
+  grid-template-columns: minmax(0, 1fr) 180px;
   align-content: start;
   padding: 0;
   border: 1px solid var(--line);
@@ -813,7 +850,8 @@ h3 { letter-spacing: -0.01em; }
 }
 
 .building-photo {
-  grid-column: 1;
+  grid-column: 2;
+  grid-row: 1;
   align-self: start;
   display: block;
   background: var(--paper-2);
@@ -823,33 +861,63 @@ h3 { letter-spacing: -0.01em; }
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
 }
 
 .building-body {
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 12px 14px 12px;
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  align-items: baseline;
+  gap: 2px 18px;
+  padding: 18px 24px;
 }
 
-.building-card h3 { font-size: 1rem; }
-.building-card .zh { font-size: 0.84rem; }
-.building-card .desc { font-size: 0.82rem; line-height: 1.4; }
-.building-card .where { font-size: 0.74rem; line-height: 1.38; }
+/* "Where" and the map link share the last line, so a row stays short. */
+.building-body > h3,
+.building-body > .zh,
+.building-body > .desc,
+.building-body > .building-inside { grid-column: 1 / -1; }
+.building-body > .where { grid-column: 1; }
+.building-body > .card-link { grid-column: 2; justify-self: end; }
 
+.building-card h3 { margin: 0; font-size: 1.18rem; line-height: 1.3; }
+.building-card .zh { margin: 0 0 6px; color: var(--dim); font-size: 0.92rem; line-height: 1.4; }
+.building-card .desc {
+  max-width: 78ch;
+  margin: 0 0 4px;
+  color: #2c332f;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.building-card .where { margin: 0; color: var(--dim); font-size: 0.85rem; line-height: 1.45; }
+.building-card .where strong { color: var(--ink); font-weight: 600; }
+.building-card .card-link {
+  color: var(--teal);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.building-card .card-link:hover { color: var(--teal-dark); text-decoration: underline; }
+
+/* The rooms inside get their own full-width row, so six thumbnails can share
+   the card width rather than the narrower text column. */
 .building-inside {
   grid-column: 1 / -1;
-  padding: 0 14px 12px;
+  grid-row: 2;
+  padding: 14px 24px 20px;
+  border-top: 1px dashed var(--line);
 }
 
 .inside-label {
-  margin: 0 0 7px;
+  margin: 0 0 9px;
   color: var(--dim);
-  font-size: 0.68rem;
-  font-weight: 750;
+  font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
@@ -863,7 +931,9 @@ h3 { letter-spacing: -0.01em; }
   list-style: none;
 }
 
-.inside-item { width: 92px; }
+/* Six thumbnails share the row, so they grow with the card instead of
+   wrapping onto a second line. */
+.inside-item { width: clamp(114px, calc((100% - 50px) / 6), 170px); }
 
 .inside-photo {
   display: block;
@@ -871,8 +941,9 @@ h3 { letter-spacing: -0.01em; }
 }
 .inside-photo img {
   display: block;
-  width: 92px;
-  height: 69px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
   border: 1px solid var(--line);
   border-radius: 6px;
   object-fit: cover;
@@ -890,38 +961,38 @@ h3 { letter-spacing: -0.01em; }
 /* narrow screens: stack the photo on top instead of squeezing the text column */
 @media (max-width: 560px) {
   .building-card { grid-template-columns: 1fr; }
-  .building-photo { grid-column: 1; }
-  .building-body { grid-column: 1; padding-top: 14px; }
-  .building-inside { padding-top: 2px; }
+  .building-photo { grid-column: 1; grid-row: 1; }
+  .building-photo img { aspect-ratio: 4 / 3; }
+  .building-body { grid-column: 1; grid-row: 2; padding: 16px 18px; }
+  .building-inside { padding: 12px 18px 18px; }
+  .building-inside { grid-row: 3; }
+  /* a narrow column: let the map link sit under "Where" instead of beside it */
+  .building-body > .where,
+  .building-body > .card-link { grid-column: 1; justify-self: start; }
 }
 
-.inside-name { display: block; font-size: 0.74rem; font-weight: 650; line-height: 1.25; }
-.inside-zh { display: block; color: var(--dim); font-size: 0.7rem; line-height: 1.25; }
-.building-card h3 { margin: 0; font-size: 1.04rem; }
-.building-card .zh { margin: 0; color: var(--dim); font-size: 0.9rem; }
-.building-card .desc { margin: 0; color: var(--dim); font-size: 0.9rem; }
-.building-card .where {
-  margin: 0;
-  color: var(--dim);
-  font-size: 0.8rem;
-}
-.building-card .card-link {
-  align-self: flex-start;
-  color: var(--teal);
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-.building-card .card-link:hover { color: var(--teal-dark); text-decoration: underline; }
+.inside-name { display: block; font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
+.inside-zh { display: block; color: var(--dim); font-size: 0.78rem; line-height: 1.3; }
 
 /* ----------------------------------------------------------------- about */
 
-.prose { max-width: 70ch; }
-.prose h2 { margin-top: 2.1em; }
-.prose h2:first-child { margin-top: 0; }
+.prose { max-width: 68ch; margin-top: 20px; font-size: 1.04rem; line-height: 1.7; }
+/* Section headings inside an article: smaller than the page h1's h2s,
+   with the space above them rather than below. */
+.prose h2 {
+  margin: 2.2em 0 0.55em;
+  padding-top: 1.1em;
+  border-top: 1px solid var(--line);
+  font-size: clamp(1.3rem, 2vw, 1.55rem);
+}
+.prose h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.prose p { margin: 0 0 1em; }
 .prose p, .prose li { color: #2c332f; }
-.prose ul { padding-left: 1.2em; }
-.prose li { margin: 0.4em 0; }
+.prose ul { margin: 0 0 1em; padding-left: 1.2em; }
+.prose li { margin: 0.45em 0; }
+.prose li::marker { color: var(--teal); }
+.prose strong { color: var(--ink); }
+[data-lang="zh"] .prose { line-height: 1.85; }
 
 .callout {
   margin: 22px 0;
@@ -942,7 +1013,8 @@ h3 { letter-spacing: -0.01em; }
   color: var(--dim);
   font-size: 0.9rem;
 }
-.credits p { margin: 0.35em 0; }
+.credits p { margin: 0.4em 0; line-height: 1.6; }
+.credits p:first-child { margin-top: 0; color: var(--ink); }
 
 /* ---------------------------------------------------------------- footer */
 
@@ -983,8 +1055,8 @@ h3 { letter-spacing: -0.01em; }
 }
 
 @media (max-width: 520px) {
-  .header-inner { align-items: flex-start; }
-  .site-nav { width: 100%; }
+  .header-inner { row-gap: 8px; }
+  .site-nav a { padding: 7px 12px; }
   .map-panel, .building-card { scroll-margin-top: 110px; }
 }
 
