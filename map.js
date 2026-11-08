@@ -157,6 +157,7 @@
   function applyFilters() {
     var spotVisible = {};
     var count = 0;
+    var firstVisible = null;
 
     BUILDINGS.forEach(function (building) {
       var visible = matches(building);
@@ -169,6 +170,9 @@
       }
       if (visible) {
         count += 1;
+        if (!firstVisible) {
+          firstVisible = building.id;
+        }
       }
     });
 
@@ -191,6 +195,13 @@
     });
 
     updateStatus(count);
+
+    /* A phone shows about a fifth of the drawing at a time and starts at the
+       left edge, so a search for "宿舍" would otherwise match something the
+       reader cannot see. Slide the first match into view. */
+    if ((query || currentCategory !== 'all') && firstVisible && groups[firstVisible]) {
+      centerInScroller(groups[firstVisible]);
+    }
 
     if (selectedSpotId && !spotVisible[selectedSpotId]) {
       if (selectedId && matches(byId(selectedId))) {
@@ -372,6 +383,8 @@
     }
     renderBuilding(building);
     renderPhoto(building);
+    schedulePlacePhoto();
+    revealPhoto();
     if (hadPanelFocus) {
       restorePanelFocus(null);
     }
@@ -401,6 +414,8 @@
     }
     renderSpot(spot);
     renderPhoto(spot);
+    schedulePlacePhoto();
+    revealPhoto();
     if (hadPanelFocus) {
       restorePanelFocus(id);
     }
@@ -553,6 +568,79 @@
     return selectedId ? byId(selectedId) : null;
   }
 
+  /* Below the map layout breakpoint the photograph cannot sit beside the map
+     — there is no beside — so it floats next to the shape that was clicked.
+     A wide window keeps the column it has always had. */
+  var mapLayout = document.querySelector('.map-layout');
+  var mapCard = document.querySelector('.map-card');
+  var mapScroller = document.querySelector('.map-scroller');
+  var narrow = window.matchMedia ? window.matchMedia('(max-width: 760px)') : null;
+
+  function photoAnchor() {
+    if (selectedSpotId && spotEls[selectedSpotId]) {
+      return spotEls[selectedSpotId];
+    }
+    return selectedId ? groups[selectedId] : null;
+  }
+
+  function placePhoto() {
+    if (!photoBox || !mapLayout || !mapCard || !narrow || !narrow.matches) {
+      return;
+    }
+    var anchor = photoAnchor();
+    if (!anchor || photoBox.classList.contains('is-empty')) {
+      return;
+    }
+    var a = anchor.getBoundingClientRect();
+    var lr = mapLayout.getBoundingClientRect();
+    var cr = mapCard.getBoundingClientRect();
+    var w = photoBox.offsetWidth;
+    var h = photoBox.offsetHeight;
+    var gap = 12;
+    var margin = 8;
+
+    var top = a.bottom - lr.top + gap;
+    if (top + h > cr.bottom - lr.top - margin) {
+      top = a.top - lr.top - gap - h;
+    }
+    if (top < cr.top - lr.top + margin) {
+      top = cr.top - lr.top + margin;
+    }
+
+    var left = (a.left + a.right) / 2 - lr.left - w / 2;
+    var minLeft = cr.left - lr.left + margin;
+    var maxLeft = cr.right - lr.left - margin - w;
+    left = Math.max(minLeft, Math.min(left, maxLeft));
+
+    photoBox.style.left = Math.round(left) + 'px';
+    photoBox.style.top = Math.round(top) + 'px';
+
+    /* Swiping the map away from the place leaves the card pointing at
+       nothing, so let it step aside until the place comes back. */
+    var view = mapScroller ? mapScroller.getBoundingClientRect() : null;
+    var away = view && (a.right < view.left || a.left > view.right);
+    photoBox.classList.toggle('is-away', Boolean(away));
+  }
+
+  /* If the shape was near the bottom of the screen, the popover below it
+     would open out of sight; nudge the page just far enough to show both. */
+  function revealPhoto() {
+    if (!photoBox || !narrow || !narrow.matches || photoBox.classList.contains('is-empty')) {
+      return;
+    }
+    var rect = photoBox.getBoundingClientRect();
+    var hidden = rect.top < 0 || rect.bottom > window.innerHeight;
+    if (!hidden) {
+      return;
+    }
+    var reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollBy({
+      top: rect.bottom - window.innerHeight + 16,
+      behavior: reduceMotion ? 'auto' : 'smooth'
+    });
+  }
+
   function renderPhoto(item) {
     if (!photoBox) {
       return;
@@ -572,8 +660,11 @@
       '</a>',
       '<p class="map-photo-name">' + escapeHtml(pick(item.en, item.zh)) + '</p>',
       '<p class="map-photo-zh" lang="' + pick('zh', 'en') + '">' + escapeHtml(pick(item.zh, item.en)) + '</p>',
-      '<p class="map-photo-hint">' + pick('Click the photo to see it full size.', '点击照片查看大图。') + '</p>'
+      '<p class="map-photo-hint">' + pick('Click the photo to see it full size.', '点击照片查看大图。') + '</p>',
+      '<button class="map-photo-close" type="button" aria-label="' + pick('Close the photo', '关闭照片') + '" data-photo-close>×</button>'
     ].join('');
+    /* the picture has to be laid out before it can be measured */
+    placePhoto();
   }
 
   /* ---- panel interactions ------------------------------------------------ */
@@ -597,6 +688,45 @@
     if (chip) {
       selectSpot(chip.getAttribute('data-spot'));
       return;
+    }
+  });
+
+  var photoReposition = null;
+  function schedulePlacePhoto() {
+    if (photoReposition) {
+      return;
+    }
+    photoReposition = window.requestAnimationFrame(function () {
+      photoReposition = null;
+      placePhoto();
+    });
+  }
+
+  if (mapScroller) {
+    mapScroller.addEventListener('scroll', schedulePlacePhoto, { passive: true });
+  }
+  window.addEventListener('resize', schedulePlacePhoto);
+  if (narrow) {
+    var onNarrowChange = function () {
+      photoBox.classList.toggle('is-popover', narrow.matches);
+      if (narrow.matches) {
+        placePhoto();
+      } else {
+        photoBox.style.left = '';
+        photoBox.style.top = '';
+      }
+    };
+    if (narrow.addEventListener) {
+      narrow.addEventListener('change', onNarrowChange);
+    } else if (narrow.addListener) {
+      narrow.addListener(onNarrowChange);
+    }
+    photoBox.classList.toggle('is-popover', narrow.matches);
+  }
+
+  photoBox.addEventListener('click', function (event) {
+    if (event.target.closest('[data-photo-close]')) {
+      clearSelection();
     }
   });
 

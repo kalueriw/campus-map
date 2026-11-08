@@ -91,6 +91,10 @@ body {
 [data-lang="zh"] .kicker { font-size: 0.86rem; }
 [data-lang="zh"] .inside-label { font-size: 0.76rem; }
 
+/* no lonely last word (or "续吧。") on a line of its own; ignored by older browsers */
+p, li, figcaption { text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; }
+
 img, svg { max-width: 100%; }
 
 a { color: var(--teal); text-underline-offset: 0.18em; }
@@ -244,6 +248,9 @@ h3 { letter-spacing: -0.01em; }
   color: var(--dim);
   font-size: clamp(1.05rem, 1.7vw, 1.22rem);
   line-height: 1.55;
+  /* balance keeps a two-character tail like "续吧。" off a line of its own;
+     Chinese has no word breaks, so pretty alone does not help */
+  text-wrap: balance;
 }
 
 /* ---------------------------------------------------------------- hero */
@@ -759,16 +766,60 @@ h3 { letter-spacing: -0.01em; }
   text-align: center;
 }
 
-/* The photo stays beside the map on anything wider than a phone; only a
-   phone stacks it under the map, where there is no room beside it. */
+/* The photo stays beside the map on anything wider than a phone. */
 @media (max-width: 760px) {
   /* minmax(0, …) so the map scroller can stay narrower than the SVG */
-  .map-layout { grid-template-columns: minmax(0, 1fr); }
-  /* Stacked, an empty photo box only pushes the details further down; the
-     panel below already says what to click. */
+  .map-layout { grid-template-columns: minmax(0, 1fr); position: relative; }
+
+  /* A phone has no room beside the map, and putting the picture under it
+     meant scrolling away from what was just tapped. It floats next to the
+     shape instead, and map.js keeps it there while the map is swiped. */
   .map-photo.is-empty { display: none; }
-  /* Stacked, the photo would fill the whole page width; keep it a figure. */
-  .map-photo { width: 100%; max-width: 640px; justify-self: center; }
+  .map-photo.is-popover {
+    position: absolute;
+    z-index: 6;
+    top: 0;
+    left: 0;
+    width: min(196px, 58%);
+    padding: 6px 6px 8px;
+    border-radius: 12px;
+    box-shadow: 0 18px 36px -14px rgba(20, 32, 28, 0.55), 0 2px 6px rgba(20, 32, 28, 0.14);
+    animation: pop 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .map-photo.is-popover.is-away {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.96);
+  }
+  .map-photo.is-popover { transition: opacity 0.18s ease, transform 0.18s ease; }
+  .map-photo.is-popover .map-photo-name { margin: 7px 3px 0; font-size: 0.86rem; }
+  .map-photo.is-popover .map-photo-zh { margin: 0 3px; font-size: 0.78rem; }
+  .map-photo.is-popover .map-photo-hint { display: none; }
+  .map-photo-close {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    font: inherit;
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(20, 32, 28, 0.35);
+  }
+}
+
+/* the close button belongs to the phone popover only */
+.map-photo-close { display: none; }
+@media (max-width: 760px) {
+  .map-photo.is-popover .map-photo-close { display: grid; }
 }
 
 .panel-breadcrumb {
@@ -915,7 +966,9 @@ h3 { letter-spacing: -0.01em; }
    small square on the right, the rooms inside sit on a second row below. */
 .building-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 180px;
+  /* The picture grows with the window, so a wide screen gives it more room
+     without the words on the left getting squeezed. */
+  grid-template-columns: minmax(0, 1fr) clamp(200px, 23vw, 330px);
   align-content: start;
   padding: 0;
   border: 1px solid var(--line);
@@ -938,7 +991,9 @@ h3 { letter-spacing: -0.01em; }
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1;
+  /* 4:3 is the shape the photographs were taken in, so almost none of the
+     building is cropped, and the picture lines up with the words beside it. */
+  aspect-ratio: 4 / 3;
   object-fit: cover;
 }
 
@@ -993,7 +1048,7 @@ h3 { letter-spacing: -0.01em; }
 .inside-label {
   margin: 0 0 9px;
   color: var(--dim);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -1009,8 +1064,9 @@ h3 { letter-spacing: -0.01em; }
 }
 
 /* Six thumbnails share the row, so they grow with the card instead of
-   wrapping onto a second line. */
-.inside-item { width: clamp(114px, calc((100% - 50px) / 6), 170px); }
+   wrapping onto a second line. The page is wide now, so each one gets
+   about 215px instead of 165px on a laptop. */
+.inside-item { width: clamp(120px, calc((100% - 50px) / 6), 225px); }
 
 .inside-photo {
   display: block;
@@ -1048,8 +1104,8 @@ h3 { letter-spacing: -0.01em; }
   .building-body > .card-link { grid-column: 1; justify-self: start; }
 }
 
-.inside-name { display: block; font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
-.inside-zh { display: block; color: var(--dim); font-size: 0.78rem; line-height: 1.3; }
+.inside-name { display: block; font-size: 0.94rem; font-weight: 600; line-height: 1.3; }
+.inside-zh { display: block; color: var(--dim); font-size: 0.84rem; line-height: 1.3; }
 
 /* ----------------------------------------------------------------- about */
 
