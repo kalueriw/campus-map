@@ -375,6 +375,7 @@ h3 { letter-spacing: -0.01em; }
 /* --------------------------------------------------------------- map card */
 
 .map-card {
+  min-width: 0;
   padding: 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -426,15 +427,13 @@ h3 { letter-spacing: -0.01em; }
 
 .b-label { paint-order: stroke; stroke: rgba(251, 250, 247, 0.9); stroke-width: 4px; }
 .b-label .en { fill: #14201c; font-weight: 700; font-size: 22px; }
-.b-label .zh { fill: #3f4a43; font-size: 14px; font-weight: 500; }
-.b-label--small .en { font-size: 17px; }
-.b-label--small .zh { font-size: 12px; }
-.b-label--medium .en { font-size: 18px; }
-.b-label--medium .zh { font-size: 12px; }
-.b-label--minor .en { font-size: 16px; }
-.b-label--minor .zh { font-size: 11px; }
-.b-label--water .en { fill: var(--cat-ink); font-style: italic; font-size: 19px; }
-.b-label--water .zh { fill: var(--cat-ink); font-size: 12px; }
+.b-label .zh { fill: #3f4a43; font-size: 15px; font-weight: 500; }
+.b-label--small .en { font-size: 18px; }
+.b-label--small .zh { font-size: 13px; }
+.b-label--minor .en { font-size: 21px; }
+.b-label--minor .zh { font-size: 13px; }
+.b-label--water .en { fill: var(--cat-ink); font-style: italic; font-size: 21px; }
+.b-label--water .zh { fill: var(--cat-ink); font-size: 13px; }
 .b-label--outside { stroke-width: 5px; }
 
 .b-leader {
@@ -466,17 +465,16 @@ h3 { letter-spacing: -0.01em; }
 
 .spot-glyph {
   fill: var(--cat-ink);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   pointer-events: none;
 }
-.spot-glyph--tiny { font-size: 9.5px; }
+.spot-glyph--tiny { font-size: 10.5px; }
 .map-spot.is-active .spot-glyph { fill: #fff; }
 
 .map-spot.is-dimmed { opacity: 0.18; pointer-events: none; }
 
 .tree { fill: #7fb35a; stroke: #a8cf83; stroke-width: 2; }
-.context-building { fill: #e4e0d5; stroke: #c9c2b2; stroke-width: 1.5; }
 .road { fill: none; stroke: #f6f1e6; stroke-linecap: round; }
 .park { fill: #dfeccb; }
 .plinth { fill: #efe9dc; opacity: 0.9; }
@@ -582,45 +580,82 @@ h3 { letter-spacing: -0.01em; }
 }
 .panel-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* ------------------------------------------------------------ panel photo */
+/* ------------------------------------------------------- map and photo */
 
-.panel-photo { margin: 0 0 18px; }
-
-.panel-photo-link {
-  display: block;
-  max-width: 760px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--paper-2);
-  cursor: zoom-in;
+.map-layout {
+  display: grid;
+  /* The photo column grows with the window so the picture stays readable;
+     it stops at 460px so the map keeps most of the width. */
+  grid-template-columns: minmax(0, 1fr) clamp(340px, 34vw, 460px);
+  gap: 16px;
+  align-items: start;
 }
 
-.panel-photo img {
+.map-photo {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.map-photo-link {
+  display: block;
+  cursor: zoom-in;
+}
+.map-photo img {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  border-radius: 8px;
 }
 
-.panel-photo figcaption {
-  margin-top: 7px;
+.map-photo-name {
+  margin: 10px 4px 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.map-photo-zh {
+  margin: 1px 4px 0;
   color: var(--dim);
-  font-size: 0.8rem;
+  font-size: 0.86rem;
+}
+.map-photo-hint {
+  margin: 10px 4px 2px;
+  color: var(--dim);
+  font-size: 0.76rem;
 }
 
-.panel-photo--empty {
+/* before anything is picked, the empty card matches the height of the map */
+.map-photo.is-empty {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.map-photo.is-empty .photo-empty { flex: 1; min-height: 0; }
+
+.photo-empty {
   display: grid;
   place-items: center;
-  max-width: 760px;
-  min-height: 140px;
-  padding: 22px;
+  min-height: 240px;
+  padding: 18px;
   border: 2px dashed var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
   color: var(--dim);
+  font-size: 0.86rem;
   text-align: center;
 }
-.panel-photo--empty p { margin: 0; font-size: 0.9rem; }
+
+@media (max-width: 1180px) {
+  /* minmax(0, …) so the map scroller can stay narrower than the SVG */
+  .map-layout { grid-template-columns: minmax(0, 1fr); }
+  .photo-empty { min-height: 150px; }
+  /* Stacked, the photo would fill the whole page width; keep it a figure. */
+  .map-photo { width: 100%; max-width: 640px; justify-self: center; }
+}
 
 .panel-breadcrumb {
   margin: 0 0 14px;
@@ -757,7 +792,7 @@ h3 { letter-spacing: -0.01em; }
 
 .building-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr));
   gap: 14px;
   /* Each card keeps its natural height; the tallest in a category is placed
      first so the row reads as a deliberate cascade rather than a ragged edge. */
@@ -790,19 +825,6 @@ h3 { letter-spacing: -0.01em; }
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-}
-
-/* The Student Center has no photograph of the outside, only its rooms. */
-.building-photo--none {
-  display: grid;
-  place-items: center;
-  min-height: 92px;
-  margin: 0;
-  padding: 12px 18px;
-  color: var(--dim);
-  font-size: 0.8rem;
-  text-align: center;
-  cursor: auto;
 }
 
 .building-body {
@@ -865,9 +887,7 @@ h3 { letter-spacing: -0.01em; }
 }
 .inside-link:hover .inside-name { color: var(--teal-dark); text-decoration: underline; }
 
-""
-
-# narrow screens: stack the photo on top instead of squeezing the text column
+/* narrow screens: stack the photo on top instead of squeezing the text column */
 @media (max-width: 560px) {
   .building-card { grid-template-columns: 1fr; }
   .building-photo { grid-column: 1; }
@@ -893,68 +913,6 @@ h3 { letter-spacing: -0.01em; }
   text-decoration: none;
 }
 .building-card .card-link:hover { color: var(--teal-dark); text-decoration: underline; }
-
-/* ---------------------------------------------------------------- photos */
-
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 18px;
-  margin-bottom: 10px;
-}
-
-.photo-card {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--cat-line);
-  border-radius: 12px;
-  background: #fff;
-  overflow: hidden;
-}
-
-.photo-card-link {
-  display: block;
-  background: var(--paper-2);
-  cursor: zoom-in;
-}
-
-.photo-card img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-}
-
-.photo-card figcaption {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 14px 14px;
-}
-
-.photo-card strong { font-size: 0.98rem; letter-spacing: -0.01em; }
-.photo-card .zh { color: var(--dim); font-size: 0.86rem; }
-
-.photo-where {
-  margin: 6px 0 0;
-  color: var(--dim);
-  font-size: 0.78rem;
-}
-
-.photo-link {
-  align-self: flex-start;
-  margin-top: auto;
-  padding-top: 10px;
-  color: var(--teal);
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-.photo-link:hover { color: var(--teal-dark); text-decoration: underline; }
 
 /* ----------------------------------------------------------------- about */
 
@@ -1011,11 +969,12 @@ h3 { letter-spacing: -0.01em; }
 /* --------------------------------------------------------- small screens */
 
 @media (max-width: 900px) {
-  .map-scroller svg { min-width: 1100px; }
+  .map-scroller svg { min-width: 1200px; }
 }
 
 @media (max-width: 760px) {
-  .map-scroller svg { min-width: 1280px; }
+  /* Wide enough that the 60-unit marker hit circle stays above 44 CSS px. */
+  .map-scroller svg { min-width: 1440px; }
   .header-inner { padding-top: 10px; padding-bottom: 10px; }
   .site-nav a { padding: 7px 10px; font-size: 0.9rem; }
   .map-toolbar { align-items: stretch; }

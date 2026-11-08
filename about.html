@@ -16,6 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="canonical" href="https://kalueriw.github.io/campus-map/about.html">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -31,7 +32,7 @@
       </svg>
       BiUH Campus Map
     </a>
-    <nav class="site-nav" aria-label="Main">
+    <nav class="site-nav" aria-label="Main" data-al-zh="主导航">
       <a href="index.html" data-zh="首页">Home</a>
       <a href="map.html" data-zh="地图">Map</a>
       <a href="buildings.html" data-zh="建筑">Buildings</a>
@@ -59,7 +60,7 @@
     <h2 data-zh="网站有什么">What is on the site</h2>
     <ul>
       <li><strong data-zh="首页">Home</strong><span data-zh="——简短介绍和校园预览。"> — a short introduction and a preview of the campus.</span></li>
-      <li><strong data-zh="地图">Map</strong><span data-zh="——主页面：14 栋建筑和它们内部的 11 个场所，配有搜索框、分类筛选，以及点开后带照片的详情面板。"> — the main page: 14 buildings and 11 places inside them, a search box, category filters, and a details panel with a photo of whatever you click.</span></li>
+      <li><strong data-zh="地图">Map</strong><span data-zh="——主页面：地图上的 14 个地点和楼内的 11 个场所，配有搜索框和分类筛选；点击后照片显示在地图右侧，详情在下方。"> — the main page: 14 places on the map and 11 places inside them, a search box, category filters, a photograph beside the map and the details below it.</span></li>
       <li><strong data-zh="建筑">Buildings</strong><span data-zh="——同样的地点做成卡片，每张都带照片和楼内场所。"> — the same places as cards, each with its photograph and the rooms inside it.</span></li>
       <li><strong data-zh="关于">About</strong><span data-zh="——本页。"> — this page.</span></li>
     </ul>
@@ -72,7 +73,7 @@
       <li><strong>Vanilla JavaScript</strong><span data-zh="——一个小文件读取建筑数据、处理点击和键盘输入、筛选地图，不用任何框架。"> — a single small file reads the building data, handles clicks and keyboard input, and filters the map. No libraries.</span></li>
       <li><strong>Responsive by default</strong><span data-zh="——SVG 随容器缩放；窄屏时地图改为横向滚动，而不是缩到看不清。"> — the SVG scales with its container; on a narrow screen the map becomes scrollable instead of shrinking to nothing.</span></li>
       <li><strong>Accessible controls</strong><span data-zh="——每栋建筑都是可键盘聚焦的按钮，楼内场所也是独立按钮，筛选按钮会报告按下状态，详情面板会播报变化。"> — every building is a keyboard-focusable button, the markers inside buildings are buttons of their own, the filter buttons report their pressed state, and the details panel announces changes.</span></li>
-      <li><strong>Photos on demand</strong><span data-zh="——面板只在你点击时才创建 &lt;img&gt;，所以打开地图本身不会下载任何照片。"> — the panel builds its <code>&lt;img&gt;</code> only when you click something, so opening the map downloads no photographs at all.</span></li>
+      <li><strong>Photos on demand</strong><span data-zh="——只有点击建筑时才会请求照片，照片显示在地图右侧的图片栏；打开地图本身不会下载任何照片。"> — a photograph is requested only when you click a building, and it appears in the column beside the map; opening the map downloads none at all.</span></li>
       <li><strong>English / 中文</strong><span data-zh="——右上角的开关切换整站语言，并记住你的选择。"> — the switch in the header changes the language of the whole site, and remembers your choice.</span></li>
     </ul>
 
@@ -97,7 +98,7 @@
 
     <div class="credits">
       <p><strong data-zh="素材与来源">Credits and sources</strong></p>
-      <p data-zh="地图是从零手绘的 SVG 示意图，依据校园平面图和我自己在校园里的走动。本站没有使用任何第三方地图瓦片。">The map is a schematic drawn from scratch in SVG, based on the campus plan and my own walks around campus. No third-party map tiles are used on this site.</p>
+      <p data-zh="地图是依据校园平面图和我自己在校园里的走动，从零绘制的 SVG 示意图。本站没有使用任何第三方地图瓦片。">The map is a schematic drawn from scratch in SVG, based on the campus plan and my own walks around campus. No third-party map tiles are used on this site.</p>
       <p data-zh="照片是我 2026 年 11 月在校园里拍摄的，只用在这里。原图存放在 photos/ 目录下，photos/README.md 记录了每张的拍摄位置。">The photographs were taken by me on walks around campus in November 2026 and are used only here. They are stored at full size in <code>photos/</code>, and the index in <code>photos/README.md</code> records where each one was taken.</p>
       <p data-zh="字体使用设备自带的系统字体。为 BiUH 的 Web Technologies 2026 课程制作。">Typefaces are the ones already on your device (system fonts). Built for Web Technologies 2026 at BiUH.</p>
       <p><strong data-zh="联系方式">Contact</strong><span data-zh="——"> — </span><a href="mailto:X20250076@stu.hibiuh.edu.cn">X20250076@stu.hibiuh.edu.cn</a></p>
@@ -107,8 +108,8 @@
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图为手绘 SVG。"> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</span></p>
-    <nav aria-label="Footer">
+    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图以 SVG 绘制。"> — a student project for Web Technologies 2026. Map drawn as SVG.</span></p>
+    <nav aria-label="Footer" data-al-zh="页脚导航">
       <a href="index.html" data-zh="首页">Home</a>
       <a href="map.html" data-zh="地图">Map</a>
       <a href="buildings.html" data-zh="建筑">Buildings</a>

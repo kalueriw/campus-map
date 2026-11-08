@@ -214,7 +214,7 @@
     },
     {
       /* The dormitories are numbered from the north: the top block on the map
-         is 1栋, the lower block is 2栋. Keep the ids (dorm-b / dorm-a) so old
+         is 2栋, the lower block is 1栋. Keep the ids (dorm-b / dorm-a) so old
          links and the buildings page anchors keep working. */
       id: 'dorm-b',
       en: 'Student Dormitory 2',
@@ -222,7 +222,7 @@
       category: 'residence',
       desc: 'Student housing on the eastern edge of campus, with a fruit shop on its south side.',
       descZh: '校园东侧的学生宿舍，南侧有一家水果店。',
-      where: 'Northern of the two student dormitories, on the eastern edge.',
+      where: 'The northern of the two student dormitories, on the eastern edge.',
       whereZh: '东侧靠北的那栋宿舍。',
       aliases: 'student dormitory dorm housing 2栋 二栋 学生宿舍2 学生公寓 宿舍',
       photo: 'photos/dorm-2.jpg',
@@ -250,7 +250,7 @@
       category: 'residence',
       desc: 'Student housing on the eastern edge of campus, with a coffee shop and a parcel station along its north side, and a supermarket at the south-west corner.',
       descZh: '校园东侧的学生宿舍，北侧是咖啡店和快递驿站，西南角是美宜佳超市。',
-      where: 'Southern of the two student dormitories, below Student Dormitory 2.',
+      where: 'The southern of the two student dormitories, below Student Dormitory 2.',
       whereZh: '东侧靠南的那栋宿舍，在 2 栋下方。',
       aliases: 'student dormitory dorm housing 1栋 一栋 学生宿舍1 学生公寓 宿舍',
       photo: 'photos/dorm-1.jpg',
@@ -376,11 +376,6 @@
   function categoryLabel(building) {
     return pick(CATEGORY_LABELS[building.category], CATEGORY_LABELS_ZH[building.category]);
   }
-
-  /* Photos are 4:3 (4080 × 3060 or 4096 × 3072). Declaring the ratio lets the
-     browser reserve the space before the image arrives. */
-  var PHOTO_WIDTH = 1600;
-  var PHOTO_HEIGHT = 1200;
 
   var svg = document.getElementById('campus-svg');
   var panel = document.getElementById('map-panel');
@@ -541,7 +536,7 @@
 
     if (selectedSpotId && !spotVisible[selectedSpotId]) {
       if (selectedId && matches(byId(selectedId))) {
-        selectBuilding(selectedId, { scroll: false });
+        selectBuilding(selectedId);
       } else {
         clearSelection();
       }
@@ -559,27 +554,6 @@
   }
 
   /* ---- panel markup ------------------------------------------------------ */
-
-  function photoMarkup(photo, caption, fallback) {
-    if (!photo) {
-      return [
-        '<div class="panel-photo panel-photo--empty">',
-        '  <p>' + escapeHtml(fallback || pick('No photo of this place yet.', '这个地点还没有照片。')) + '</p>',
-        '</div>'
-      ].join('');
-    }
-    return [
-      '<figure class="panel-photo">',
-      '  <a class="panel-photo-link" href="' + escapeHtml(photo) + '" data-lightbox data-caption="' + escapeHtml(caption) + '">',
-      /* The <img> only exists once something is selected, so it can start
-         loading straight away: lazy-loading would just delay the photo the
-         reader asked for. */
-      '    <img src="' + escapeHtml(photo) + '" alt="' + escapeHtml(caption) + '" width="' + PHOTO_WIDTH + '" height="' + PHOTO_HEIGHT + '" decoding="async">',
-      '  </a>',
-      '  <figcaption>' + pick('Click the photo to see it full size.', '点击照片查看大图。') + '</figcaption>',
-      '</figure>'
-    ].join('');
-  }
 
   function spotChipsMarkup(building) {
     if (!building.spots || !building.spots.length) {
@@ -610,13 +584,7 @@
   }
 
   function renderBuilding(building) {
-    var emptyText = (building.spots && building.spots.length)
-      ? pick('No photo of the outside yet — pick a place inside to see one.',
-             '还没有外景照片——点下方楼内的场所。')
-      : pick('No photo of this place yet — it is still on the to-do list.',
-             '这个地点还没有照片，正在补拍。');
     panel.innerHTML = [
-      photoMarkup(building.photo, pick(building.en + ' · ' + building.zh, building.zh + ' · ' + building.en), emptyText),
       spotChipsMarkup(building),
       '<div class="panel-grid">',
       '  <div>',
@@ -642,8 +610,6 @@
       '位于<strong>' + escapeHtml(building.zh) + '</strong>内 · ' + escapeHtml(building.en));
     panel.innerHTML = [
       '<p class="panel-breadcrumb">' + crumb + '</p>',
-      photoMarkup(spot.photo, pick(spot.en + ' · ' + spot.zh, spot.zh + ' · ' + spot.en),
-                  pick('No photo of this place yet.', '这个地点还没有照片。')),
       spotChipsMarkup(building),
       '<div class="panel-grid">',
       '  <div>',
@@ -710,22 +676,6 @@
     });
   }
 
-  function revealPanel(options) {
-    var settings = options || {};
-    var reduceMotion = window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var panelRect = panel.getBoundingClientRect();
-    var panelIsVisible = panelRect.top < window.innerHeight - 180 &&
-                         panelRect.bottom > 80;
-    var isSmallScreen = window.matchMedia('(max-width: 760px)').matches;
-    if (settings.scroll !== false && (!panelIsVisible || isSmallScreen)) {
-      panel.scrollIntoView({
-        behavior: reduceMotion ? 'auto' : 'smooth',
-        block: 'start'
-      });
-    }
-  }
-
   /* ---- selection --------------------------------------------------------- */
 
   /* Rebuilding the panel destroys the button the reader just used, which
@@ -763,13 +713,13 @@
       centerInScroller(groups[id]);
     }
     renderBuilding(building);
+    renderPhoto(building);
     if (hadPanelFocus) {
       restorePanelFocus(null);
     }
     if (settings.syncUrl !== false) {
       syncUrl();
     }
-    revealPanel(settings);
   }
 
   function selectSpot(id, options) {
@@ -792,13 +742,13 @@
       spotEls[id].classList.add('is-active');
     }
     renderSpot(spot);
+    renderPhoto(spot);
     if (hadPanelFocus) {
       restorePanelFocus(id);
     }
     if (settings.syncUrl !== false) {
       syncUrl();
     }
-    revealPanel(settings);
   }
 
   function clearSelection(options) {
@@ -807,7 +757,13 @@
     clearMarks();
     selectedId = null;
     selectedSpotId = null;
+    renderPhoto(null);
     panel.innerHTML = EMPTY_PANEL;
+    /* EMPTY_PANEL was captured after i18n had already translated the page, so
+       it holds whichever language was active at load. Re-apply the current one. */
+    if (i18n && i18n.applyTo) {
+      i18n.applyTo(panel);
+    }
     if (hadPanelFocus) {
       panel.focus({ preventScroll: true });
     }
@@ -915,8 +871,51 @@
           i18n.applyTo(panel);
         }
       }
+      renderPhoto(currentPhotoItem());
       applyFilters();
     });
+  }
+
+  /* ---- photo column ------------------------------------------------------ */
+
+  /* The photograph opens in its own column beside the map, so it is large
+     enough to read and never covers the drawing. The panel below keeps the
+     words. */
+
+  var photoBox = document.getElementById('map-photo');
+
+  function thumbPath(src) {
+    return String(src).replace('photos/', 'photos/thumbs/');
+  }
+
+  function currentPhotoItem() {
+    if (selectedSpotId && spotById[selectedSpotId]) {
+      return spotById[selectedSpotId];
+    }
+    return selectedId ? byId(selectedId) : null;
+  }
+
+  function renderPhoto(item) {
+    if (!photoBox) {
+      return;
+    }
+    if (!item || !item.photo) {
+      photoBox.classList.add('is-empty');
+      photoBox.innerHTML = '<p class="photo-empty">' + pick(
+        'Click a building or a marker to see its photograph here.',
+        '点击建筑或圆点，照片会显示在这里。') + '</p>';
+      return;
+    }
+    photoBox.classList.remove('is-empty');
+    var caption = pick(item.en + ' · ' + item.zh, item.zh + ' · ' + item.en);
+    photoBox.innerHTML = [
+      '<a class="map-photo-link" href="' + escapeHtml(item.photo) + '" data-lightbox data-caption="' + escapeHtml(caption) + '">',
+      '  <img src="' + escapeHtml(thumbPath(item.photo)) + '" alt="' + escapeHtml(caption) + '" width="640" height="480" decoding="async">',
+      '</a>',
+      '<p class="map-photo-name">' + escapeHtml(pick(item.en, item.zh)) + '</p>',
+      '<p class="map-photo-zh" lang="' + pick('zh', 'en') + '">' + escapeHtml(pick(item.zh, item.en)) + '</p>',
+      '<p class="map-photo-hint">' + pick('Click the photo to see it full size.', '点击照片查看大图。') + '</p>'
+    ].join('');
   }
 
   /* ---- panel interactions ------------------------------------------------ */
@@ -978,9 +977,9 @@
   var initialId = params.get('building');
 
   if (initialSpot && spotById[initialSpot]) {
-    selectSpot(initialSpot, { syncUrl: false, scroll: false });
+    selectSpot(initialSpot, { syncUrl: false });
   } else if (initialId && byId(initialId)) {
-    selectBuilding(initialId, { syncUrl: false, scroll: false });
+    selectBuilding(initialId, { syncUrl: false });
   }
 
   applyFilters();

@@ -16,6 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="canonical" href="https://kalueriw.github.io/campus-map/map.html">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -31,7 +32,7 @@
       </svg>
       BiUH Campus Map
     </a>
-    <nav class="site-nav" aria-label="Main">
+    <nav class="site-nav" aria-label="Main" data-al-zh="主导航">
       <a href="index.html" data-zh="首页">Home</a>
       <a href="map.html" aria-current="page" data-zh="地图">Map</a>
       <a href="buildings.html" data-zh="建筑">Buildings</a>
@@ -79,8 +80,9 @@
   </div>
   <p class="map-status" id="map-status" role="status" aria-live="polite"></p>
 
+  <div class="map-layout">
   <div class="map-card">
-    <div class="map-scroller" tabindex="0" role="region" aria-label="Campus map. On a narrow screen, scroll sideways to see the whole campus.">
+    <div class="map-scroller" tabindex="0" role="region" aria-label="Campus map. On a narrow screen, scroll sideways to see the whole campus." data-al-zh="校园地图。屏幕较窄时可以左右滑动查看整个校园。">
       <svg id="campus-svg" viewBox="0 0 1964 700" role="group" aria-labelledby="map-svg-title map-svg-desc" focusable="false">
         <title id="map-svg-title" data-zh="BiUH 校园示意图">Schematic map of the BiUH campus</title>
         <desc id="map-svg-desc" data-zh="运动场、羽毛球场和篮球场在校园西侧。教学楼 A、B 位于北侧，实训楼在 B 楼东北。实训楼东边是学生中心；学生宿舍沿东侧上下排列，2 栋在上、1 栋在下。学生中心下方是小湖和一组小楼：教师宿舍 A、B，湖畔坊餐厅就在湖边。小圆点可以打开建筑内部的场所，例如学生餐厅、健身房，以及宿舍楼一层的商铺。">The sports field, badminton courts and basketball courts are on the west. Teaching buildings A and B sit in the north, with the training building north-east of B. East of the training building is the student center, with the student dormitories stacked on the eastern edge, Dormitory 2 above Dormitory 1. Below the student center are a lake and a group of smaller buildings: teacher dormitories A and B, with the Lakeside Restaurant beside the lake. Small round markers open the places inside a building, such as the canteen, the gyms and the shops on the ground floor of the dormitories.</desc>
@@ -198,8 +200,8 @@
           <circle class="tree" cx="1730" cy="330" r="6"/>
           <circle class="tree" cx="1730" cy="380" r="6"/>
           <circle class="tree" cx="1730" cy="430" r="6"/>
-          <circle class="tree" cx="1752" cy="548" r="8"/>
-          <circle class="tree" cx="1600" cy="560" r="7"/>
+          <circle class="tree" cx="1770" cy="624" r="8"/>
+          <circle class="tree" cx="1600" cy="612" r="7"/>
           <circle class="tree" cx="880" cy="600" r="9"/>
           <circle class="tree" cx="950" cy="644" r="9"/>
           <circle class="tree" cx="1040" cy="590" r="9"/>
@@ -424,6 +426,11 @@
     <p class="map-hint" data-zh="示意图，非等比例。小屏幕上可左右滑动查看整个校园。">Schematic map — not to scale. On a small screen, swipe the map sideways to see the whole campus.</p>
   </div>
 
+  <aside class="map-photo is-empty" id="map-photo" aria-live="polite">
+    <p class="photo-empty" data-zh="点击建筑或圆点，照片会显示在这里。">Click a building or a marker to see its photograph here.</p>
+  </aside>
+  </div>
+
   <aside class="map-panel" id="map-panel" aria-live="polite" tabindex="-1">
     <div class="panel-empty">
       <h2 data-zh="选择一个地点">Pick a place</h2>
@@ -437,7 +444,7 @@
   </aside>
 </main>
 
-<dialog class="lightbox" id="photo-lightbox" aria-label="Photo viewer">
+<dialog class="lightbox" id="photo-lightbox" aria-label="Photo viewer" data-al-zh="照片查看器">
   <form method="dialog">
     <button class="lightbox-close" type="submit" aria-label="Close the photo" data-al-zh="关闭照片">×</button>
   </form>
@@ -447,8 +454,8 @@
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图为手绘 SVG。"> — a student project for Web Technologies 2026. Map drawn by hand as SVG.</span></p>
-    <nav aria-label="Footer">
+    <p><strong>BiUH Campus Map</strong><span data-zh="——Web Technologies 2026 课程作业。地图以 SVG 绘制。"> — a student project for Web Technologies 2026. Map drawn as SVG.</span></p>
+    <nav aria-label="Footer" data-al-zh="页脚导航">
       <a href="index.html" data-zh="首页">Home</a>
       <a href="map.html" data-zh="地图">Map</a>
       <a href="buildings.html" data-zh="建筑">Buildings</a>

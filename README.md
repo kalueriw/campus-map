@@ -2,7 +2,7 @@
 
 A four-page, static campus map built for the **Web Technologies 2026** personal project.
 
-The site is a schematic map of the campus — the sports field, teaching buildings, training building, student center, dormitories, lake and Lakeside Restaurant — with English and Chinese names. Click a building and the panel shows a photograph of it; small markers on the map open the places inside a building (the canteen, the gyms, the shops along the dormitories).
+The site is a schematic map of the campus — the sports field, teaching buildings, training building, student center, dormitories, lake and Lakeside Restaurant — with English and Chinese names. Click a building and its photograph opens in the column beside the map, with the details below it; small markers open the places inside a building (the canteen, the gyms, the shops along the dormitories).
 
 ## Pages
 
@@ -23,6 +23,8 @@ campus-map/
 ├── map.html
 ├── buildings.html
 ├── about.html
+├── sitemap.xml
+├── robots.txt
 ├── style.css          one shared stylesheet
 ├── map.js             map data + interactions (vanilla JavaScript)
 ├── lightbox.js        the photo dialog, shared by map.html and buildings.html
@@ -30,7 +32,7 @@ campus-map/
 ├── photos/
 │   ├── README.md              which photo was taken where
 │   ├── *.jpg                  25 originals, 4080 × 3060 or 4096 × 3072, 82.2 MB
-│   └── thumbs/*.jpg           640 × 480 previews for the photo grid, 1.4 MB
+│   └── thumbs/*.jpg           640 × 480 previews for the cards and photo column, 1.4 MB
 ├── images/
 │   ├── og-image.jpg          1200 × 630, under 100 KB
 │   ├── favicon-32.png        32 × 32
@@ -78,14 +80,14 @@ The site is designed for **GitHub Pages**:
 Suggested text for the course platform — edit it so the words are yours.
 
 - **Title:** BiUH Campus Map
-- **Short description:** A hand-drawn campus map where every building opens its own photo, with English and Chinese names.
+- **Short description:** A campus map where every building opens its own photo, with English and Chinese names.
 - **Long description:** Start from the About page: why you built it, what the four pages do, how the map works, and what you would add next. Aim for 3–5 paragraphs.
 - **Status:** Completed
 
 ## Built with
 
 - Semantic HTML, one shared CSS file, and vanilla JavaScript.
-- An inline **SVG** map drawn by hand with a `viewBox`, so it scales with its container.
+- An inline **SVG** map with a `viewBox`, so it scales with its container.
 - No server, no database, no libraries, no tracking.
 - System fonts and CSS custom properties for colour.
 
