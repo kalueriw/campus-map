@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-zh="3D 校园 · BiUH 校园地图">3D Campus · BiUH Campus Map</title>
+<meta name="description" content="Walk around the BiUH campus in 3D. Every teaching building, dormitory, sports ground and the lake, built from the campus master plan — in English or Chinese.">
+<meta name="theme-color" content="#0f766e">
+
+<!-- Open Graph — update these if the username or repository changes. -->
+<meta property="og:title" content="3D Campus · BiUH Campus Map">
+<meta property="og:description" content="Walk around the BiUH campus in 3D, built from the campus master plan.">
+<meta property="og:image" content="https://kalueriw.github.io/campus-map/images/og-image.jpg">
+<meta property="og:url" content="https://kalueriw.github.io/campus-map/campus.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="canonical" href="https://kalueriw.github.io/campus-map/campus.html">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script>
+  /* Choose the theme before the page paints, so a dark page never flashes
+     white: the saved choice first, otherwise the system setting. */
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('campus-map-theme'); } catch (error) {}
+    if (theme !== 'dark' && theme !== 'light') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="scene.css">
+</head>
+<body class="page-campus">
+<a class="skip-link" href="#main" data-zh="跳到主要内容">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap wrap-wide header-inner">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Z" fill="currentColor"/>
+        <circle cx="12" cy="9" r="2.6" fill="#fbfaf7"/>
+      </svg>
+      BiUH Campus Map
+    </a>
+    <nav class="site-nav" aria-label="Main" data-al-zh="主导航">
+      <a href="index.html" data-zh="首页">Home</a>
+      <a href="map.html" data-zh="地图">Map</a>
+      <a href="campus.html" aria-current="page" data-zh="3D 校园">3D Campus</a>
+      <a href="buildings.html" data-zh="建筑">Buildings</a>
+      <a href="about.html" data-zh="关于">About</a>
+    </nav>
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label="Language" data-al-zh="语言">
+        <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-btn="zh" aria-pressed="false">中文</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode" data-al-zh="深色模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4 8.2 8.2 0 1 0 20 14.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="campus-main">
+
+  <!-- The scene fills the page; the panel floats over it on the right. -->
+  <div class="stage" id="stage">
+    <div class="scene-labels" id="scene-labels" aria-hidden="false"></div>
+
+    <div class="stage-fallback" role="status">
+      <p data-zh="这台设备上的浏览器无法显示 3D 校园。">This browser cannot show the 3D campus.</p>
+      <a class="btn btn-primary" href="map.html" data-zh="改用平面地图">Use the flat map</a>
+    </div>
+
+    <div class="view-bar" role="group" aria-label="Jump to a part of campus" data-al-zh="跳到校园的某个区域">
+      <button type="button" data-view="overview" aria-pressed="true" data-zh="全景">Overview</button>
+      <button type="button" data-view="teaching" aria-pressed="false" data-zh="教学区">Teaching</button>
+      <button type="button" data-view="lake" aria-pressed="false" data-zh="湖畔">Lake</button>
+      <button type="button" data-view="sport" aria-pressed="false" data-zh="运动场">Sport</button>
+      <button type="button" data-view="dorms" aria-pressed="false" data-zh="宿舍">Dorms</button>
+    </div>
+
+    <aside class="scene-panel" id="scene-panel" aria-label="The building you picked" data-al-zh="你选中的建筑"></aside>
+
+    <p class="stage-hint" data-zh="拖动旋转 · 滚轮缩放 · 点建筑看照片">
+      Drag to turn · scroll to zoom · click a building for its photo
+    </p>
+  </div>
+</main>
+
+<dialog class="lightbox" id="photo-lightbox" aria-label="Photo viewer" data-al-zh="照片查看器">
+  <form method="dialog">
+    <button class="lightbox-close" type="submit" aria-label="Close the photo" data-al-zh="关闭照片">×</button>
+  </form>
+  <img alt="">
+  <p class="lightbox-caption"></p>
+</dialog>
+
+<script src="data.js"></script>
+<script src="i18n.js"></script>
+<script src="site.js"></script>
+<script src="lightbox.js"></script>
+<script type="module" src="scene3d/main.js"></script>
+</body>
+</html>

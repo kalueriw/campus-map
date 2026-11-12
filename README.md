@@ -1,6 +1,6 @@
 # BiUH Campus Map
 
-A four-page, static campus map built for the **Web Technologies 2026** personal project.
+A five-page, static campus map built for the **Web Technologies 2026** personal project.
 
 The site is a schematic map of the campus — the sports field, teaching buildings, training building, student center, dormitories, lake and Lakeside Restaurant — with English and Chinese names. Click a building and its photograph opens in the column beside the map, with the details below it; small markers open the places inside a building (the canteen, the gyms, the shops along the dormitories).
 
@@ -10,6 +10,7 @@ The site is a schematic map of the campus — the sports field, teaching buildin
 | --- | --- | --- |
 | Home | `index.html` | Introduction, campus overview, preview illustration |
 | Map | `map.html` | Interactive SVG map: select a building or a place inside it, see its photo, search, filter by category |
+| 3D Campus | `campus.html` | The campus in three dimensions: fly round it, click a building for its photo, jump to teaching, lake, sport or dorms |
 | Buildings | `buildings.html` | Every place as a card with its photo, grouped by category, with a link back to the map |
 | About | `about.html` | Why and how the site was built, plus credits |
 | Not found | `404.html` | Shown by GitHub Pages for any missing address, with a way back |
@@ -26,6 +27,7 @@ campus-map/
 ├── map.html
 ├── buildings.html
 ├── about.html
+├── campus.html        the 3D campus
 ├── 404.html           "not on the map" page for missing addresses
 ├── sitemap.xml
 ├── robots.txt
@@ -33,7 +35,19 @@ campus-map/
 ├── data.js            the places: names, descriptions, photos — the one copy
 ├── map.js             map interactions (vanilla JavaScript), reads data.js
 ├── buildings.js       builds the buildings page cards from data.js
-├── lightbox.js        the photo dialog, shared by map.html and buildings.html
+├── lightbox.js        the photo dialog, shared by map.html, buildings.html and campus.html
+├── scene.css          the 3D page's own stylesheet
+├── scene3d/           the 3D campus (ES modules)
+│   ├── main.js          renderer, camera flights, labels, the panel
+│   ├── data.js          the buildings: names, photos, text
+│   ├── buildings.js     the building models (facades drawn on canvas)
+│   ├── site.js          the site in 3D: lawn, roads, kerbs, crossings,
+│   │                    paving, the track, the courts, the lake, the walls
+│   └── props.js         trees, shrubs, hedges, the boundary belt
+├── vendor/three/      three.js and OrbitControls, kept local (no CDN)
+├── tools/             the measuring scripts that read the master plan
+│                      (plan-coords.md holds the result), the photo cropper,
+│                      and a headless screenshot helper
 ├── i18n.js            the English / 中文 switch, shared by every page
 ├── site.js            the light / dark switch and the header shadow
 ├── photos/

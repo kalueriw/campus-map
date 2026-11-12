@@ -1,0 +1,468 @@
+/* ==========================================================================
+   BiUH Campus Map — the 3D campus page
+   Only campus.html loads this. The scene fills the screen under the header;
+   the floating panel, the view bar and the labels sit on top of it.
+   ========================================================================== */
+
+.page-campus .campus-main { padding: 0; }
+
+/* ---- the stage ---------------------------------------------------------- */
+
+.stage {
+  position: relative;
+  height: calc(100vh - var(--campus-header-height, 68px));
+  min-height: 460px;
+  max-height: 1100px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #dfe9ec 0%, #e7eee4 55%, #e6ecd8 100%);
+  touch-action: none;
+  cursor: grab;
+}
+
+[data-theme="dark"] .stage {
+  background: linear-gradient(180deg, #101b1c 0%, #131d1a 55%, #131a12 100%);
+}
+
+.stage > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.stage:active { cursor: grabbing; }
+
+/* A soft vignette so the panel and labels read against bright ground. */
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 42%, transparent 52%, rgba(20, 32, 28, 0.16) 100%),
+    linear-gradient(180deg, rgba(251, 250, 247, 0.55) 0%, transparent 14%);
+}
+
+[data-theme="dark"] .stage::after {
+  background:
+    radial-gradient(120% 90% at 50% 42%, transparent 48%, rgba(0, 0, 0, 0.42) 100%),
+    linear-gradient(180deg, rgba(14, 21, 19, 0.6) 0%, transparent 16%);
+}
+
+.stage-fallback {
+  display: none;
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.stage-fallback p { margin: 0; }
+
+/* Shown only when WebGL is missing: campus-3d.js sets this. */
+.no-webgl .stage-fallback { display: grid; }
+.no-webgl .view-bar,
+.no-webgl .scene-panel,
+.no-webgl .scene-labels,
+.no-webgl .stage-hint { display: none; }
+
+/* ---- labels ------------------------------------------------------------- */
+
+.scene-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scene-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  padding: 0.22rem 0.6rem 0.24rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(18, 30, 26, 0.46);
+  color: #f7f4ea;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(12, 22, 20, 0.22);
+  transition: opacity 0.25s ease, transform 0.12s linear, background 0.2s ease;
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+}
+
+[data-theme="dark"] .scene-label {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(10, 18, 16, 0.58);
+  color: #f4f1e6;
+}
+
+.scene-label:hover {
+  background: rgba(232, 196, 138, 0.92);
+  border-color: transparent;
+  color: #2a2415;
+}
+
+.scene-label.is-active {
+  background: rgba(246, 241, 228, 0.96);
+  border-color: transparent;
+  color: #1d2b26;
+}
+
+.scene-label.is-scenery {
+  font-weight: 400;
+  opacity: 0.82;
+}
+
+.scene-label-spot,
+.scene-place-chip {
+  background: rgba(18, 30, 26, 0.24);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #f7f4ea;
+  font-size: 0.61rem;
+  font-weight: 500;
+  padding: 0.16rem 0.48rem 0.18rem;
+  box-shadow: 0 2px 9px rgba(12, 22, 20, 0.12);
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+}
+
+.scene-label-spot:hover,
+.scene-label-spot:focus-visible,
+.scene-place-chip:hover,
+.scene-place-chip:focus-visible,
+.scene-place-chip[aria-pressed="true"] {
+  background: rgba(18, 30, 26, 0.72);
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #fff;
+}
+
+[data-theme="dark"] .scene-label-spot,
+[data-theme="dark"] .scene-place-chip { background: rgba(10, 18, 16, 0.42); }
+
+.scene-landmark-sign {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  padding: .28rem .72rem;
+  border: 1px solid rgba(255,255,255,.76);
+  border-radius: 999px;
+  background: rgba(250,248,239,.92);
+  color: #263530;
+  box-shadow: 0 3px 12px rgba(20,32,28,.24);
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.scene-place-dock {
+  position: absolute;
+  z-index: 3;
+  left: 10px;
+  top: 112px;
+  width: min(232px, calc(100% - 20px));
+  max-height: calc(100% - 132px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .18rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: auto;
+  scrollbar-width: none;
+}
+.scene-place-dock::-webkit-scrollbar { display: none; }
+.scene-place-dock:not(.is-empty) { opacity: 1; pointer-events: auto; }
+.scene-place-dock.is-empty { display: none; }
+.scene-place-group { width: fit-content; max-width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: .16rem; padding: .18rem .24rem; border: 0; border-radius: 9px; background: rgba(18,30,26,.07); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+.scene-place-group[hidden] { display: none; }
+.scene-place-group h3 { flex: 1 0 100%; margin: 0 0 .12rem; color: rgba(255,255,255,.98); font-size: .82rem; line-height: 1.25; font-weight: 700; white-space: normal; text-shadow: 0 1px 4px rgba(0,0,0,.72); }
+.scene-place-chip { position: static; cursor: pointer; border-radius: 999px; font: inherit; font-size: .76rem; white-space: nowrap; padding: .16rem .48rem; box-shadow: 0 1px 5px rgba(0,0,0,.24); }
+.stage.has-selection .scene-place-dock { opacity: 1; }
+
+
+
+.scene-label.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-lang="zh"] .scene-label { font-size: 0.8rem; }
+[data-lang="zh"] .scene-label-spot { font-size: 0.56rem; }
+
+/* ---- the floating panel ------------------------------------------------- */
+
+.scene-panel {
+  position: absolute;
+  z-index: 5;
+  right: clamp(12px, 3vw, 40px);
+  top: clamp(12px, 3vw, 34px);
+  width: min(336px, calc(100% - 24px));
+  max-height: calc(100% - 60px);
+  overflow: auto;
+  padding: 1.05rem 1.15rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--header-bg);
+  box-shadow: 0 2px 6px rgba(20, 32, 28, 0.06), 0 22px 50px rgba(20, 32, 28, 0.14);
+  backdrop-filter: blur(14px);
+  overscroll-behavior: contain;
+}
+
+[data-theme="dark"] .scene-panel {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 22px 50px rgba(0, 0, 0, 0.45);
+}
+
+.scene-hint {
+  margin: 0;
+  color: var(--dim);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.scene-panel[hidden] { display: none; }
+
+.scene-panel-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.6rem;
+  pointer-events: none;
+}
+
+.scene-close {
+  min-height: 44px;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--header-bg);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+  backdrop-filter: blur(12px);
+}
+
+.scene-close:hover { background: var(--paper-2); }
+.scene-close:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.scene-photo-item { margin: 0 0 1rem; }
+.scene-photo-item figcaption { font-size: 0.85rem; color: var(--body-ink); }
+.scene-photo-item .scene-photo { margin-bottom: 0.4rem; }
+
+.scene-photo {
+  display: block;
+  margin: -0.35rem -0.35rem 0.85rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--paper-2);
+  line-height: 0;
+}
+
+.scene-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.scene-photo:hover img { transform: scale(1.03); }
+
+.scene-kicker {
+  margin: 0 0 0.15rem;
+  color: var(--dim);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.scene-title {
+  margin: 0 0 0.45rem;
+  font-size: 1.28rem;
+  line-height: 1.24;
+}
+
+.scene-panel p {
+  margin: 0 0 0.7rem;
+  color: var(--body-ink);
+  font-size: 0.93rem;
+  line-height: 1.62;
+}
+
+.scene-owner { margin: 0 0 .5rem; color: var(--dim); font-size: .82rem; font-weight: 700; }
+
+.scene-panel .scene-where {
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line);
+  color: var(--dim);
+  font-size: 0.86rem;
+}
+
+.scene-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.scene-actions .btn {
+  flex: 1 1 auto;
+  justify-content: center;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.86rem;
+}
+
+/* ---- the view bar ------------------------------------------------------- */
+
+.view-bar {
+  position: absolute;
+  z-index: 5;
+  left: clamp(12px, 3vw, 40px);
+  top: clamp(12px, 3vw, 34px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: rgba(18, 30, 26, 0.40);
+  box-shadow: 0 8px 28px rgba(12, 22, 20, 0.20);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+}
+
+.view-bar button {
+  padding: 0.36rem 0.78rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(247, 244, 234, 0.88);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.view-bar button:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.view-bar button[aria-pressed="true"] {
+  background: rgba(246, 241, 228, 0.95);
+  color: #1d2b26;
+}
+
+.stage-hint {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: clamp(10px, 2vw, 22px);
+  margin: 0;
+  padding: 0.4rem 0.9rem;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(18, 30, 26, 0.42);
+  color: rgba(247, 244, 234, 0.9);
+  box-shadow: 0 4px 16px rgba(12, 22, 20, 0.18);
+  font-size: 0.76rem;
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .stage-hint {
+  background: rgba(16, 24, 22, 0.72);
+  color: var(--dim);
+}
+
+/* ---- narrow screens ----------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .scene-label-count { display: none; }
+  .scene-label-spot { font-size: 0.52rem; padding: 0.1rem 0.3rem; }
+  [data-lang="zh"] .scene-label-spot { font-size: 0.52rem; }
+  .stage {
+    height: calc(100vh - var(--campus-header-height, 102px));
+    height: calc(100svh - var(--campus-header-height, 102px));
+    min-height: 420px;
+  }
+
+  .view-bar {
+    left: 8px;
+    right: 8px;
+    top: 8px;
+    justify-content: flex-start;
+    border-radius: 16px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+
+  .view-bar::-webkit-scrollbar { display: none; }
+  .view-bar button { flex: 0 0 auto; font-size: 0.76rem; padding: 0.32rem 0.62rem; }
+  .scene-place-dock { left: 7px; right: auto; top: 164px; width: min(280px, 72vw); max-height: calc(100% - 174px); gap: .16rem; }
+  .scene-place-group { gap: .15rem; padding: .16rem .2rem; background: rgba(18,30,26,.045); }
+  .scene-place-group h3 { font-size: .78rem; }
+  .scene-place-chip { font-size: .7rem; padding: .14rem .42rem; }
+  [data-lang="zh"] .scene-place-chip { font-size: .7rem; }
+
+  /* The panel becomes a card along the bottom, so the scene stays wide. */
+  .scene-panel {
+    right: 8px;
+    left: 8px;
+    top: auto;
+    bottom: 8px;
+    width: auto;
+    max-height: 46%;
+    padding: 0.85rem 0.95rem 0.95rem;
+    border-radius: 16px;
+  }
+
+  .scene-hint { font-size: 0.85rem; }
+
+  /* The hint would sit under the panel; drop it on phones. */
+  .stage-hint { display: none; }
+
+  .scene-label { font-size: 0.66rem; padding: 0.16rem 0.46rem; }
+  [data-lang="zh"] .scene-label { font-size: 0.7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-label,
+  .scene-photo img { transition: none; }
+}
+
+/* Rooms remain in their parent building, grouped by actual floor. */
+.scene-rooms { margin: 0 0 1rem; }
+.scene-rooms h3, .scene-room-detail h3 { margin: 0 0 .6rem; font-size: 1rem; }
+.scene-floor { margin-bottom: .65rem; }
+.scene-floor h4 { margin: 0 0 .3rem; color: var(--dim); font-size: .8rem; }
+.scene-room-buttons { display: flex; flex-wrap: wrap; gap: .35rem; }
+.scene-room-buttons button, .scene-room-back {
+  min-height: 44px; padding: .4rem .65rem; border: 1px solid var(--line);
+  border-radius: 10px; background: var(--paper-2); color: var(--ink);
+  font: inherit; font-size: .83rem; cursor: pointer;
+}
+.scene-room-buttons button[aria-pressed="true"] { background: #14756c; color: white; }
+.scene-room-back { margin-bottom: .65rem; }
