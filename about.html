@@ -80,19 +80,24 @@
     <ul>
       <li><strong data-zh="首页">Home</strong><span data-zh="——简短介绍和校园预览。"> — a short introduction and a preview of the campus.</span></li>
       <li><strong data-zh="地图">Map</strong><span data-zh="——主页面：地图上的 14 个地点和楼内的 11 个场所，配有搜索框和分类筛选；点击后照片显示在地图右侧，详情在下方。"> — the main page: 14 places on the map and 11 places inside them, a search box, category filters, a photograph beside the map and the details below it.</span></li>
+      <li><strong><a href="campus.html" data-zh="3D 校园">3D Campus</a></strong><span data-zh="——可以旋转、缩放的立体校园。点击建筑或东门查看实拍照片，也可以用左侧的小按钮找到自习室、健身房、餐厅和店铺。"> — a campus model you can rotate and zoom. Select a building or the East Gate for its photograph, or use the small buttons on the left to find study rooms, gyms, restaurants and shops.</span></li>
       <li><strong data-zh="建筑">Buildings</strong><span data-zh="——同样的地点做成卡片，每张都带照片和楼内场所。"> — the same places as cards, each with its photograph and the rooms inside it.</span></li>
       <li><strong data-zh="关于">About</strong><span data-zh="——本页。"> — this page.</span></li>
     </ul>
+
+    <h2 data-zh="新增的 3D 校园">The new 3D campus</h2>
+    <p data-zh="平面地图适合快速找地点，3D 页面则让人从不同角度认识校园：教学楼、学生中心、宿舍、球场、道路和小湖，依据校园总平面图与实拍照片搭建立体模型，而不是把整张平面图贴在地上。它是用于认路的校园模型，不是精密测绘图；有些建筑细节做了简化。">The flat map is for finding a place quickly; the 3D page offers a different way to get familiar with campus. Buildings, the student center, dormitories, courts, roads and the lake are modelled from the master plan and campus photographs, rather than using the whole plan as a ground image. It is a model for orientation, not a survey, and some architectural details are simplified.</p>
+    <p data-zh="拖动可以旋转视角，滚轮或触控缩放可以拉近、拉远，也能用顶部按钮跳到教学区、湖畔、运动场或宿舍区。照片不会一直悬在楼顶：直接点建筑实体或名称按钮才会打开，关闭后继续看地图。左侧按建筑分组列出房间与店铺；点击健身房或自习室会转到所属建筑，并显示楼层、位置和实拍照片。">Drag to turn the view and zoom with the wheel or touch gestures, or jump to the teaching quarter, lake, sports grounds or dormitories using the view buttons. Photos do not float over every roof: selecting a building or its name opens a photo panel that you can close to continue exploring. Rooms and shops are grouped by building on the left; choosing a gym or study room brings its building into view and shows its floor, location and photograph.</p>
 
     <h2 data-zh="它是怎么实现的">How it works</h2>
     <p data-zh="全部是静态的。没有服务器，没有数据库，也不收集任何数据。">Everything is static. There is no server and no database, and the site does not collect any data.</p>
     <ul>
       <li><strong>Semantic HTML</strong><span data-zh="——一个 &lt;header&gt;、一个 &lt;main&gt;、一个 &lt;footer&gt;；地图是带标题和描述的内联 SVG。"> — one <code>&lt;header&gt;</code>, one <code>&lt;main&gt;</code>, one <code>&lt;footer&gt;</code>; the map is an inline SVG with a title and description.</span></li>
-      <li><strong>One stylesheet</strong><span data-zh="——颜色、间距和分类配色都放在 CSS 自定义属性里，四个页面看起来像一个网站。"> — colours, spacing and category colours live in CSS custom properties, so the four pages look like one site.</span></li>
+      <li><strong>Shared styles</strong><span data-zh="——颜色、间距和分类配色放在 CSS 自定义属性里，五个页面共用一套视觉风格；3D 页另有场景按钮和照片面板的样式。"> — colours, spacing and category colours live in CSS custom properties, giving all five pages a shared visual style. The 3D page adds styles for its scene controls and photo panel.</span></li>
       <li><strong>Vanilla JavaScript</strong><span data-zh="——所有地点只写在一个数据文件里，地图和建筑页都从它读取，所以两边永远一致；点击、键盘操作和筛选也都不用任何框架。"> — every place is written once, in one data file that both the map and the buildings page read, so the two always agree. Clicks, keyboard input and filtering need no libraries.</span></li>
       <li><strong>Responsive by default</strong><span data-zh="——SVG 随容器缩放；窄屏时地图改为横向滚动，而不是缩到看不清。"> — the SVG scales with its container; on a narrow screen the map becomes scrollable instead of shrinking to nothing.</span></li>
       <li><strong>Accessible controls</strong><span data-zh="——每栋建筑都是可键盘聚焦的按钮，楼内场所也是独立按钮，筛选按钮会报告按下状态，详情面板会播报变化。"> — every building is a keyboard-focusable button, the markers inside buildings are buttons of their own, the filter buttons report their pressed state, and the details panel announces changes.</span></li>
-      <li><strong>Photos on demand</strong><span data-zh="——页面上显示的是每张约 55 KB 的小图，只有在查看器里打开照片时才会下载 2–5 MB 的原图；打开地图本身不会下载任何照片。"> — the pages show small copies of about 55 KB each, and the 2–5 MB original downloads only when a photo is opened in the viewer; opening the map downloads none at all.</span></li>
+      <li><strong>Photos on demand</strong><span data-zh="——照片按需显示，进入地图或 3D 校园时不会一次加载所有地点照片。平面地图和建筑页使用压缩预览图，3D 页在选择地点后加载对应照片；照片还可以点开放大。"> — photographs appear on demand rather than loading every location's photo when the map or 3D campus opens. The flat map and building guide use compressed previews; the 3D page loads a place's photograph when it is selected. Photos can also be opened in a larger viewer.</span></li>
       <li><strong>English / 中文</strong><span data-zh="——右上角的开关切换整站语言，并记住你的选择。"> — the switch in the header changes the language of the whole site, and remembers your choice.</span></li>
       <li><strong>Light and dark</strong><span data-zh="——默认跟随系统设置，也可以用右上角的按钮切换；颜色都放在 CSS 变量里，换主题只是换一组变量。地图本身保持纸质地图的配色。"> — the theme follows the system setting, or the button in the header; every colour is a CSS variable, so a theme is just another set of them. The map drawing keeps its paper colours.</span></li>
     </ul>
@@ -102,7 +107,8 @@
       <li data-zh="如何用坐标系规划一张 SVG，以及为什么一个 viewBox 就能让画布自动响应式。">How to plan an SVG with a coordinate system, and why a <code>viewBox</code> makes a drawing responsive for free.</li>
       <li data-zh="如何把地图交互保持简单：选择、筛选、描述——不需要框架。">How to keep a map interaction simple: select, filter, describe — no framework needed.</li>
       <li data-zh="一张照片有多重。原图每张 2–5 MB，所以按需加载和一次加载二十张是完全不同的体验。">What a photograph weighs. Full-size pictures are 2–5 MB each, so a page that loads one on demand feels very different from one that loads twenty.</li>
-      <li data-zh="主动缩小范围，项目会容易多少。四个页面，一件清楚的事。">How much easier a project becomes when the scope is small on purpose. Four pages, one clear job.</li>
+      <li data-zh="如何把总平面图上的坐标转换成 3D 场景中的位置，以及为什么屋顶、道路、绿化和镜头都需要从多个角度检查。">How to translate master-plan coordinates into a 3D scene, and why roofs, roads, planting and camera positions need checking from more than one angle.</li>
+      <li data-zh="新增页面也要围绕同一个目的：帮助人认识校园、找到地点，而不是让界面越来越复杂。">How to keep a new page focused on the same purpose: helping people understand campus and find places, rather than adding complexity for its own sake.</li>
     </ul>
 
     <h2 data-zh="接下来想做的">What I would add next</h2>
