@@ -399,11 +399,6 @@ export function buildSite(scene) {
   ring(1.07, 1.11, 0.13, mat('#3f9fbe', 0.9));
   ring(1.11, 1.16, 0.12, C.paving);
 
-  /* waterfront steps on the north bank */
-  for (let i = 0; i < 5; i++) {
-    box(g, L(46), 0.30, 1.3, C.stone, X(1420), 0.94 - i * 0.17, Z(318) + i * 1.2);
-  }
-
   /* railings round the walk */
   {
     const posts = [];
@@ -528,14 +523,36 @@ export function buildSite(scene) {
 
   /* ── street furniture ────────────────────────────────────────────────── */
   const lamps = [];
+  // The old fixed rows crossed curved roads and junctions. Relocate each
+  // pole outside the shared road/footpath clearance, including its lamp head.
+  const lampRoutes = [...KEEP.roads, ...KEEP.walks];
+  function lampFits(x, z) {
+    if (x < SITE.x0 + 1 || x > SITE.x1 - 1 || z < SITE.z0 + 1 || z > SITE.z1 - 1) return false;
+    if (lampRoutes.some(([cx, cz, r]) => Math.hypot(x - cx, z - cz) < r + 0.65)) return false;
+    if (BUILDINGS.some(b => b.kind !== 'gate' && Math.abs(x - b.x) < b.w / 2 + 1 && Math.abs(z - b.z) < b.d / 2 + 1)) return false;
+    return !lamps.some(([cx, cz]) => Math.hypot(x - cx, z - cz) < 5);
+  }
+  function placeLamp(x, z) {
+    if (lampFits(x, z)) { lamps.push([x, z]); return; }
+    // Search nearest first; omit a pole rather than put it in a junction,
+    // building, lake or sports ground when there is no nearby safe verge.
+    for (let radius = 1; radius <= 14; radius++) {
+      for (let i = 0; i < 32; i++) {
+        const angle = i * Math.PI / 16;
+        const nx = x + Math.cos(angle) * radius, nz = z + Math.sin(angle) * radius;
+        if (lampFits(nx, nz)) { lamps.push([nx, nz]); return; }
+      }
+    }
+  }
   for (let px = 590; px <= 1400; px += 46) {
-    lamps.push([X(px), Z(372)]);
-    lamps.push([X(px), Z(416)]);
+    placeLamp(X(px), Z(372));
+    placeLamp(X(px), Z(416));
   }
   for (let pz = 200; pz <= 620; pz += 46) {
-    lamps.push([X(600), Z(pz)]);
-    lamps.push([X(1058), Z(pz)]);
+    placeLamp(X(600), Z(pz));
+    placeLamp(X(1058), Z(pz));
   }
+  g.userData.lampPositions = lamps;
   const poles = lamps.map(([x, z]) => ({ p: [x, 3.4, z], s: [0.12, 6.8, 0.12] }));
   const heads = lamps.map(([x, z]) => ({ p: [x, 6.9, z], s: [0.62, 0.14, 0.62] }));
   instanced(g, new THREE.CylinderGeometry(1, 1.3, 1, 6), C.steel, poles);
@@ -592,7 +609,7 @@ export function buildSite(scene) {
 
   return {
     C, water, fountain, bubbles: bubbling, ripples,
-    track, TRACK, roads, keep: KEEP, northGate
+    track, TRACK, roads, keep: KEEP, northGate, shoreline: lakePts
   };
 }
 

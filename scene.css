@@ -453,6 +453,61 @@
   .scene-photo img { transition: none; }
 }
 
+/* Third-person mode is opt-in; its controls never intercept overview input. */
+.walk-enter, .walk-hud button {
+  min-height: 44px;
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 14px;
+  padding: .6rem 1rem;
+  background: rgba(18,30,26,.88);
+  color: #fff;
+  font: inherit;
+  font-size: .85rem;
+  cursor: pointer;
+  touch-action: none;
+}
+.view-bar .walk-enter {
+  position: static;
+  min-height: 38px;
+  padding: .45rem .95rem;
+  background: linear-gradient(135deg, #f9db85, #f2b955);
+  color: #23392f;
+  font-weight: 800;
+  box-shadow: 0 3px 12px rgba(242,185,85,.3);
+}
+.view-bar .walk-enter:hover { background: #ffe5a1; color: #152d24; }
+.view-bar .walk-enter span[aria-hidden] { margin-right: .25rem; font-size: .7em; }
+@media (max-width: 760px) {
+  .view-bar { flex-wrap: wrap; overflow: visible; gap: .15rem; }
+  .view-bar button { padding: .32rem .4rem; }
+  .view-bar .walk-enter { min-height: 36px; padding: .35rem .55rem; }
+}
+.walk-enter[hidden], .walk-hud[hidden], .no-webgl .walk-enter { display: none; }
+.walk-hud { position: absolute; inset: 0; z-index: 6; pointer-events: none; cursor: default; }
+.walk-hud button { pointer-events: auto; }
+.walk-toolbar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.walk-toolbar span, .walk-help { padding: .5rem .8rem; border-radius: 12px; background: rgba(18,30,26,.8); color: #fff; font-size: .8rem; }
+.walk-help { position: absolute; top: 64px; left: 12px; margin: 0; max-width: calc(100% - 24px); }
+.walk-pad { position: absolute; bottom: 22px; left: 18px; display: grid; grid-template-columns: repeat(3, 48px); gap: 5px; }
+.walk-pad button { padding: 0; height: 48px; font-size: 1.3rem; user-select: none; -webkit-user-select: none; }
+.walk-pad [data-walk-direction="forward"] { grid-column: 2; }
+.walk-pad [data-walk-direction="left"] { grid-column: 1; grid-row: 2; }
+.walk-pad [data-walk-direction="back"] { grid-column: 2; grid-row: 2; }
+.walk-pad [data-walk-direction="right"] { grid-column: 3; grid-row: 2; }
+.walk-run { position: absolute; bottom: 22px; right: 18px; }
+.walk-jump { position: absolute; bottom: 78px; right: 18px; }
+.walk-web { position: absolute; bottom: 134px; right: 18px; }
+.walk-climb { position: absolute; bottom: 190px; right: 18px; }
+.web-status { position: absolute; top: 125px; left: 12px; max-width: calc(100% - 24px); margin: 0; padding: .45rem .7rem; border-radius: 12px; background: rgba(18,30,26,.8); color: #fff; font-size: .75rem; }
+.web-status:empty { display: none; }
+.walk-hud button[aria-pressed="true"], .walk-hud button:active { background: #0f766e; }
+.walk-enter:focus-visible, .walk-hud button:focus-visible { outline: 3px solid #f2c879; outline-offset: 3px; }
+.is-walking .view-bar, .is-walking .scene-labels, .is-walking .scene-place-dock,
+.is-walking .scene-panel, .is-walking .stage-hint { display: none; }
+@media (max-width: 760px) {
+  .walk-help { font-size: .72rem; }
+}
+
 /* Rooms remain in their parent building, grouped by actual floor. */
 .scene-rooms { margin: 0 0 1rem; }
 .scene-rooms h3, .scene-room-detail h3 { margin: 0 0 .6rem; font-size: 1rem; }

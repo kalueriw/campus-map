@@ -907,7 +907,8 @@ export function connectingCorridor(from, to, y = GROUND, opts = {}) {
   const white = mat('#ffffff', 0.78);
   g.position.set((from[0] + to[0]) / 2, 0, (from[1] + to[1]) / 2);
   g.rotation.y = Math.atan2(to[0] - from[0], to[1] - from[1]);
-  box(g, width, 0.4, span, white, 0, y - 0.2, 0);
+  g.userData.solidBridge = true;
+  box(g, width, 0.4, span, white, 0, y - 0.2, 0).userData.walkSurface = true;
   /* freestanding supports below the deck */
   const columns = [];
   const n = Math.max(2, Math.ceil(span / 6));
@@ -972,7 +973,8 @@ export function skybridge(from, to, y, opts) {
   const rise = o.rise || (span * 0.21);
 
   /* 桥面板 + 底面 */
-  box(g, W, T, span, white, 0, y, 0);
+  g.userData.solidBridge = true;
+  box(g, W, T, span, white, 0, y, 0).userData.walkSurface = true;
   box(g, W - 0.7, 0.16, span - 0.4, mat('#dfe3e0', 0.7), 0, y - T / 2 - 0.08, 0);
 
   /* 两侧栏杆：立柱 + 上沿 */
@@ -1055,7 +1057,7 @@ export function skybridge(from, to, y, opts) {
 
   /* 桥两端落在两侧楼身上：照片里就是直接接进楼里，没有外挂楼梯 */
   for (const s of [-1, 1]) {
-    box(g, W + 1.2, T + 0.5, 1.4, white, 0, y + 0.1, s * (span / 2 + 0.4));
+    box(g, W + 1.2, T + 0.5, 1.4, white, 0, y + 0.1, s * (span / 2 + 0.4)).userData.walkSurface = true;
   }
 
   /* 玻璃栏板，照片里桥面两侧是通透的 */

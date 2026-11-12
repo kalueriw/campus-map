@@ -246,11 +246,6 @@ export function streetFurniture(scene) {
     if (onRoute(x, z, 1.2)) continue;
     escooters.push({ p: [x, 0.55, z], s: [0.45, 0.95, 1.55], r: [0, 0.1, 0] });
   }
-  for (let i = 0; i < 14; i++) {
-    const x = -6 + i * 1.6, z = -96;
-    if (onRoute(x, z, 1.2)) continue;
-    escooters.push({ p: [x, 0.55, z], s: [0.45, 0.95, 1.55], r: [0, 0.1, 0] });
-  }
   instanced(g, new THREE.BoxGeometry(1, 1, 1), mat('#2f8f86', 0.6), escooters);
 
   /* low planters along the gate forecourt */

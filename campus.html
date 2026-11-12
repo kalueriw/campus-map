@@ -82,6 +82,26 @@
       <button type="button" data-view="lake" aria-pressed="false" data-zh="湖畔">Lake</button>
       <button type="button" data-view="sport" aria-pressed="false" data-zh="运动场">Sport</button>
       <button type="button" data-view="dorms" aria-pressed="false" data-zh="宿舍">Dorms</button>
+      <button type="button" class="walk-enter" id="walk-enter"><span aria-hidden="true">▶</span> <span data-zh="校园冒险">Adventure</span></button>
+    </div>
+
+    <div class="walk-hud" id="walk-hud" hidden>
+      <div class="walk-toolbar">
+        <span data-zh="第三人称漫游">Third-person walk</span>
+        <button type="button" id="walk-exit" data-zh="退出漫游 · Esc">Exit walk · Esc</button>
+      </div>
+      <p class="walk-help" data-zh="WASD / 方向键移动 · Shift 跑步 · 空格跳跃 · 拖动调整视角">WASD / arrows to move · Shift to run · Space to jump · drag to look</p>
+      <div class="walk-pad" role="group" aria-label="Movement" data-al-zh="移动方向">
+        <button type="button" data-walk-direction="forward" aria-label="Forward" data-al-zh="向前">↑</button>
+        <button type="button" data-walk-direction="left" aria-label="Left" data-al-zh="向左">←</button>
+        <button type="button" data-walk-direction="back" aria-label="Back" data-al-zh="向后">↓</button>
+        <button type="button" data-walk-direction="right" aria-label="Right" data-al-zh="向右">→</button>
+      </div>
+      <p class="web-status" id="web-status" role="status" aria-live="polite"></p>
+      <button type="button" class="walk-climb" id="walk-climb" aria-keyshortcuts="C" aria-pressed="false" data-zh="爬墙 / 松手 · C">Climb / let go · C</button>
+      <button type="button" class="walk-web" id="walk-web" aria-keyshortcuts="E" aria-pressed="false" data-zh="蛛丝 / 松开 · E">Web / release · E</button>
+      <button type="button" class="walk-jump" id="walk-jump" aria-keyshortcuts="Space" data-zh="跳跃">Jump</button>
+      <button type="button" class="walk-run" id="walk-run" aria-pressed="false" data-zh="跑步">Run</button>
     </div>
 
     <aside class="scene-panel" id="scene-panel" aria-label="The building you picked" data-al-zh="你选中的建筑"></aside>

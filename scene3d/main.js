@@ -7,6 +7,7 @@
 
 import * as THREE from '../vendor/three/three.module.js';
 import { OrbitControls } from '../vendor/three/OrbitControls.js';
+import { createWalker } from './walk.js';
 import { BUILDINGS, CAMPUS, PAGE_ID } from './data.js';
 import { SPOTS } from './spots.js';
 import { buildStorefronts } from './storefronts.js';
@@ -177,6 +178,13 @@ sc.far = 1100;
 sc.updateProjectionMatrix();
 sun.shadow.bias = -0.0006;
 sun.shadow.normalBias = 0.6;
+/* The sun and scenery are fixed. Walking needs live avatar shadows, but the
+   orbit view can reuse its map: the animated fountain does not cast shadows. */
+sun.shadow.autoUpdate = false;
+sun.shadow.needsUpdate = true;
+canvas.addEventListener('webglcontextrestored', function () {
+  sun.shadow.needsUpdate = true;
+});
 scene.add(sun);
 sun.target.position.set(0, 0, -150);
 scene.add(sun.target);
@@ -256,6 +264,18 @@ pickables.push(sg);
 
 plantTrees(scene, [site.keep.roads, site.keep.walks]);
 streetFurniture(scene);
+
+/* Bake local transforms only for the scenery already constructed. Keep world
+   matrices updating normally; the fountain subtree stays animated, and the
+   walker/web are added later so their transforms remain fully dynamic. */
+function freezeSceneryTransforms(object) {
+  if (object === site.fountain || object === site.bubbles ||
+      (site.ripples && site.ripples.indexOf(object) !== -1)) return;
+  object.updateMatrix();
+  object.matrixAutoUpdate = false;
+  object.children.forEach(freezeSceneryTransforms);
+}
+scene.children.forEach(freezeSceneryTransforms);
 
 /* ---- labels ------------------------------------------------------------- */
 
@@ -364,13 +384,35 @@ function anchorOf(b, spot) {
   return new THREE.Vector3(b.x, h, b.z);
 }
 
+/* Label anchors are fixed scenery, not per-frame Vector3 allocations. Dock
+   chips have no world position and do not belong in the projection loop. */
+var sceneLabels = labels.filter(function (l) { return !l.dock; });
+sceneLabels.forEach(function (l) {
+  l.anchor = anchorOf(l.data, l.spot);
+  if (l.spot) l.parentAnchor = anchorOf(l.data);
+});
 var tmpVec = new THREE.Vector3();
+var tmpBuildingVec = new THREE.Vector3();
+var labelViewMatrix = new THREE.Matrix4();
+var labelProjectionMatrix = new THREE.Matrix4();
+var labelWidth = 0, labelHeight = 0;
+var labelsDirty = true;
 function positionLabels() {
+  /* CSS hides these in walking mode. Avoid even layout reads while hidden,
+     and force a fresh placement on the first orbit frame after exiting. */
+  if (walker && walker.active) { labelsDirty = true; return; }
   var w = stage.clientWidth;
   var h = stage.clientHeight;
-  labels.forEach(function (l) {
-    if (l.dock) return;
-    tmpVec.copy(anchorOf(l.data, l.spot)).project(camera);
+  if (!labelsDirty && w === labelWidth && h === labelHeight &&
+      labelViewMatrix.equals(camera.matrixWorldInverse) &&
+      labelProjectionMatrix.equals(camera.projectionMatrix)) return;
+  labelsDirty = false;
+  labelWidth = w;
+  labelHeight = h;
+  labelViewMatrix.copy(camera.matrixWorldInverse);
+  labelProjectionMatrix.copy(camera.projectionMatrix);
+  sceneLabels.forEach(function (l) {
+    tmpVec.copy(l.anchor).project(camera);
     var x = (tmpVec.x * 0.5 + 0.5) * w;
     var y = (-tmpVec.y * 0.5 + 0.5) * h;
     var visible = tmpVec.z < 1 && x > -80 && x < w + 80 && y > -40 && y < h + 40;
@@ -378,12 +420,9 @@ function positionLabels() {
       x = Math.max(92, Math.min(w - 92, x));
       y += 30;
     } else if (l.spot) {
-      var spotPosition = anchorOf(l.data, l.spot);
-      var buildingPosition = anchorOf(l.data);
-      var projectedSpot = spotPosition.clone().project(camera);
-      var projectedBuilding = buildingPosition.clone().project(camera);
-      var vx = projectedSpot.x - projectedBuilding.x;
-      var vy = projectedSpot.y - projectedBuilding.y;
+      tmpBuildingVec.copy(l.parentAnchor).project(camera);
+      var vx = tmpVec.x - tmpBuildingVec.x;
+      var vy = tmpVec.y - tmpBuildingVec.y;
       if (Math.hypot(vx, vy) < 0.045) { vx = (l.labelsInParent || 0) % 2 ? 0.045 : -0.045; vy = 0.025; }
       var len = Math.hypot(vx, vy) || 1;
       var offset = l.spot.id === 'east-gate' ? 78 : (l.spot.exterior ? 54 : 46);
@@ -415,11 +454,12 @@ function hitTest(clientX, clientY) {
 }
 
 canvas.addEventListener('pointerdown', function (e) {
+  if (walker && walker.active) return;
   downAt = { x: e.clientX, y: e.clientY };
 });
 canvas.addEventListener('pointercancel', function () { downAt = null; });
 canvas.addEventListener('pointerup', function (e) {
-  if (!downAt) { return; }
+  if ((walker && walker.active) || !downAt) { return; }
   var moved = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y);
   downAt = null;
   if (moved > 6) { return; }
@@ -432,6 +472,7 @@ canvas.addEventListener('pointerup', function (e) {
   }
 });
 canvas.addEventListener('pointermove', function (e) {
+  if (walker && walker.active) return;
   canvas.style.cursor = hitTest(e.clientX, e.clientY) ? 'pointer' : 'grab';
 });
 
@@ -440,6 +481,7 @@ canvas.addEventListener('pointermove', function (e) {
 var flight = null;
 
 function flyTo(pos, target, duration) {
+  if (walker && walker.active) walker.exit();
   flight = {
     from: { pos: camera.position.clone(), target: controls.target.clone() },
     to: { pos: pos.clone(), target: target.clone() },
@@ -699,7 +741,7 @@ function resize() {
   var h = stage.clientHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
-  camera.fov = w / h < 1 ? 54 : 38;
+  camera.fov = walker && walker.active ? 60 : (w / h < 1 ? 54 : 38);
   /* keep the orbit's far limit beyond whatever framing needs */
   controls.maxDistance = Math.max(900, 2600 * (h / Math.max(1, w)) / 2);
   camera.updateProjectionMatrix();
@@ -712,14 +754,46 @@ if (window.ResizeObserver) {
 }
 resize();
 
+var walker = createWalker({
+  scene: scene, camera: camera, controls: controls, canvas: canvas, stage: stage, shoreline: site.shoreline,
+  beforeEnter: function () { flight = null; downAt = null; clearSelection(); }
+});
+
 var clock = new THREE.Clock();
 var elapsed = 0;
+// Ease fill-rate pressure on slower devices without reducing model detail.
+// Only sustained slow frames lower resolution; mode changes reset the sample.
+var resolutionFrames = 0, resolutionTime = 0, resolutionMode = false;
+var resolutionWarmup = 120;
+document.addEventListener('visibilitychange', function () {
+  resolutionFrames = 0; resolutionTime = 0; resolutionWarmup = 120;
+});
+function adaptResolution(frameTime) {
+  if (document.hidden || frameTime > .25 || resolutionMode !== walker.active) {
+    resolutionMode = walker.active;
+    resolutionFrames = 0; resolutionTime = 0;
+    return;
+  }
+  if (resolutionWarmup > 0) { resolutionWarmup--; return; }
+  resolutionFrames++;
+  resolutionTime += frameTime;
+  if (resolutionFrames < 90) return;
+  if (resolutionTime / resolutionFrames > 1 / 35 && renderer.getPixelRatio() > .85) {
+    renderer.setPixelRatio(Math.max(.85, renderer.getPixelRatio() - .15));
+    // Shadow maps depend on the light, not the main canvas resolution.
+  }
+  resolutionFrames = 0; resolutionTime = 0;
+}
 
 function frame() {
-  var dt = Math.min(clock.getDelta(), 0.05);
+  var frameTime = clock.getDelta();
+  adaptResolution(frameTime);
+  var dt = Math.min(frameTime, 0.05);
   elapsed += dt;
 
-  if (flight) {
+  if (walker.active) {
+    walker.update(dt);
+  } else if (flight) {
     var k = Math.min(1, (performance.now() - flight.start) / (flight.duration * 1000));
     var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
     if (flight.safeShop) {
@@ -757,6 +831,12 @@ function frame() {
     });
   }
 
+  /* Rebuild on both mode transitions, especially on exit so the cached map
+     cannot retain the avatar's last shadow. Never freeze shadows mid-walk. */
+  if (sun.shadow.autoUpdate !== walker.active) {
+    sun.shadow.autoUpdate = walker.active;
+    sun.shadow.needsUpdate = true;
+  }
   renderer.render(scene, camera);
   positionLabels();
   requestAnimationFrame(frame);
@@ -788,7 +868,8 @@ window.Campus3D = {
     return {
       cam: camera.position.toArray().map(function (n) { return Math.round(n); }),
       target: controls.target.toArray().map(function (n) { return Math.round(n); }),
-      flying: !!flight, enabled: controls.enabled
+      flying: !!flight, enabled: controls.enabled,
+      walking: walker.active, player: walker.avatar.position.toArray(), web: walker.webState()
     };
   },
   view: boardView,
