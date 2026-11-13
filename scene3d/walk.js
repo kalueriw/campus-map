@@ -80,6 +80,13 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
     return !touchesWater(x, z) && !obstacles.some(b => Math.abs(x - b.x) < b.w / 2 + 0.65 && Math.abs(z - b.z) < b.d / 2 + 0.65);
   }
   const safeGround = new THREE.Vector3(-24, groundY, -68);
+  function returnFromWater() {
+    avatar.position.copy(safeGround);
+    resetJump(safeGround.y);
+    web.reset();
+    climbing = null;
+    verticalSpeed = 0;
+  }
   const steering = new THREE.Vector3();
   // Shared height-aware movement for swings, jumps and walking off roofs.
   function moveFlight(next, velocity) {
@@ -95,7 +102,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
     p.y = Math.min(next.y, ceiling);
     if (next.y > ceiling) { velocity.y = Math.min(0, velocity.y); blocked = true; }
     if (velocity.y <= 0 && p.y <= roof) {
-      if (roof <= groundY && touchesWater(p.x, p.z)) p.copy(safeGround);
+      if (roof <= groundY && touchesWater(p.x, p.z)) returnFromWater();
       else p.y = roof;
       return { blocked, landed: true };
     }
@@ -317,12 +324,13 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
         const scale = (sprint ? 14 : 3.2) * dt / Math.hypot(forward, right);
         const dx = (-Math.sin(yaw) * forward + Math.cos(yaw) * right) * scale;
         const dz = (-Math.cos(yaw) * forward - Math.sin(yaw) * right) * scale;
-        if (traversal.clearAt(avatar.position.x + dx, avatar.position.z, avatar.position.y) && (avatar.position.y > groundY + .5 || !touchesWater(avatar.position.x + dx, avatar.position.z))) avatar.position.x += dx;
-        if (traversal.clearAt(avatar.position.x, avatar.position.z + dz, avatar.position.y) && (avatar.position.y > groundY + .5 || !touchesWater(avatar.position.x, avatar.position.z + dz))) avatar.position.z += dz;
+        if (traversal.clearAt(avatar.position.x + dx, avatar.position.z, avatar.position.y)) avatar.position.x += dx;
+        if (traversal.clearAt(avatar.position.x, avatar.position.z + dz, avatar.position.y)) avatar.position.z += dz;
         const angle = Math.atan2(dx, dz);
         avatar.rotation.y += Math.atan2(Math.sin(angle - avatar.rotation.y), Math.cos(angle - avatar.rotation.y)) * Math.min(1, dt * 14);
         phase += dt * (sprint ? 18 : 9);
       }
+      if (avatar.position.y <= groundY + .5 && touchesWater(avatar.position.x, avatar.position.z)) returnFromWater();
       const floor = traversal.roofAt(avatar.position.x, avatar.position.z, avatar.position.y + .45);
       if (!airborne && avatar.position.y > floor + .45) airborne = true;
       if (airborne) {
@@ -332,8 +340,8 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
         verticalSpeed -= gravity * dt;
         if (desiredY > ceiling) verticalSpeed = Math.min(0, verticalSpeed);
         if (verticalSpeed <= 0 && nextY <= floor) {
-          if (floor <= groundY && touchesWater(avatar.position.x, avatar.position.z)) avatar.position.copy(safeGround);
-          resetJump(floor);
+          if (floor <= groundY && touchesWater(avatar.position.x, avatar.position.z)) returnFromWater();
+          else resetJump(floor);
         } else avatar.position.y = nextY;
       } else avatar.position.y = floor;
     }

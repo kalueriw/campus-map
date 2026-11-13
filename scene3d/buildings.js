@@ -444,9 +444,11 @@ export function lakesidePavilion(cfg) {
   const roofD = new THREE.MeshStandardMaterial({ color: '#3c4348', roughness: 0.5, metalness: 0.35, side: THREE.DoubleSide });
   const roofL = new THREE.MeshStandardMaterial({ color: '#7d848a', roughness: 0.45, metalness: 0.3, side: THREE.DoubleSide });
 
-  /* 主甲板 + 伸向水面的栈桥 */
-  box(g, 35, 0.6, 25, deckMat, 5, 0.95, 0);
-  box(g, 14, 0.55, 6, deckMat, -22, 0.92, 5);
+  /* 主甲板 + 伸向水面的栈桥；可行走的甲板面 */
+  const mainDeck = box(g, 35, 0.6, 25, deckMat, 5, 0.95, 0);
+  mainDeck.userData.walkSurface = true;
+  const accessDeck = box(g, 14, 0.55, 6, deckMat, -22, 0.92, 5);
+  accessDeck.userData.walkSurface = true;
   const piers = [];
   for (let i = 0; i < 12; i++) piers.push({ p: [-16 + (i % 6) * 7, 0.3, -13 + Math.floor(i / 6) * 26], s: [0.9, 1.6, 0.9] });
   instanced(g, new THREE.BoxGeometry(1, 1, 1), mat('#6b6257', 0.9), piers, false, false);
@@ -454,7 +456,8 @@ export function lakesidePavilion(cfg) {
   /* 一号亭（深色木构，浅灶平坡屋面） */
   const pav = (px, pz, w, d, wh, rh, rm, dark) => {
     const y0 = 1.25;
-    box(g, w + 1.6, 0.3, d + 1.6, deckMat, px, y0 - 0.05, pz);
+    const pavilionDeck = box(g, w + 1.6, 0.3, d + 1.6, deckMat, px, y0 - 0.05, pz);
+    pavilionDeck.userData.walkSurface = true;
     for (let i = 0; i < 5; i++) {
       for (const sg of [-1, 1]) {
         box(g, 0.26, wh, 0.26, dark ? mat('#3c332b', 0.8) : mat('#8b8578', 0.8),

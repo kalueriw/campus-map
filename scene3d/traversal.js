@@ -17,7 +17,9 @@ export function createTraversal(scene) {
   scene.traverse(model => {
     if (model.userData.solidBridge) sources.push({ model, minY: 0, bridge: true });
   });
-  for (const { model, minY, bridge } of sources) {
+  const lakeside = scene.children.find(o => o.isGroup && o.userData.id === 'lakeside');
+  if (lakeside) sources.push({ model: lakeside, minY: 0, walkSurfacesOnly: true });
+  for (const { model, minY, bridge, walkSurfacesOnly } of sources) {
     if (!model) continue;
     model.traverse(mesh => {
       if (!mesh.isMesh || !mesh.visible) return;
@@ -28,6 +30,7 @@ export function createTraversal(scene) {
       for (let n = 0; n < (mesh.isInstancedMesh ? mesh.count : 1); n++) {
         matrix.copy(mesh.matrixWorld);
         if (mesh.isInstancedMesh) { mesh.getMatrixAt(n, instance); matrix.multiply(instance); }
+        if (walkSurfacesOnly && !mesh.userData.walkSurface) continue;
         if (bridge) {
           // World AABBs for slabs, rails, columns and arch members are baked
           // once. Vertical overlap keeps the ground underneath walkable.
