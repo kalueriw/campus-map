@@ -269,13 +269,24 @@ export function buildSite(scene) {
       -TRACK.w / 2 - 1.7 - i * 2.1, h / 2, 0);
   }
 
-  /* four floodlights round the sports ground */
-  for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+  const nightLights = [];
+  const floodMaterial = new THREE.MeshStandardMaterial({
+    color: '#e9e6da', roughness: 0.6, emissive: '#e3efff', emissiveIntensity: 0
+  });
+  /* Keep only the lower-left floodlight in the Sport camera view (south-west). */
+  for (const [sx, sz] of [[-1, 1]]) {
     const px = TRACK.cx + sx * (TRACK.w / 2 + 8);
     const pz = TRACK.cz + sz * (TRACK.d / 2 + 6);
     cyl(g, 0.22, 0.34, 19, C.steel, px, 9.5, pz, 8);
     box(g, 3.6, 0.36, 0.8, C.dark, px, 19.2, pz);
-    box(g, 3.4, 1.4, 0.26, mat('#e9e6da', 0.6), px, 18.2, pz);
+    box(g, 3.4, 1.4, 0.26, floodMaterial, px, 18.2, pz);
+    const light = new THREE.SpotLight('#e3efff', 0, 210, Math.PI / 3, 0.65, 2);
+    light.position.set(px, 18, pz);
+    light.target.position.set(TRACK.cx + sx * TRACK.w * 0.18, 0, TRACK.cz + sz * TRACK.d * 0.18);
+    light.userData.nightIntensity = 18000;
+    light.name = 'sports-floodlight';
+    g.add(light, light.target);
+    nightLights.push(light);
   }
 
   /* ── the courts ──────────────────────────────────────────────────────── */
@@ -556,9 +567,49 @@ export function buildSite(scene) {
   const poles = lamps.map(([x, z]) => ({ p: [x, 3.4, z], s: [0.12, 6.8, 0.12] }));
   const heads = lamps.map(([x, z]) => ({ p: [x, 6.9, z], s: [0.62, 0.14, 0.62] }));
   instanced(g, new THREE.CylinderGeometry(1, 1.3, 1, 6), C.steel, poles);
-  instanced(g, new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({
-    color: '#ffe6b8', emissive: '#ffc069', emissiveIntensity: 1.2, roughness: 0.5
-  }), heads, false, false);
+  const lampMaterial = new THREE.MeshStandardMaterial({
+    color: '#ffe6b8', emissive: '#ffc069', emissiveIntensity: 0, roughness: 0.5
+  });
+  instanced(g, new THREE.BoxGeometry(1, 1, 1), lampMaterial, heads, false, false);
+  // A fixed light budget avoids compiling dozens of lights into every material.
+  const roadLights = Array.from({ length: Math.min(8, lamps.length) }, () => {
+    const light = new THREE.PointLight('#ffc981', 0, 22, 2);
+    light.name = 'street-light';
+    g.add(light);
+    return light;
+  });
+  const lampOrder = lamps.map(([x, z]) => ({ x, z, distance: 0 }));
+  function updateNightLights(cameraPosition, night) {
+    if (!night) { roadLights.forEach(light => { light.intensity = 0; }); return; }
+    lampOrder.forEach(lamp => { lamp.distance = (lamp.x - cameraPosition.x) ** 2 + (lamp.z - cameraPosition.z) ** 2; });
+    lampOrder.sort((a, b) => a.distance - b.distance);
+    roadLights.forEach((light, i) => {
+      light.position.set(lampOrder[i].x, 6.6, lampOrder[i].z);
+      light.updateMatrix(); // Scenery transforms are otherwise frozen.
+      light.intensity = 130;
+    });
+  }
+  // Soft pools remain visible for every lamp in the distant overview.
+  const glowCanvas = document.createElement('canvas');
+  glowCanvas.width = glowCanvas.height = 64;
+  const glowContext = glowCanvas.getContext('2d');
+  const gradient = glowContext.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, 'rgba(255,206,125,0.32)');
+  gradient.addColorStop(0.45, 'rgba(255,190,90,0.14)');
+  gradient.addColorStop(1, 'rgba(255,190,90,0)');
+  glowContext.fillStyle = gradient;
+  glowContext.fillRect(0, 0, 64, 64);
+  const glowTexture = new THREE.CanvasTexture(glowCanvas);
+  glowTexture.colorSpace = THREE.SRGBColorSpace;
+  const glowMaterial = new THREE.MeshBasicMaterial({ map: glowTexture, transparent: true,
+    depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 });
+  const glowGeometry = new THREE.PlaneGeometry(17, 17);
+  lamps.forEach(([x, z]) => {
+    const pool = new THREE.Mesh(glowGeometry, glowMaterial);
+    pool.rotation.x = -Math.PI / 2;
+    pool.position.set(x, 0.3, z);
+    g.add(pool);
+  });
 
   /* benches */
   const seats = [];
@@ -609,6 +660,13 @@ export function buildSite(scene) {
 
   return {
     C, water, fountain, bubbles: bubbling, ripples,
+    updateNightLights,
+    setNight(night) {
+      lampMaterial.emissiveIntensity = night ? 2.4 : 0;
+      floodMaterial.emissiveIntensity = night ? 3 : 0;
+      glowMaterial.opacity = night ? 1 : 0;
+      nightLights.forEach(light => { light.intensity = night ? light.userData.nightIntensity : 0; });
+    },
     track, TRACK, roads, keep: KEEP, northGate, shoreline: lakePts
   };
 }

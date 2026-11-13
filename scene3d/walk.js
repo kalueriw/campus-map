@@ -34,7 +34,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   const groundY = 0.36, gravity = 20, jumpSpeed = 7.5;
   let verticalSpeed = 0, airborne = false;
   function jump() {
-    if (!active) return;
+    if (!active || entryFlight) return;
     if (climbing) stopClimb();
     else if (airborne) return;
     airborne = true;
@@ -47,6 +47,8 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   }
   const keys = new Set();
   const held = new Map();
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let entryFlight = null;
   let active = false, saved, yaw = 0, pitch = 0.28, distance = 7;
   let drag = null, running = false, phase = 0;
   const character = createAvatar();
@@ -112,7 +114,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   const web = createWebSwing({ scene, avatar, handPosition: character.handPosition,
     move: moveFlight, onLand: () => { resetJump(avatar.position.y); showWebStatus('ready'); } });
   function attachWeb() {
-    if (!active) return;
+    if (!active || entryFlight) return;
     if (web.attach(yaw)) { stopClimb(); airborne = true; showWebStatus('attached'); }
     else showWebStatus('missing');
   }
@@ -124,13 +126,22 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   const focus = new THREE.Vector3();
   const desired = new THREE.Vector3();
   const offset = new THREE.Vector3();
-  function updateCamera() {
+  function cameraDestination() {
     focus.copy(avatar.position).add(offset.set(0, 1.4, 0));
     offset.set(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
-    const reach = traversal.cameraDistance(focus, offset, distance);
+    // When looking upward, shorten the orbit arm rather than clipping below
+    // the ground. Keep its direction so the full sky remains reachable.
+    const groundReach = offset.y < 0 ? Math.max(0.1, (focus.y - 0.5) / -offset.y) : distance;
+    const reach = traversal.cameraDistance(focus, offset, Math.min(distance, groundReach));
     desired.copy(focus).addScaledVector(offset, reach);
+  }
+  function updateCamera() {
+    cameraDestination();
     camera.position.copy(desired);
     camera.lookAt(focus);
+    // The shortened upward orbit sits inside the character: hide it there
+    // rather than filling the sky with the underside of the avatar.
+    avatar.visible = !(pitch < 0 && camera.position.distanceTo(focus) < 2.5);
   }
   function stopClimb() {
     if (!climbing) return;
@@ -141,7 +152,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
     showWebStatus('ready');
   }
   function toggleClimb() {
-    if (!active) return;
+    if (!active || entryFlight) return;
     if (climbing) { stopClimb(); return; }
     const wall = traversal.wallNear(avatar.position);
     if (!wall) { showWebStatus('noWall'); return; }
@@ -186,12 +197,17 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   function enter() {
     if (active) return;
     beforeEnter();
-    // Flush any residual orbit damping before saving the overview.
+    saved = { position: camera.position.clone(), target: controls.target.clone(), near: camera.near, fov: camera.fov,
+      quaternion: camera.quaternion.clone() };
+    // Flush residual orbit damping, but keep the rendered starting pose: an
+    // interrupted building flight may be outside OrbitControls' distance limits.
     const damping = controls.enableDamping;
     controls.enableDamping = false;
     controls.update();
     controls.enableDamping = damping;
-    saved = { position: camera.position.clone(), target: controls.target.clone(), near: camera.near, fov: camera.fov };
+    camera.position.copy(saved.position);
+    camera.quaternion.copy(saved.quaternion);
+    controls.target.copy(saved.target);
     controls.enabled = false;
     clearInput();
     resetJump();
@@ -203,17 +219,27 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
     yaw = 0; pitch = 0.28; distance = 7; phase = 0;
     active = avatar.visible = true;
     camera.near = 0.1;
-    camera.fov = 60;
+    cameraDestination();
+    if (!reducedMotion.matches) {
+      // Match the actual view direction even if an overview flight was cancelled.
+      const fromTarget = camera.getWorldDirection(new THREE.Vector3())
+        .multiplyScalar(Math.max(1, saved.position.distanceTo(saved.target))).add(saved.position);
+      entryFlight = { elapsed: 0, duration: 1.6, fromTarget,
+        position: desired.clone(), target: focus.clone() };
+    } else {
+      camera.fov = 60;
+    }
     camera.updateProjectionMatrix();
     stage.classList.add('is-walking');
     enterButton.hidden = true;
     hud.hidden = false;
     canvas.style.cursor = 'grab';
-    updateCamera();
+    if (!entryFlight) updateCamera();
     canvas.focus({ preventScroll: true });
   }
   function exit() {
     if (!active) return;
+    entryFlight = null;
     active = avatar.visible = false;
     clearInput();
     web.reset();
@@ -237,6 +263,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   climbButton.addEventListener('click', toggleClimb);
   webButton.addEventListener('click', () => web.attached ? releaseWeb() : attachWeb());
   runButton.addEventListener('click', () => {
+    if (!active || entryFlight) return;
     running = !running;
     runButton.setAttribute('aria-pressed', String(running));
   });
@@ -245,6 +272,10 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
     if (!active) return;
     if (e.code === 'Escape') { e.preventDefault(); exit(); return; }
     if (e.target !== canvas && !hud.contains(e.target)) return;
+    if (entryFlight) {
+      if (movementKeys.includes(e.code) || ['KeyC', 'KeyE', 'Space'].includes(e.code)) e.preventDefault();
+      return;
+    }
     if (e.code === 'KeyC') {
       e.preventDefault();
       if (!e.repeat && !keys.has('KeyC')) toggleClimb();
@@ -276,7 +307,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   });
   hud.querySelectorAll('[data-walk-direction]').forEach(button => {
     button.addEventListener('pointerdown', e => {
-      if (!active) return;
+      if (!active || entryFlight) return;
       e.preventDefault();
       button.setPointerCapture(e.pointerId);
       held.set(e.pointerId, button.dataset.walkDirection);
@@ -286,7 +317,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
     }
   });
   canvas.addEventListener('pointerdown', e => {
-    if (!active || drag || e.button !== 0) return;
+    if (!active || entryFlight || drag || e.button !== 0) return;
     canvas.focus({ preventScroll: true });
     canvas.setPointerCapture(e.pointerId);
     drag = { id: e.pointerId, x: e.clientX, y: e.clientY };
@@ -294,7 +325,7 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   canvas.addEventListener('pointermove', e => {
     if (!active || !drag || drag.id !== e.pointerId) return;
     yaw -= (e.clientX - drag.x) * 0.006;
-    pitch = THREE.MathUtils.clamp(pitch + (e.clientY - drag.y) * 0.004, 0.1, 0.85);
+    pitch = THREE.MathUtils.clamp(pitch + (e.clientY - drag.y) * 0.004, -Math.PI / 2 + 0.02, Math.PI / 2 - 0.02);
     drag.x = e.clientX; drag.y = e.clientY;
   });
   for (const event of ['pointerup', 'pointercancel', 'lostpointercapture']) {
@@ -303,10 +334,30 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
   canvas.addEventListener('wheel', e => {
     if (!active) return;
     e.preventDefault();
+    if (entryFlight) return;
     distance = THREE.MathUtils.clamp(distance + e.deltaY * 0.008, 3, 12);
   }, { passive: false });
   function update(dt) {
     if (!active) return;
+    if (entryFlight) {
+      const flight = entryFlight;
+      flight.elapsed += dt;
+      const t = reducedMotion.matches ? 1 : Math.min(1, flight.elapsed / flight.duration);
+      const eased = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      camera.position.lerpVectors(saved.position, flight.position, eased);
+      focus.lerpVectors(flight.fromTarget, flight.target, eased);
+      camera.lookAt(focus);
+      camera.fov = THREE.MathUtils.lerp(saved.fov, 60, eased);
+      camera.updateProjectionMatrix();
+      // Never update OrbitControls here: its overview minDistance would push
+      // the camera away from the avatar. Walking takes over at this exact pose.
+      if (t === 1) {
+        entryFlight = null;
+        clearInput();
+        updateCamera();
+      }
+      return;
+    }
     const directions = new Set(held.values());
     const forward = Number(keys.has('KeyW') || keys.has('ArrowUp') || directions.has('forward')) - Number(keys.has('KeyS') || keys.has('ArrowDown') || directions.has('back'));
     const right = Number(keys.has('KeyD') || keys.has('ArrowRight') || directions.has('right')) - Number(keys.has('KeyA') || keys.has('ArrowLeft') || directions.has('left'));
@@ -351,5 +402,5 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
     web.render();
     updateCamera();
   }
-  return { get active() { return active; }, enter, exit, update, avatar, webState: web.state };
+  return { get active() { return active; }, get entering() { return !!entryFlight; }, enter, exit, update, avatar, webState: web.state };
 }

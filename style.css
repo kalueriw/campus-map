@@ -151,6 +151,8 @@ code {
 }
 
 .header-inner {
+  /* Keep navigation aligned across pages, independent of content width. */
+  max-width: 1440px;
   display: flex;
   align-items: center;
   justify-content: space-between;

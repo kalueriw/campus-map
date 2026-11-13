@@ -47,7 +47,10 @@
     }
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     /* Cross-fade, like the language switch, unless less motion is asked for. */
-    if (document.startViewTransition && !(reduceMotion && reduceMotion.matches)) {
+    // Capturing a live WebGL campus for a page transition can stall on
+    // software-rendered devices. Its sky and lighting switch directly instead.
+    if (document.startViewTransition && !document.body.classList.contains('page-campus') &&
+        !(reduceMotion && reduceMotion.matches)) {
       document.startViewTransition(function () {
         apply(next, true);
       });

@@ -8,6 +8,7 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { OrbitControls } from '../vendor/three/OrbitControls.js';
 import { createWalker } from './walk.js';
+import { paintNightSky } from './night-sky.js';
 import { BUILDINGS, CAMPUS, PAGE_ID } from './data.js';
 import { SPOTS } from './spots.js';
 import { buildStorefronts } from './storefronts.js';
@@ -21,14 +22,16 @@ import {
 
 var stage = document.getElementById('stage');
 
-/* An ES module cannot `return` at the top level. The page always has a
-   #stage, so a missing one only means this script was loaded elsewhere:
-   do nothing in that case. */
-if (stage) {
-  boot();
+export async function boot(onProgress = function () {}) {
+if (!stage) return;
+async function progress(value) {
+  onProgress(value);
+  // Two frames let the browser paint the bar before more synchronous geometry work.
+  await new Promise(function (resolve) {
+    requestAnimationFrame(function () { requestAnimationFrame(resolve); });
+  });
 }
-
-function boot() {
+await progress(10);
 var i18n = window.CampusI18n;
 var lang = function () { return i18n ? i18n.lang : 'en'; };
 var pick = function (en, zh) { return lang() === 'zh' && zh ? zh : en; };
@@ -134,19 +137,20 @@ if (isTopView()) {
 
 /* ---- sky and environment ------------------------------------------------ */
 
-function skyCanvas() {
+function skyCanvas(night) {
   var c = document.createElement('canvas');
-  c.width = 8;
-  c.height = 512;
+  c.width = night ? 4096 : 8;
+  c.height = night ? 2048 : 512;
   var g = c.getContext('2d');
-  var gr = g.createLinearGradient(0, 0, 0, 512);
-  gr.addColorStop(0.00, '#5b93bf');
-  gr.addColorStop(0.34, '#93bcd3');
-  gr.addColorStop(0.58, '#c8dbe0');
-  gr.addColorStop(0.76, '#e8ece0');
-  gr.addColorStop(1.00, '#f4efe0');
+  var gr = g.createLinearGradient(0, 0, 0, c.height);
+  gr.addColorStop(0.00, night ? '#01030c' : '#5b93bf');
+  gr.addColorStop(0.34, night ? '#050a19' : '#93bcd3');
+  gr.addColorStop(0.58, night ? '#101b2c' : '#c8dbe0');
+  gr.addColorStop(0.76, night ? '#142031' : '#e8ece0');
+  gr.addColorStop(1.00, night ? '#172337' : '#f4efe0');
   g.fillStyle = gr;
-  g.fillRect(0, 0, 8, 512);
+  g.fillRect(0, 0, c.width, c.height);
+  if (night) paintNightSky(c);
   return c;
 }
 
@@ -156,7 +160,20 @@ skyTex.mapping = THREE.EquirectangularReflectionMapping;
 scene.background = skyTex;
 
 var pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromEquirectangular(skyTex).texture;
+var dayEnvironment = pmrem.fromEquirectangular(skyTex);
+var nightSkyTex = new THREE.CanvasTexture(skyCanvas(true));
+nightSkyTex.colorSpace = THREE.SRGBColorSpace;
+nightSkyTex.mapping = THREE.EquirectangularReflectionMapping;
+// Reflections need only a small version; keep the detailed stars in the background.
+var environmentCanvas = document.createElement('canvas');
+environmentCanvas.width = 512; environmentCanvas.height = 256;
+environmentCanvas.getContext('2d').drawImage(nightSkyTex.image, 0, 0, 512, 256);
+var environmentTexture = new THREE.CanvasTexture(environmentCanvas);
+environmentTexture.colorSpace = THREE.SRGBColorSpace;
+var nightEnvironment = pmrem.fromEquirectangular(environmentTexture);
+environmentTexture.dispose();
+pmrem.dispose();
+scene.environment = dayEnvironment.texture;
 scene.environmentIntensity = 0.45;
 
 /* ---- light -------------------------------------------------------------- */
@@ -194,7 +211,9 @@ scene.add(fill);
 
 /* ---- the site ----------------------------------------------------------- */
 
+await progress(22);
 var site = buildSite(scene);
+await progress(38);
 var pickables = [];
 var buildingById = {};
 BUILDINGS.forEach(function (b) { buildingById[b.id] = b; });
@@ -231,7 +250,10 @@ function addBuilding(cfg) {
   pickables.push(proxy);
 }
 
-BUILDINGS.forEach(addBuilding);
+for (var buildingIndex = 0; buildingIndex < BUILDINGS.length; buildingIndex++) {
+  addBuilding(BUILDINGS[buildingIndex]);
+  await progress(38 + Math.round(24 * (buildingIndex + 1) / BUILDINGS.length));
+}
 var storefronts = buildStorefronts(scene);
 
 /* ── the bridge between A and B ──────────────────────────────────────────
@@ -264,6 +286,42 @@ pickables.push(sg);
 
 plantTrees(scene, [site.keep.roads, site.keep.walks]);
 streetFurniture(scene);
+await progress(76);
+
+var night = false;
+var nightWindowMaterials = new Set();
+var nightBuildingLights = [];
+scene.traverse(function (object) {
+  if (object.isLight && object.name === 'lakeside-dining-light') nightBuildingLights.push(object);
+  var materials = Array.isArray(object.material) ? object.material : [object.material];
+  materials.forEach(function (material) {
+    if (material && (material.userData.nightWindow || material.userData.nightGlow)) nightWindowMaterials.add(material);
+  });
+});
+function applySceneTheme() {
+  night = document.documentElement.getAttribute('data-theme') === 'dark';
+  scene.background = night ? nightSkyTex : skyTex;
+  scene.environment = night ? nightEnvironment.texture : dayEnvironment.texture;
+  scene.environmentIntensity = night ? 0.25 : 0.45;
+  scene.fog.color.set(night ? '#18263b' : '#e3ebe6');
+  hemi.color.set(night ? '#91add9' : '#e7f0fa');
+  hemi.groundColor.set(night ? '#303d46' : '#6f7d55');
+  hemi.intensity = night ? 0.45 : 1.15;
+  sun.color.set(night ? '#a4beed' : '#fff2dc');
+  sun.intensity = night ? 0.3 : 2.05;
+  fill.intensity = night ? 0.12 : 0.28;
+  site.setNight(night);
+  nightBuildingLights.forEach(function (light) {
+    light.intensity = night ? light.userData.nightIntensity : 0;
+  });
+  nightWindowMaterials.forEach(function (material) {
+    material.emissiveIntensity = night ? material.userData.nightIntensity : 0;
+  });
+}
+applySceneTheme();
+new MutationObserver(applySceneTheme).observe(document.documentElement, {
+  attributes: true, attributeFilter: ['data-theme']
+});
 
 /* Bake local transforms only for the scenery already constructed. Keep world
    matrices updating normally; the fountain subtree stays animated, and the
@@ -352,7 +410,6 @@ function refreshLabels() {
 refreshLabels();
 if (i18n && i18n.onChange) {
   i18n.onChange(function () {
-    welcomePlanterLabel.textContent = pick('Welcome Center', '欢迎中心');
     refreshLabels();
     placeDock.querySelectorAll('.scene-place-group h3').forEach(function (heading) {
       var rooms = Number(heading.getAttribute('data-room-count'));
@@ -741,7 +798,8 @@ function resize() {
   var h = stage.clientHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
-  camera.fov = walker && walker.active ? 60 : (w / h < 1 ? 54 : 38);
+  // The walker owns FOV, including its animated entry transition.
+  if (!(walker && walker.active)) camera.fov = w / h < 1 ? 54 : 38;
   /* keep the orbit's far limit beyond whatever framing needs */
   controls.maxDistance = Math.max(900, 2600 * (h / Math.max(1, w)) / 2);
   camera.updateProjectionMatrix();
@@ -837,12 +895,18 @@ function frame() {
     sun.shadow.autoUpdate = walker.active;
     sun.shadow.needsUpdate = true;
   }
+  site.updateNightLights(camera.position, night);
   renderer.render(scene, camera);
   positionLabels();
   requestAnimationFrame(frame);
 }
 
 renderPanel();
+await progress(90);
+// Compile/render the first frame before announcing that loading has finished.
+site.updateNightLights(camera.position, night);
+renderer.render(scene, camera);
+await progress(100);
 frame();
 
 /* The visitor arrives from the south-west and the camera settles in. */
@@ -869,7 +933,8 @@ window.Campus3D = {
       cam: camera.position.toArray().map(function (n) { return Math.round(n); }),
       target: controls.target.toArray().map(function (n) { return Math.round(n); }),
       flying: !!flight, enabled: controls.enabled,
-      walking: walker.active, player: walker.avatar.position.toArray(), web: walker.webState()
+      walking: walker.active, entering: walker.entering,
+      player: walker.avatar.position.toArray(), web: walker.webState()
     };
   },
   view: boardView,

@@ -68,7 +68,25 @@
 <main id="main" class="campus-main">
 
   <!-- The scene fills the page; the panel floats over it on the right. -->
-  <div class="stage" id="stage">
+  <div class="stage is-loading" id="stage" aria-busy="true">
+    <div class="scene-loading" id="scene-loading" role="status">
+      <div class="loading-card">
+        <div class="loading-campus" aria-hidden="true">
+          <svg viewBox="0 0 320 160" fill="none">
+            <path class="loading-ground" d="M24 125 158 72 296 125 160 155Z"/>
+            <g class="loading-building loading-building-back"><path d="m150 87 58-23 45 18v41l-58 23-45-18Z"/><path d="m150 87 45 18 58-23m-58 23v41"/><path d="m207 103 34-13m-34 23 34-13m-34 23 34-13"/></g>
+            <g class="loading-building loading-building-front"><path d="m65 89 59-23 48 19v43l-59 23-48-19Z"/><path d="m65 89 48 19 59-23m-59 23v43"/><path d="m125 113 35-14m-35 25 35-14m-35 25 35-14"/></g>
+            <g class="loading-pin"><path d="M151 34a12 12 0 1 1 24 0c0 10-12 22-12 22s-12-12-12-22Z"/><circle cx="163" cy="34" r="4"/></g>
+          </svg>
+        </div>
+        <p class="loading-eyebrow">BiUH · 3D CAMPUS</p>
+        <h2 data-zh="校园，即将呈现">Your campus awaits</h2>
+        <p class="loading-subtitle" data-zh="从一张地图，走进校园">Step beyond the map</p>
+        <div class="loading-progress-meta"><span id="scene-loading-step">Preparing the campus</span><span id="scene-progress-text" aria-hidden="true">5%</span></div>
+        <div class="loading-track" aria-hidden="true"><div id="scene-progress-fill"></div></div>
+        <progress class="loading-native-progress" id="scene-progress" max="100" value="5" aria-label="3D campus loading" data-al-zh="3D 校园加载进度">5%</progress>
+      </div>
+    </div>
     <div class="scene-labels" id="scene-labels" aria-hidden="false"></div>
 
     <div class="stage-fallback" role="status">
@@ -124,6 +142,6 @@
 <script src="i18n.js"></script>
 <script src="site.js"></script>
 <script src="lightbox.js"></script>
-<script type="module" src="scene3d/main.js"></script>
+<script type="module" src="scene3d/load.js"></script>
 </body>
 </html>

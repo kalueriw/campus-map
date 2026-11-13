@@ -91,6 +91,34 @@ function nightTile(kind) {
   });
 }
 
+/* 宿舍整面窗光遮罩：逐开间分配亮暗，不改变白天立面贴图。
+ * 坐标与 tile() 一致；窗框、遮阳网、阳台横档及墙面保持黑色。 */
+function residentialNightMap(kind, bays, floors) {
+  return canvasTex(bays * 128, floors * 128, (g) => {
+    g.fillStyle = '#000';
+    g.fillRect(0, 0, bays * 128, floors * 128);
+    for (let row = 0; row < floors; row++) {
+      for (let bay = 0; bay < bays; bay++) {
+        // 稳定的约 80% 亮窗，切换昼夜时不重新随机。
+        const seed = (bay * 7 + row * 3 + Math.floor(row / 2)) % 10;
+        if (seed < 2) continue;
+        g.save();
+        g.translate(bay * 128, row * 128);
+        g.scale(0.5, 0.5);
+        const glow = g.createLinearGradient(0, 30, 0, 180);
+        glow.addColorStop(0, seed % 2 ? '#ffe2b0' : '#ffdb97');
+        glow.addColorStop(1, seed % 2 ? '#eab776' : '#e8aa66');
+        g.fillStyle = glow;
+        g.fillRect(18, 32, 220, kind === 'apt' ? 142 : 146);
+        g.fillStyle = '#000';
+        for (let i = 1; i < 4; i++) g.fillRect(16 + i * 56 - 2, 30, 3, 150);
+        if (kind === 'dorm') g.fillRect(0, 0, 132, 256);
+        g.restore();
+      }
+    }
+  });
+}
+
 /* 首层：玻璃店面 + 暖光 */
 function shopfront() {
   return canvasTex(256, 128, (g) => {
@@ -188,10 +216,17 @@ function block(g, { w, d, floors, kind, y = 0, plinth = true, cx = 0, cz = 0 }) 
   const tex = tile(kind);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
   tex.repeat.set(bays, floors);
+  const residential = kind === 'dorm' || kind === 'apt';
   const side = new THREE.MeshStandardMaterial({
     map: tex, roughness: 0.62, metalness: 0.05,
-    emissive: new THREE.Color('#ffb974'), emissiveMap: nightTile(kind), emissiveIntensity: 0
+    emissive: new THREE.Color(residential ? '#ffffff' : '#ffb974'),
+    emissiveMap: residential ? residentialNightMap(kind, bays, floors) : nightTile(kind),
+    emissiveIntensity: 0
   });
+  if (residential) {
+    side.userData.nightWindow = true;
+    side.userData.nightIntensity = 1.35;
+  }
   NIGHT_MATS.push(side);
   const body = addMesh(g, new THREE.BoxGeometry(w, bodyH, d),
     [side, side, roofMat, roofMat, side, side], cx, y + GROUND + bodyH / 2, cz);
@@ -443,6 +478,23 @@ export function lakesidePavilion(cfg) {
   const glassW = new THREE.MeshStandardMaterial({ color: '#9db4b2', roughness: 0.1, metalness: 0.15, transparent: true, opacity: 0.55 });
   const roofD = new THREE.MeshStandardMaterial({ color: '#3c4348', roughness: 0.5, metalness: 0.35, side: THREE.DoubleSide });
   const roofL = new THREE.MeshStandardMaterial({ color: '#7d848a', roughness: 0.45, metalness: 0.3, side: THREE.DoubleSide });
+
+  // Warm evening dining lights: two interiors, the terrace and the entrance.
+  const diningLamp = new THREE.MeshStandardMaterial({ color: '#fff0ce',
+    emissive: '#ffd28b', emissiveIntensity: 0, roughness: 0.45 });
+  diningLamp.userData.nightGlow = true;
+  diningLamp.userData.nightIntensity = 2;
+  for (const [x, y, z, intensity, reach] of [
+    [-9, 4.1, -8, 95, 19], [10, 4.3, 8, 95, 19],
+    [19, 3.4, 11, 65, 14], [-20, 2.8, 5, 45, 12]
+  ]) {
+    const light = new THREE.PointLight('#ffd49a', 0, reach, 2);
+    light.position.set(x, y, z);
+    light.name = 'lakeside-dining-light';
+    light.userData.nightIntensity = intensity;
+    g.add(light);
+    box(g, 0.65, 0.16, 0.65, diningLamp, x, y + 0.12, z);
+  }
 
   /* 主甲板 + 伸向水面的栈桥；可行走的甲板面 */
   const mainDeck = box(g, 35, 0.6, 25, deckMat, 5, 0.95, 0);

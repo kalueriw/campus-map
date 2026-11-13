@@ -18,6 +18,8 @@ const server = http.createServer((req, res) => {
     await new Promise(r => server.listen(0, '127.0.0.1', r));
     browser = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--no-sandbox','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader'] });
     const page = await browser.newPage();
+    // These traversal checks start actions immediately after entering the scene.
+    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
     const pause = ms => new Promise(r => setTimeout(r, ms));
@@ -245,14 +247,19 @@ const server = http.createServer((req, res) => {
       await pause(200);
       const stopped = (await state()).player;
       assert.deepEqual(stopped, ran, 'key release stops movement');
+      // Reset to the clear spawn before testing the pad: preceding movement
+      // covers a frame-rate-dependent distance and can end beside a wall.
+      await page.click('#walk-exit');
+      await page.click('#walk-enter');
+      const padStart = (await state()).player;
       // Real pointer controls, also available on narrow touch layouts.
       const button = await page.$('[data-walk-direction="right"]');
       const rect = await button.boundingBox();
       await page.mouse.move(rect.x + rect.width / 2, rect.y + rect.height / 2);
       await page.mouse.down();
-      await pause(450);
+      await page.waitForFunction(x => Campus3D.state().player[0] > x + 0.05, {}, padStart[0]);
       await page.mouse.up();
-      assert((await state()).player[0] > ran[0], 'direction pad moves');
+      assert((await state()).player[0] > padStart[0], 'direction pad moves');
       await page.click('#walk-run');
       assert.equal(await page.$eval('#walk-run', el => el.getAttribute('aria-pressed')), 'true');
       await page.screenshot({path: path.join(root, `shots/walk-${width}.png`)});

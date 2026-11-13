@@ -71,6 +71,46 @@
 .no-webgl .scene-labels,
 .no-webgl .stage-hint { display: none; }
 
+/* A small architectural illustration builds while the real scene is prepared. */
+.scene-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 50% 40%, rgba(79, 173, 154, .12), transparent 65%), var(--paper);
+  color: var(--ink);
+  cursor: wait;
+  opacity: 1;
+  transition: opacity .45s ease;
+}
+.scene-loading[hidden] { display: none; }
+.scene-loading.is-leaving { opacity: 0; }
+.loading-card { width: min(340px, calc(100% - 48px)); text-align: center; }
+.scene-loading p { margin: 0; }
+.loading-campus { width: 280px; max-width: 100%; margin: 0 auto 24px; color: #239c8b; }
+.loading-campus svg { display: block; width: 100%; overflow: visible; }
+.loading-ground { fill: rgba(35, 156, 139, .07); stroke: currentColor; stroke-opacity: .25; }
+.loading-building { stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; fill: var(--paper); animation: campus-build 2.8s ease-in-out infinite; }
+.loading-building-back { animation-delay: -.45s; }
+.loading-pin { stroke: currentColor; stroke-width: 1.8; fill: var(--paper); animation: campus-pin 2.8s ease-in-out infinite; }
+.loading-pin circle { fill: currentColor; stroke: none; }
+.loading-eyebrow { font-size: 10px; letter-spacing: .24em; font-weight: 700; opacity: .6; }
+.loading-card h2 { margin: 12px 0 8px; font-size: clamp(24px, 4vw, 30px); font-weight: 600; letter-spacing: .04em; }
+.loading-subtitle { font-size: 13px; opacity: .55; }
+.loading-progress-meta { display: flex; justify-content: space-between; gap: 12px; width: min(240px, 100%); margin: 36px auto 0; font-size: 11px; opacity: .7; }
+#scene-progress-text { font-variant-numeric: tabular-nums; }
+.loading-track { width: min(240px, 100%); height: 8px; margin: 12px auto 0; overflow: hidden; border-radius: 8px; background: rgba(35, 156, 139, .15); }
+#scene-progress-fill { height: 100%; width: 5%; border-radius: inherit; background: #239c8b; transition: width .4s ease; }
+.loading-native-progress { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+.is-loading > :not(.scene-loading) { visibility: hidden; }
+@keyframes campus-build { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes campus-pin { 0%, 100% { transform: translateY(0); opacity: .65; } 50% { transform: translateY(-8px); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .loading-building, .loading-pin { animation: none; }
+  .scene-loading, #scene-progress-fill { transition: none; }
+}
+
 /* ---- labels ------------------------------------------------------------- */
 
 .scene-labels {
