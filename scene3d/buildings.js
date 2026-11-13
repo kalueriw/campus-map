@@ -464,7 +464,28 @@ export function lakesidePavilion(cfg) {
           px - w / 2 + 0.6 + i * (w - 1.2) / 4, y0 + wh / 2, pz + sg * (d / 2 - 0.5));
       }
     }
-    box(g, w - 1.0, wh - 0.9, d - 1.0, glassW, px, y0 + 0.45 + (wh - 0.9) / 2, pz);
+    // Glazed perimeter walls leave a real south-facing doorway between the posts.
+    const wallH = wh - 0.9, wallY = y0 + 0.45 + wallH / 2;
+    const wallT = 0.12, doorW = 2.4, doorH = 2.8;
+    // Keep the original translucent glazing; collision is handled separately.
+    const solidWall = (width, height, depth, x, y, z) => {
+      const panel = box(g, width, height, depth, glassW, x, y, z);
+      panel.userData.walkBlocker = true;
+      return panel;
+    };
+    solidWall(wallT, wallH, d - 1.0, px - (w - 1.0) / 2, wallY, pz);
+    solidWall(wallT, wallH, d - 1.0, px + (w - 1.0) / 2, wallY, pz);
+    solidWall(w - 1.0, wallH, wallT, px, wallY, pz - (d - 1.0) / 2);
+    const southZ = pz + (d - 1.0) / 2;
+    const sideW = (w - 1.0 - doorW) / 2;
+    solidWall(sideW, wallH, wallT, px - doorW / 2 - sideW / 2, wallY, southZ);
+    solidWall(sideW, wallH, wallT, px + doorW / 2 + sideW / 2, wallY, southZ);
+    solidWall(doorW, wallH - doorH, wallT, px, y0 + doorH + (wallH - doorH) / 2, southZ);
+    // Open door frame: intentionally no leaf across the walking opening.
+    const doorMat = mat('#5b4433', 0.75);
+    box(g, 0.16, doorH, 0.18, doorMat, px - doorW / 2, y0 + doorH / 2, southZ);
+    box(g, 0.16, doorH, 0.18, doorMat, px + doorW / 2, y0 + doorH / 2, southZ);
+    box(g, doorW + 0.16, 0.16, 0.18, doorMat, px, y0 + doorH, southZ);
     box(g, w + 0.4, 0.5, d + 0.4, dark ? wallMat : mat('#cfc9ba', 0.8), px, y0 + wh, pz);
     const rf = new THREE.Mesh(hipRoof(w + 3.0, d + 3.0, rh), rm);
     rf.position.set(px, y0 + wh + 0.25, pz);
@@ -472,8 +493,8 @@ export function lakesidePavilion(cfg) {
     g.add(rf);
     return y0 + wh + 0.25;
   };
-  pav(-9, -5, 20, 13, 3.5, 1.9, roofD, true);
-  pav(10, 7, 17, 14, 3.7, 2.1, roofL, false);
+  pav(-9, -8, 20, 13, 3.5, 1.9, roofD, true);
+  pav(10, 8, 17, 14, 3.7, 2.1, roofL, false);
 
   /* 屋面脊线小护边 */
   for (const [px, pz, w] of [[-9, -5, 20], [10, 7, 17]]) {

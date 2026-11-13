@@ -56,7 +56,8 @@ export function createWalker({ scene, camera, controls, canvas, stage, beforeEnt
 
   // Buildings use footprints; water uses the very same curved shoreline as
   // the rendered lake, not its rectangular label/picking bounds.
-  const obstacles = BUILDINGS.filter(b => !['track', 'courts', 'gate', 'lake'].includes(b.kind));
+  // The restaurant is an open pavilion, so don't block its entire footprint.
+  const obstacles = BUILDINGS.filter(b => !['track', 'courts', 'gate', 'lake', 'lakeside'].includes(b.kind));
   const waterBounds = new THREE.Box2();
   shoreline.forEach(([x, z]) => waterBounds.expandByPoint(new THREE.Vector2(x, z)));
   waterBounds.expandByScalar(.3);

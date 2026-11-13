@@ -6,7 +6,8 @@ import { BUILDINGS } from './data.js';
 export function createTraversal(scene) {
   const cellSize = 4;
   const cells = new Map();
-  const buildings = BUILDINGS.filter(b => b.h > 0 && !['gate', 'lake', 'track', 'courts'].includes(b.kind));
+  // Lakeside is an open-sided pavilion; its footprint must not become an invisible wall.
+  const buildings = BUILDINGS.filter(b => b.h > 0 && !['gate', 'lake', 'track', 'courts', 'lakeside'].includes(b.kind));
   const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
   const ab = new THREE.Vector3(), ac = new THREE.Vector3(), normal = new THREE.Vector3();
   const instance = new THREE.Matrix4(), matrix = new THREE.Matrix4();
@@ -14,6 +15,7 @@ export function createTraversal(scene) {
   scene.updateMatrixWorld(true);
   const sources = buildings.map(cfg => ({ model: scene.children.find(o => o.isGroup && o.userData.id === cfg.id), minY: cfg.h * .55 }));
   const bridgeSolids = [];
+  const walkBlockers = [];
   scene.traverse(model => {
     if (model.userData.solidBridge) sources.push({ model, minY: 0, bridge: true });
   });
@@ -30,6 +32,10 @@ export function createTraversal(scene) {
       for (let n = 0; n < (mesh.isInstancedMesh ? mesh.count : 1); n++) {
         matrix.copy(mesh.matrixWorld);
         if (mesh.isInstancedMesh) { mesh.getMatrixAt(n, instance); matrix.multiply(instance); }
+        if (mesh.userData.walkBlocker) {
+          if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+          walkBlockers.push(mesh.geometry.boundingBox.clone().applyMatrix4(matrix));
+        }
         if (walkSurfacesOnly && !mesh.userData.walkSurface) continue;
         if (bridge) {
           // World AABBs for slabs, rails, columns and arch members are baked
@@ -58,6 +64,16 @@ export function createTraversal(scene) {
         }
       }
     });
+  }
+  const walkBlockerCells = new Map();
+  for (const box of walkBlockers) {
+    for (let x = Math.floor((box.min.x - .25) / cellSize); x <= Math.floor((box.max.x + .25) / cellSize); x++) {
+      for (let z = Math.floor((box.min.z - .25) / cellSize); z <= Math.floor((box.max.z + .25) / cellSize); z++) {
+        const k = `${x},${z}`;
+        if (!walkBlockerCells.has(k)) walkBlockerCells.set(k, []);
+        walkBlockerCells.get(k).push(box);
+      }
+    }
   }
   const solidCells = new Map();
   for (const box of bridgeSolids) {
@@ -90,19 +106,30 @@ export function createTraversal(scene) {
     }
     return height;
   }
+  function footprint(cfg) {
+    // Welcome Center's survey/picking bounds include its broad canopy; its solid body is 44 × 26.
+    return cfg.id === 'welcome' ? { w: 44, d: 26 } : cfg;
+  }
   function contains(cfg, x, z, margin = .4) {
-    return Math.abs(x - cfg.x) < cfg.w / 2 + margin && Math.abs(z - cfg.z) < cfg.d / 2 + margin;
+    const size = footprint(cfg);
+    return Math.abs(x - cfg.x) < size.w / 2 + margin && Math.abs(z - cfg.z) < size.d / 2 + margin;
   }
   function clearAt(x, z, y) {
     if (x < -347 || x > 308 || z < -203 || z > 25) return false;
+    for (const box of walkBlockerCells.get(key(x, z)) || []) {
+      if (overlapsXZ(box, x, z) && y < box.max.y - .02 && y + 1.9 > box.min.y + .02) return false;
+    }
+    // The south-facing opening is intentionally clear; the glass panels above are collidable.
+
     for (const box of solidCells.get(key(x, z)) || []) {
       if (overlapsXZ(box, x, z) && y < box.max.y - .02 && y + 1.9 > box.min.y + .02) return false;
     }
     for (const cfg of buildings) {
       if (!contains(cfg, x, z)) continue;
       // Sample just inside the facade, including its real roof slab height.
-      const rx = THREE.MathUtils.clamp(x, cfg.x - cfg.w / 2 + .8, cfg.x + cfg.w / 2 - .8);
-      const rz = THREE.MathUtils.clamp(z, cfg.z - cfg.d / 2 + .8, cfg.z + cfg.d / 2 - .8);
+      const size = footprint(cfg);
+      const rx = THREE.MathUtils.clamp(x, cfg.x - size.w / 2 + .8, cfg.x + size.w / 2 - .8);
+      const rz = THREE.MathUtils.clamp(z, cfg.z - size.d / 2 + .8, cfg.z + size.d / 2 - .8);
       const roof = roofAt(rx, rz);
       if (y < (roof > 1 ? roof : cfg.h) - .42) return false;
     }
@@ -111,8 +138,9 @@ export function createTraversal(scene) {
   function wallNear(position) {
     let closest = null, best = 2.2;
     for (const cfg of buildings) {
-      const left = cfg.x - cfg.w / 2, right = cfg.x + cfg.w / 2;
-      const back = cfg.z - cfg.d / 2, front = cfg.z + cfg.d / 2;
+      const size = footprint(cfg);
+      const left = cfg.x - size.w / 2, right = cfg.x + size.w / 2;
+      const back = cfg.z - size.d / 2, front = cfg.z + size.d / 2;
       const faces = [
         { axis: 'x', value: left - .7, normal: -1, min: back + 1, max: front - 1 },
         { axis: 'x', value: right + .7, normal: 1, min: back + 1, max: front - 1 },
@@ -128,10 +156,13 @@ export function createTraversal(scene) {
     }
     return closest;
   }
-  // Camera collisions use a dozen analytic boxes, not thousands of meshes.
-  const boxes = buildings.map(cfg => new THREE.Box3(
-    new THREE.Vector3(cfg.x - cfg.w / 2 - .3, 0, cfg.z - cfg.d / 2 - .3),
-    new THREE.Vector3(cfg.x + cfg.w / 2 + .3, cfg.h + 1, cfg.z + cfg.d / 2 + .3)));
+  // Camera collisions use analytic boxes for closed buildings; the open-sided lake pavilion is excluded.
+  const boxes = buildings.map(cfg => {
+    const size = footprint(cfg);
+    return new THREE.Box3(
+      new THREE.Vector3(cfg.x - size.w / 2 - .3, 0, cfg.z - size.d / 2 - .3),
+      new THREE.Vector3(cfg.x + size.w / 2 + .3, cfg.h + 1, cfg.z + size.d / 2 + .3));
+  });
   const cameraRay = new THREE.Ray(), hit = new THREE.Vector3();
   function cameraDistance(origin, direction, distance) {
     cameraRay.set(origin, direction);
