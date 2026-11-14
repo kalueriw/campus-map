@@ -273,8 +273,8 @@ export function buildSite(scene) {
   const floodMaterial = new THREE.MeshStandardMaterial({
     color: '#e9e6da', roughness: 0.6, emissive: '#e3efff', emissiveIntensity: 0
   });
-  /* Keep only the lower-left floodlight in the Sport camera view (south-west). */
-  for (const [sx, sz] of [[-1, 1]]) {
+  /* Diagonal pair: lower-left (south-west) and upper-right (north-east). */
+  for (const [sx, sz] of [[-1, 1], [1, -1]]) {
     const px = TRACK.cx + sx * (TRACK.w / 2 + 8);
     const pz = TRACK.cz + sz * (TRACK.d / 2 + 6);
     cyl(g, 0.22, 0.34, 19, C.steel, px, 9.5, pz, 8);

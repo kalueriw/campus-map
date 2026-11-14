@@ -57,7 +57,7 @@ const server = http.createServer((req, res) => {
       return result;
     });
     let state = await lights();
-    assert.equal(state.sport.length, 1);
+    assert.equal(state.sport.length, 2);
     assert.equal(state.dining.length, 4);
     assert(state.dining.every(v => v === 0));
     assert(state.windows.length > 0 && state.windows.every(v => v === 0));
@@ -124,7 +124,7 @@ const server = http.createServer((req, res) => {
     await page.waitForFunction(() => document.documentElement.classList.contains('no-webgl') && document.getElementById('scene-loading').hidden);
     assert.equal(await page.$eval('#stage', e => e.getAttribute('aria-busy')), 'false');
     assert.deepEqual(errors, []);
-    console.log('PASS: staged loading, day/night road lights, one south-west sports light, dorm windows, adventure entry/cancel, saved dark theme, failed-module fallback');
+    console.log('PASS: staged loading, day/night road lights, two diagonal sports lights, dorm windows, adventure entry/cancel, saved dark theme, failed-module fallback');
   } finally {
     if (browser) await browser.close();
     server.close();
